@@ -14,7 +14,7 @@ const Cluster: FC<Props> = ({}) => {
   return (
     <>
       <h2>All Cluster</h2>
-      {cluster.map((clusterItem) => {
+      {/* {cluster.map((clusterItem) => {
         count++;
         return (
           <ClusterItem
@@ -23,7 +23,7 @@ const Cluster: FC<Props> = ({}) => {
             count={count}
           ></ClusterItem>
         );
-      })}
+      })} */}
     </>
   );
 };
