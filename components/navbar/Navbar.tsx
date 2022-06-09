@@ -27,10 +27,10 @@ const Navbar: FC<Props> = ({}) => {
           </div>
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <div className="navbar-nav me-auto mb-lg-0">
-              <a className="list-group-item list-group-item-action" href="#">
+              <a className="list-group-item list-group-item-action rounded" href="#">
                 Cluster
               </a>
-              <a className="list-group-item list-group-item-action" href="#">
+              <a className="list-group-item list-group-item-action rounded" href="#">
                 Options
               </a>
             </div>
