@@ -5,7 +5,7 @@ interface Props {}
 const Navbar: FC<Props> = ({}) => {
   return (
     <>
-      <nav className="navbar navbar-expand-md border-bottom border-primary">
+      <nav className="navbar navbar-expand-md border-bottom border-primary fixed-top bg-white">
         <div className="container-fluid">
           <a className="navbar-brand text-primary fw-bold fs-4" href="#">
             Cluster Thruster
@@ -21,7 +21,7 @@ const Navbar: FC<Props> = ({}) => {
             >
               <i
                 className="bi bi-list border border-dark rounded px-2"
-                style={style.icon}
+                style={{ fontSize: "2rem" }}
               ></i>
             </button>
           </div>
@@ -44,32 +44,25 @@ const Navbar: FC<Props> = ({}) => {
         className="collapse border-bottom border-primary"
         id="navbarToggleExternalContent"
       >
-        <div className="">
-          <div className="list-group">
-            <button className="btn btn-sm btn-outline-grey m-3" type="button">
-              <i className="bi bi-box-arrow-in-right" />
-              &nbsp; Abmelden
-            </button>
-            <a
-              className="list-group-item list-group-item-action"
-              aria-current="page"
-              href="#"
-            >
-              Cluster
-            </a>
-            <a className="list-group-item list-group-item-action" href="#">
-              Options
-            </a>
-          </div>
+        <div className="list-group">
+          <button className="btn btn-sm btn-outline-grey m-3" type="button">
+            <i className="bi bi-box-arrow-in-right" />
+            &nbsp; Abmelden
+          </button>
+          <a
+            className="list-group-item list-group-item-action"
+            aria-current="page"
+            href="#"
+          >
+            Cluster
+          </a>
+          <a className="list-group-item list-group-item-action" href="#">
+            Options
+          </a>
         </div>
       </div>
     </>
   );
-};
-const style = {
-  icon: {
-    fontSize: "2rem",
-  },
 };
 
 export default Navbar;
