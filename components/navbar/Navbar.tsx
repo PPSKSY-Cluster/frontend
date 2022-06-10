@@ -1,19 +1,37 @@
 import { FC } from "react";
+import Link from "node_modules/next/link";
+import BarItem from "components/sidebar/BarItem";
+import { MobileMenu } from "types/MobileMenu";
 
-interface Props {}
+const pages = [
+  {
+    id: "cluster",
+    title: "Cluster",
+    href: "/cluster",
+  },
+  {
+    id: "options",
+    title: "Options",
+    href: "/options",
+  },
+];
+interface Props {
+  mobileMenu?: MobileMenu;
+}
 
-const Navbar: FC<Props> = ({}) => {
+const Navbar: FC<Props> = ({ mobileMenu }) => {
   return (
     <>
       <nav className="navbar navbar-expand-md border-bottom border-primary fixed-top bg-white">
         <div className="container-fluid">
-          <a className="navbar-brand text-primary fw-bold fs-4" href="#">
-            Cluster Thruster
-          </a>
+          <Link href="/cluster">
+            <a className="navbar-brand text-primary fw-bold fs-4" href="#">
+              Cluster Thruster
+            </a>
+          </Link>
           <div className="d-md-none">
             <button
               className="navbar-toggler"
-              type="button"
               data-bs-toggle="collapse"
               data-bs-target="#navbarToggleExternalContent"
               aria-controls="navbarToggleExternalContent"
@@ -27,12 +45,18 @@ const Navbar: FC<Props> = ({}) => {
           </div>
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <div className="navbar-nav me-auto mb-lg-0">
-              <a className="list-group-item list-group-item-action rounded" href="#">
-                Cluster
-              </a>
-              <a className="list-group-item list-group-item-action rounded" href="#">
-                Options
-              </a>
+              {pages.map((el) => {
+                return (
+                  <Link href={el.href}>
+                    <a
+                      className="list-group-item list-group-item-action rounded"
+                      href="#"
+                    >
+                      {el.title}
+                    </a>
+                  </Link>
+                );
+              })}
             </div>
             <button className="btn btn-sm btn-outline-grey" type="button">
               Abmelden
@@ -49,16 +73,32 @@ const Navbar: FC<Props> = ({}) => {
             <i className="bi bi-box-arrow-in-right" />
             &nbsp; Abmelden
           </button>
-          <a
-            className="list-group-item list-group-item-action"
-            aria-current="page"
-            href="#"
-          >
-            Cluster
-          </a>
-          <a className="list-group-item list-group-item-action" href="#">
-            Options
-          </a>
+          {pages.map((el) => {
+            return (
+              <>
+                <Link href={el.href}>
+                  <a
+                    className="list-group-item list-group-item-action"
+                    href="#"
+                  >
+                    {el.title}
+                  </a>
+                </Link>
+                {mobileMenu && mobileMenu.id === el.id && (
+                  <ul>
+                    {mobileMenu.mobileSubPages.map((element) => {
+                      return (
+                        <BarItem
+                          element={element}
+                          onClickHandler={mobileMenu.onClickHandler}
+                        />
+                      );
+                    })}
+                  </ul>
+                )}
+              </>
+            );
+          })}
         </div>
       </div>
     </>

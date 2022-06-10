@@ -1,5 +1,7 @@
+import BarItem from "./BarItem";
+
 const Sidebar = (props) => {
-  const { title, elements } = props;
+  const { title, elements, onClickHandler } = props;
   return (
     <div
       className="d-flex flex-column flex-shrink-0 p-3 text-primary bg-white"
@@ -9,12 +11,11 @@ const Sidebar = (props) => {
       <ul className="list-group flex-column mb-auto">
         {elements?.map((element, index) => {
           return (
-            <li
-              className="list-group-item list-group-item-action rounded"
+            <BarItem
+              element={element}
               key={index}
-            >
-              {element}
-            </li>
+              onClickHandler={onClickHandler}
+            />
           );
         })}
       </ul>
