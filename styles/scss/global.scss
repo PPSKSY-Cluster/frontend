@@ -29,3 +29,14 @@ $list-group-action-hover-color: white;
 .list-group-item {
   border: none;
 }
+
+.btn-group {
+  width: 100%;
+  height: 100%;
+  margin-top: 10px;
+}
+
+.btn-group .btn {
+  width: 50%;
+  height: 50%;
+}

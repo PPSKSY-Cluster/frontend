@@ -1,8 +1,8 @@
 import { FC } from "react";
 
-interface Props {}
+//interface Props {}
 
-const Navbar: FC<Props> = ({}) => {
+const Navbar = ({use, clus, opt}) => {
   return (
     <>
       <nav className="navbar navbar-expand-md border-bottom border-primary fixed-top bg-white">
@@ -27,13 +27,18 @@ const Navbar: FC<Props> = ({}) => {
           </div>
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <div className="navbar-nav me-auto mb-lg-0">
-              <a className="list-group-item list-group-item-action rounded" href="#">
+              <button className="list-group-item list-group-item-action rounded" onClick ={clus}>
                 Cluster
-              </a>
-              <a className="list-group-item list-group-item-action rounded" href="#">
-                Options
-              </a>
+              </button>
+              <button className="list-group-item list-group-item-action rounded" onClick ={use}>
+                User
+              </button>
             </div>
+            <div className ="pull-right">
+              <button className="list-group-item list-group-item-action rounded" onClick ={opt}>
+                  Options
+              </button>
+            </div>  
             <button className="btn btn-sm btn-outline-grey" type="button">
               Abmelden
             </button>
