@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Login from "./main/Login";
+import Auth from "./auth/Auth";
 import Main from "./main/Main";
 
 const App = () => {
@@ -8,6 +8,6 @@ const App = () => {
   const authenticate = () => {
     setAuthenticated(!authenticated);
   };
-  return authenticated ? <Main /> : <Login authenticate={authenticate} />;
+  return authenticated ? <Main /> : <Auth authenticate={authenticate} />;
 };
 export default App;
