@@ -64,6 +64,7 @@ import axios from "node_modules/axios/index";
               <th>Nr</th>
               <th>Name</th>
               <th>Rolle</th>
+              <th>Edit</th>
             </tr>
           </thead>
           <tbody>

@@ -16,13 +16,9 @@ const UserItem: FC<Props> = ({userItem, count}) => {
       <tr>
         <td>{count}</td>
         <td>{userItem.username}</td>
+        <td>User</td>
         <div className="d-grid gap-2 d-lg-flex justify-content-lg-front">
-              <button
-                type="submit"
-                className="btn btn-primary"
-              >
-                Edit
-              </button>
+        <a><i className="bi bi-pencil-square"></i></a>
         </div>
       </tr>
     </>
