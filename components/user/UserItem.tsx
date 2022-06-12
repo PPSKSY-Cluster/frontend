@@ -7,21 +7,19 @@ interface Props {
   opt: Function;
 }
 
-const UserItem: FC<Props> = ({ userItem, count, opt }) => {
-    const callOpt = () => {
+const UserItem: FC<Props> = ({userItem, count}) => {
+    /*const callOpt = () => {
         return opt;
-    }
+    }*/
   return (
     <>
       <tr>
         <td>{count}</td>
-        <td>{userItem.name}</td>
-        <td>{userItem.description}</td>
+        <td>{userItem.username}</td>
         <div className="d-grid gap-2 d-lg-flex justify-content-lg-front">
               <button
                 type="submit"
                 className="btn btn-primary"
-                onClick={callOpt}
               >
                 Edit
               </button>
