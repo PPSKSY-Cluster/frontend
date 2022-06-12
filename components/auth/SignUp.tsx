@@ -1,7 +1,8 @@
-import { FC } from "react";
+import { FC, useRef } from "react";
 import axios from "axios";
 
 interface Props {
+  authenticate: () => void;
   showSignIn: () => void;
 }
 
@@ -10,58 +11,75 @@ interface User {
   password: string;
 }
 
-const SignUp: FC<Props> = ({ showSignIn }) => {
-  const createUserApiRequest = (event) => {
-    event.preventDefault();
-    var { email, password } = document.forms[0];
-    console.log(email, password);
+const SignUp: FC<Props> = ({ authenticate, showSignIn }) => {
+  const mailEl = useRef(null);
+  const nameEl = useRef(null);
+  const passwordEl = useRef(null);
 
-    /*      axios
-        .post('/api/user', payload)
-        .then((res) => state.commit('addTodo', res.data))
-        .catch((err) => console.log(err));
-*/
+  const followUpSignIn = () => {
+    console.log("sign in");
+    authenticate();
     axios
-      .post("http://localhost:8080/api/users", {
-        username: "foo",
-        password: "bar",
+      .post("http://localhost:8080/api/login", {
+        username: nameEl.current.value,
+        password: passwordEl.current.value,
       })
-      .then((res) => console.log(res))
+      .then((res) => authenticate())
+      .catch((err) => console.log(err));
+  };
+
+  const signUp = (e) => {
+    e.preventDefault();
+
+    const newUserData = {
+      username: nameEl.current.value,
+      password: passwordEl.current.value,
+      email: mailEl.current.value,
+    };
+
+    // TODO save jwt-token in redux + keep me signed in
+    // save token in context hook
+    axios
+      .post("http://localhost:8080/api/users", newUserData)
+      .then((res) => followUpSignIn())
       .catch((err) => console.log(err));
   };
 
   return (
     <>
       <h2 className="mb-3">Registrieren bei Cluster Thruster</h2>
-      <form onSubmit={createUserApiRequest}>
+      <form onSubmit={signUp}>
         <div className="form-outline mb-4">
-          <input type="email" className="form-control" required />
+          <input type="email" className="form-control" ref={mailEl} required />
           <label className="form-label">Email Addresse</label>
         </div>
         <div className="form-outline mb-4">
-          <input type="username" className="form-control" required />
+          <input
+            type="username"
+            className="form-control"
+            ref={nameEl}
+            required
+          />
           <label className="form-label">Username</label>
         </div>
 
         <div className="form-outline mb-4">
-          <input type="password" className="form-control" />
+          <input type="password" className="form-control" ref={passwordEl} />
           <label className="form-label">Passwort</label>
         </div>
 
-        <button type="button" className="btn btn-primary btn-block mb-4">
-          Registrieren
-        </button>
-
-        <hr></hr>
-        <div className="text-center">
-          <p>
-            Bereits ein Mitglied?{" "}
-            <a href="#!" onClick={showSignIn}>
-              Einloggen
-            </a>
-          </p>
-        </div>
+        <input
+          type="submit"
+          value="Registrieren"
+          className="btn btn-primary btn-block mb-4"
+        />
       </form>
+      <hr></hr>
+      <div className="text-center">
+        <p>
+          Bereits ein Mitglied? <a onClick={showSignIn}>Einloggen</a>
+        </p>
+      </div>
     </>
   );
 };

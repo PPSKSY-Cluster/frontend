@@ -1,4 +1,5 @@
-import { FC } from "react";
+import { FC, useRef, useState } from "react";
+import axios from "axios";
 
 interface Props {
   authenticate: () => void;
@@ -6,17 +7,39 @@ interface Props {
 }
 
 const SignIn: FC<Props> = ({ authenticate, showSignUp }) => {
+  const nameEl = useRef(null);
+  const passwordEl = useRef(null);
+
+  const signIn = (e) => {
+    e.preventDefault();
+
+    const data = {
+      username: nameEl.current.value,
+      password: passwordEl.current.value,
+    };
+
+    //
+    axios
+      .post("http://localhost:8080/api/login", data)
+      .then((res) => authenticate())
+      .catch((err) => console.log(err));
+  };
   return (
     <>
       <h2 className="mb-3">Anmelden bei Cluster Thruster</h2>
-      <form>
+      <form onSubmit={signIn}>
         <div className="form-group mb-2">
-          <input type="email" id="form2Example1" className="form-control" />
-          <label className="form-label">Email Addresse</label>
+          <input
+            type="username"
+            className="form-control"
+            ref={nameEl}
+            required
+          />
+          <label className="form-label">Username</label>
         </div>
 
         <div className="form-outline mb-4">
-          <input type="password" id="form2Example2" className="form-control" />
+          <input type="password" className="form-control" ref={passwordEl} />
           <label className="form-label">Passwort</label>
         </div>
 
@@ -40,24 +63,18 @@ const SignIn: FC<Props> = ({ authenticate, showSignUp }) => {
         </div>
 */}
 
-        <button
-          type="button"
+        <input
+          type="submit"
+          value="Login"
           className="btn btn-primary btn-block mb-4"
-          onClick={authenticate}
-        >
-          Einloggen
-        </button>
-
-        <hr></hr>
-        <div className="text-center">
-          <p>
-            Noch kein Mitglied?{" "}
-            <a href="#!" onClick={showSignUp}>
-              Registrieren
-            </a>
-          </p>
-        </div>
+        />
       </form>
+      <hr></hr>
+      <div className="text-center">
+        <p>
+          Noch kein Mitglied? <a onClick={showSignUp}>Registrieren </a>
+        </p>
+      </div>
     </>
   );
 };

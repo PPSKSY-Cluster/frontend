@@ -26,7 +26,10 @@ const Auth: FC<Props> = ({ authenticate }) => {
               showSignUp={changeSignType}
             ></SignIn>
           ) : (
-            <SignUp showSignIn={changeSignType}></SignUp>
+            <SignUp
+              authenticate={authenticate}
+              showSignIn={changeSignType}
+            ></SignUp>
           )}
         </div>
       </div>

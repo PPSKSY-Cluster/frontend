@@ -6,6 +6,7 @@ const App = () => {
   const [authenticated, setAuthenticated] = useState(false);
 
   const authenticate = () => {
+    console.log("im here");
     setAuthenticated(!authenticated);
   };
   return authenticated ? <Main /> : <Auth authenticate={authenticate} />;
