@@ -8,16 +8,17 @@ import axios from "node_modules/axios/index";
   interface Props {}
 
   const Options: FC<Props> = ({}) => {
-    const username = "Anna";
-    const email = "anna@gmail.de"
+    const email = "foo@mail.de"
     const password = "*********"
-    const [user, setUser] = useState([]);
+    var use: IUser = {_id:0, username:"bar"};
+    var [user, setUsers] = useState(use);
 
     useEffect(() => {
-      async function getUser(){
-        setUser(await getUser())
+      async function getUsers(){
+        setUsers(await getUser())
       } 
-      getUser();
+      getUsers();
+      //alert(user.username)
     },[])
 
     const editUser = async () => {
@@ -27,7 +28,6 @@ import axios from "node_modules/axios/index";
     }
     
     const getUser = async () => {
-        var searchName = (document.getElementById("searchName") as HTMLInputElement).value;
         const response = await axios.get("http://localhost:8080/api/users" + "/62a5ef5f9b388bcfc925fcdc", {headers:{'Content-Type': 'application/json',
         'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbiI6dHJ1ZSwiZXhwIjoxNjU1MTI4MzM2LCJ1c2VybmFtZSI6ImZvbyJ9.RmKj9VTsxjMR1JnMHaE4bO6wbMF8tCoGt7e3EterseU'}
         })
@@ -59,7 +59,7 @@ import axios from "node_modules/axios/index";
                         <th>Name { }</th>
                         <input
                             text-align="right"
-                            defaultValue={username}>
+                            defaultValue={user.username}>
                         </input>
                         <th>Email { }</th>
                         <input
