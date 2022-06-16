@@ -3,6 +3,7 @@ import ConfirmDialog from "components/dialog/ConfirmDialog";
 import { useEffect, useState } from "react";
 import { ICluster } from "../../types/Cluster";
 import ClusterItem from "./ClusterItem";
+import ClusterUpdate from "./ClusterUpdate";
 
 const ClusterTable = () => {
   const clusterB: ICluster[] = [
@@ -10,7 +11,10 @@ const ClusterTable = () => {
     { _id: "2", name: "Cluster 2", description: "CPU" },
   ];
   const [cluster, setCluster] = useState(clusterB);
-  const [deleteItem, setDeleteItem] = useState<ICluster>();
+  const [currentItem, setCurrentItem] = useState<ICluster>({
+    name: "",
+    description: "",
+  });
 
   useEffect(() => {
     async function getCluster() {
@@ -26,9 +30,19 @@ const ClusterTable = () => {
 
   const onDeleteClick = async () => {
     try {
-      const response = await ClusterAPI.delete(deleteItem._id);
+      const response = await ClusterAPI.delete(currentItem._id);
       response.status === 204
         ? alert("Cluster successfully deleted!")
+        : alert("Uups! Something went wrong!");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const onUpdateClick = async () => {
+    try {
+      const response = await ClusterAPI.update(currentItem);
+      response.status === 202
+        ? alert("Cluster successfully updated!")
         : alert("Uups! Something went wrong!");
     } catch (error) {
       console.log(error);
@@ -54,7 +68,7 @@ const ClusterTable = () => {
                 key={clusterItem._id}
                 clusterItem={clusterItem}
                 count={++index}
-                setDeleteItem={setDeleteItem}
+                setCurrentItem={setCurrentItem}
               ></ClusterItem>
             );
           })}
@@ -65,7 +79,12 @@ const ClusterTable = () => {
         id={"clusterDeletion"}
         accept={{ caption: "Löschen", onClick: onDeleteClick }}
         title={"Cluster Löschen"}
-        text={`Möchten Sie ${deleteItem?.name} wirklich löschen?`}
+        text={`Möchten Sie ${currentItem?.name} wirklich löschen?`}
+      />
+      <ClusterUpdate
+        currentItem={currentItem}
+        setCurrentItem={setCurrentItem}
+        onSubmit={onUpdateClick}
       />
     </>
   );

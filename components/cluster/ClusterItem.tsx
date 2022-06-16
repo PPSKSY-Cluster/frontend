@@ -4,13 +4,13 @@ import { ICluster } from "../../types/Cluster";
 interface ClusterItemProps {
   clusterItem: ICluster;
   count: number;
-  setDeleteItem: (item: ICluster) => void;
+  setCurrentItem: (item: ICluster) => void;
 }
 
 const ClusterItem: FC<ClusterItemProps> = ({
   clusterItem,
   count,
-  setDeleteItem,
+  setCurrentItem,
 }) => {
   return (
     <>
@@ -19,17 +19,21 @@ const ClusterItem: FC<ClusterItemProps> = ({
         <td className="text-center">{clusterItem.name}</td>
         <td className="text-center">{clusterItem.description}</td>
         <td className="text-center">
-          <a>
-            <i className="bi bi-pencil-square"></i>
+          <a onClick={() => setCurrentItem(clusterItem)}>
+            <i
+              className="bi bi-pencil-square"
+              data-bs-toggle="modal"
+              data-bs-target="#clusterUpdate"
+            />
           </a>
         </td>
         <td className="text-center">
-          <a onClick={() => setDeleteItem(clusterItem)}>
+          <a onClick={() => setCurrentItem(clusterItem)}>
             <i
               className="bi bi-trash-fill"
               data-bs-toggle="modal"
               data-bs-target="#clusterDeletion"
-            ></i>
+            />
           </a>
         </td>
       </tr>

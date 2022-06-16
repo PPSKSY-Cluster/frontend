@@ -1,5 +1,5 @@
 import { FC } from "react";
-import Link from "node_modules/next/link";
+import Link from "next/link";
 import BarItem from "components/sidebar/BarItem";
 import { IMobileMenu } from "types/MobileMenu";
 import { ILinks } from "types/Links";
@@ -77,8 +77,6 @@ const Navbar: FC<NavbarProps> = ({ mobileMenu }) => {
                 <Link href={el.href}>
                   <a
                     className="list-group-item list-group-item-action"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#navBarMobile"
                     href="#"
                   >
                     {el.caption}

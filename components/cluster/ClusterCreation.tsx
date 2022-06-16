@@ -1,49 +1,33 @@
-import { FC, FormEvent, useLayoutEffect, useRef } from "react";
+import { FC, useState } from "react";
 import ClusterAPI from "api/cluster";
+import ClusterForm from "./ClusterForm";
+import { ICluster } from "types/Cluster";
 
 const ClusterCreation: FC = () => {
-  const formRef = useRef<HTMLFormElement>();
-  const nameRef = useRef<HTMLInputElement>();
-  const descriptionRef = useRef<HTMLTextAreaElement>();
+  const [cluster, setCluster] = useState<ICluster>({
+    name: "",
+    description: "",
+  });
 
-  useLayoutEffect(() => {
-    if (nameRef?.current) {
-      nameRef.current.focus();
-    }
-  }, []);
-
-  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const onSubmit = async () => {
     try {
-      await ClusterAPI.create({
-        name: nameRef.current.value.trim(),
-        description: descriptionRef.current.value.trim(),
+      const response = await ClusterAPI.create({
+        name: cluster.name.trim(),
+        description: cluster.description.trim(),
       });
-      formRef.current.reset();
+      response.status === 201 ? alert("Success") : alert("Failed");
     } catch (error) {
       console.log(error);
     }
   };
 
   return (
-    <div className="container-fluid p-4">
-      <h2 className="mb-3">Neues Cluster erstellen</h2>
-      <form onSubmit={onSubmit} ref={formRef}>
-        <div className="form-group mb-2">
-          <label htmlFor="exampleInputEmail1">Name</label>
-          <input type="text" className="form-control" ref={nameRef} required />
-        </div>
-        <div className="form-group mb-4">
-          <label htmlFor="exampleInputPassword1">Beschreibung</label>
-          <textarea className="form-control" ref={descriptionRef} required />
-        </div>
-        <div className="d-grid gap-2 d-lg-flex justify-content-lg-end">
-          <button type="submit" className="btn btn-primary float-right">
-            Erstellen
-          </button>
-        </div>
-      </form>
-    </div>
+    <ClusterForm
+      title="Neues Cluster erstellen"
+      action={{ title: "Erstellen", onSubmit }}
+      currentItem={cluster}
+      setCurrentItem={setCluster}
+    />
   );
 };
 export default ClusterCreation;
