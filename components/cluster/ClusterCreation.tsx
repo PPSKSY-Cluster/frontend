@@ -1,5 +1,5 @@
 import { FormEvent, useLayoutEffect, useRef } from "react";
-import axios from "node_modules/axios/index";
+import ClusterAPI from "api/cluster";
 
 const ClusterCreation = () => {
   const formRef = useRef<HTMLFormElement>();
@@ -15,21 +15,10 @@ const ClusterCreation = () => {
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
-        "http://localhost:8080/api/cresources/",
-        {
-          name: nameRef.current.value.trim(),
-          description: descriptionRef.current.value.trim(),
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization:
-              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbiI6dHJ1ZSwiZXhwIjoxNjU1MTI1NTI3LCJ1c2VybmFtZSI6ImZvbyJ9.ZBDkby7NBxAW5jWtcwmo1BFFPPqHGUYkIxowqPgKMnQ",
-          },
-        }
-      );
-      response.status === 201 ? alert("Cluster succesfully created!") : alert("Uups! Something went wrong!");
+      await ClusterAPI.create({
+        name: nameRef.current.value.trim(),
+        description: descriptionRef.current.value.trim(),
+      });
       formRef.current.reset();
     } catch (error) {
       console.log(error);

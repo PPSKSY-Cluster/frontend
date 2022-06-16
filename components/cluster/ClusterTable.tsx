@@ -1,4 +1,4 @@
-import axios from "node_modules/axios/index";
+import ClusterAPI from "api/cluster";
 import { useEffect, useState } from "react";
 import { ICluster } from "../../types/Cluster";
 import ClusterItem from "./ClusterItem";
@@ -13,16 +13,7 @@ const ClusterTable = () => {
   useEffect(() => {
     async function getCluster() {
       try {
-        const response = await axios.get(
-          "http://localhost:8080/api/cresources/",
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization:
-                "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbiI6dHJ1ZSwiZXhwIjoxNjU1MTI1NTI3LCJ1c2VybmFtZSI6ImZvbyJ9.ZBDkby7NBxAW5jWtcwmo1BFFPPqHGUYkIxowqPgKMnQ",
-            },
-          }
-        );
+        const response = await ClusterAPI.getAll();
         if (response.data.length > 0) setCluster(response.data);
       } catch (error) {
         console.log(error);
