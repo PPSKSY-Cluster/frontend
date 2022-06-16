@@ -1,23 +1,17 @@
-import ClusterAPI from "api/cluster";
 import { FC } from "react";
 import { ICluster } from "../../types/Cluster";
 
 interface ClusterItemProps {
   clusterItem: ICluster;
   count: number;
+  setDeleteItem: (item: ICluster) => void;
 }
 
-const ClusterItem: FC<ClusterItemProps> = ({ clusterItem, count }) => {
-  const onDeleteClick = async () => {
-    try {
-      const response = await ClusterAPI.delete(clusterItem._id);
-      response.status === 204
-        ? alert("Cluster successfully deleted!")
-        : alert("Uups! Something went wrong!");
-    } catch (error) {
-      console.log(error);
-    }
-  };
+const ClusterItem: FC<ClusterItemProps> = ({
+  clusterItem,
+  count,
+  setDeleteItem,
+}) => {
   return (
     <>
       <tr>
@@ -30,8 +24,12 @@ const ClusterItem: FC<ClusterItemProps> = ({ clusterItem, count }) => {
           </a>
         </td>
         <td className="text-center">
-          <a onClick={onDeleteClick}>
-            <i className="bi bi-trash-fill"></i>
+          <a onClick={() => setDeleteItem(clusterItem)}>
+            <i
+              className="bi bi-trash-fill"
+              data-bs-toggle="modal"
+              data-bs-target="#clusterDeletion"
+            ></i>
           </a>
         </td>
       </tr>

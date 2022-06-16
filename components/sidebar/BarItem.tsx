@@ -5,13 +5,18 @@ interface BarItemProps {
   element: PageType;
   onClickHandler: (page: PageType) => void;
 }
-const BarItem: FC<BarItemProps> = ({ element, onClickHandler }) => {
+const BarItem: FC<BarItemProps> = ({
+  element,
+  onClickHandler,
+  ...otherProps
+}) => {
   return (
     <li
       className="list-group-item list-group-item-action rounded"
       onClick={() => {
         onClickHandler(element);
       }}
+      {...otherProps}
     >
       {element.caption}
     </li>

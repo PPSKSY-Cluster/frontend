@@ -1,4 +1,5 @@
 import ClusterAPI from "api/cluster";
+import ConfirmDialog from "components/dialog/ConfirmDialog";
 import { useEffect, useState } from "react";
 import { ICluster } from "../../types/Cluster";
 import ClusterItem from "./ClusterItem";
@@ -9,6 +10,7 @@ const ClusterTable = () => {
     { _id: "2", name: "Cluster 2", description: "CPU" },
   ];
   const [cluster, setCluster] = useState(clusterB);
+  const [deleteItem, setDeleteItem] = useState<ICluster>();
 
   useEffect(() => {
     async function getCluster() {
@@ -22,29 +24,50 @@ const ClusterTable = () => {
     getCluster();
   }, [cluster]);
 
+  const onDeleteClick = async () => {
+    try {
+      const response = await ClusterAPI.delete(deleteItem._id);
+      response.status === 204
+        ? alert("Cluster successfully deleted!")
+        : alert("Uups! Something went wrong!");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
-    <table className="table table-hover m-3">
-      <thead>
-        <tr>
-          <th>Nr</th>
-          <th className="text-center">Name</th>
-          <th className="text-center">Beschreibung</th>
-          <th className="text-center">Bearbeiten</th>
-          <th className="text-center">Löschen</th>
-        </tr>
-      </thead>
-      <tbody>
-        {cluster?.map((clusterItem, index) => {
-          return (
-            <ClusterItem
-              key={clusterItem._id}
-              clusterItem={clusterItem}
-              count={++index}
-            ></ClusterItem>
-          );
-        })}
-      </tbody>
-    </table>
+    <>
+      <table className="table table-hover m-3">
+        <thead>
+          <tr>
+            <th>Nr</th>
+            <th className="text-center">Name</th>
+            <th className="text-center">Beschreibung</th>
+            <th className="text-center">Bearbeiten</th>
+            <th className="text-center">Löschen</th>
+          </tr>
+        </thead>
+        <tbody>
+          {cluster?.map((clusterItem, index) => {
+            return (
+              <ClusterItem
+                key={clusterItem._id}
+                clusterItem={clusterItem}
+                count={++index}
+                setDeleteItem={setDeleteItem}
+              ></ClusterItem>
+            );
+          })}
+        </tbody>
+      </table>
+
+      <ConfirmDialog
+        id={"clusterDeletion"}
+        accept={{ caption: "Löschen", onClick: onDeleteClick }}
+        title={"Cluster Löschen"}
+        text={`Möchten Sie ${deleteItem?.name} wirklich löschen?`}
+      />
+    </>
   );
 };
 export default ClusterTable;

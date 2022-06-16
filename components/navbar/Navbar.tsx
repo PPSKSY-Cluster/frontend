@@ -34,8 +34,8 @@ const Navbar: FC<NavbarProps> = ({ mobileMenu }) => {
             <button
               className="navbar-toggler"
               data-bs-toggle="collapse"
-              data-bs-target="#navbarToggleExternalContent"
-              aria-controls="navbarToggleExternalContent"
+              data-bs-target="#navBarMobile"
+              aria-controls="navBarMobile"
               aria-expanded="false"
             >
               <i
@@ -65,10 +65,7 @@ const Navbar: FC<NavbarProps> = ({ mobileMenu }) => {
           </div>
         </div>
       </nav>
-      <div
-        className="collapse border-bottom border-primary"
-        id="navbarToggleExternalContent"
-      >
+      <div className="collapse border-bottom border-primary" id="navBarMobile">
         <div className="list-group">
           <button className="btn btn-sm btn-outline-grey m-3" type="button">
             <i className="bi bi-box-arrow-in-right" />
@@ -80,6 +77,8 @@ const Navbar: FC<NavbarProps> = ({ mobileMenu }) => {
                 <Link href={el.href}>
                   <a
                     className="list-group-item list-group-item-action"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navBarMobile"
                     href="#"
                   >
                     {el.caption}
@@ -93,6 +92,8 @@ const Navbar: FC<NavbarProps> = ({ mobileMenu }) => {
                           key={index}
                           element={element}
                           onClickHandler={mobileMenu.onClickHandler}
+                          data-bs-toggle="collapse"
+                          data-bs-target="#navBarMobile"
                         />
                       );
                     })}
