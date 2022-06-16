@@ -1,25 +1,43 @@
+import ClusterAPI from "api/cluster";
+import { useEffect, useState } from "react";
 import { ICluster } from "../../types/Cluster";
-
 import ClusterItem from "./ClusterItem";
+
 const ClusterTable = () => {
-  const cluster: ICluster[] = [
-    { id: 1, name: "Cluster 1", description: "RAM" },
-    { id: 2, name: "Cluster 2", description: "CPU" },
+  const clusterB: ICluster[] = [
+    { _id: 1, name: "Cluster 1", description: "RAM" },
+    { _id: 2, name: "Cluster 2", description: "CPU" },
   ];
+  const [cluster, setCluster] = useState(clusterB);
+
+  useEffect(() => {
+    async function getCluster() {
+      try {
+        const response = await ClusterAPI.getAll();
+        if (response.data.length > 0) setCluster(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    getCluster();
+  }, [cluster]);
+
   return (
-    <table className="table m-3">
+    <table className="table table-hover m-3">
       <thead>
         <tr>
           <th>Nr</th>
-          <th>Name</th>
-          <th>Beschreibung</th>
+          <th className="text-center">Name</th>
+          <th className="text-center">Beschreibung</th>
+          <th className="text-center">Bearbeiten</th>
+          <th className="text-center">Löschen</th>
         </tr>
       </thead>
       <tbody>
-        {cluster.map((clusterItem, index) => {
+        {cluster?.map((clusterItem, index) => {
           return (
             <ClusterItem
-              key={clusterItem.id}
+              key={clusterItem._id}
               clusterItem={clusterItem}
               count={++index}
             ></ClusterItem>
