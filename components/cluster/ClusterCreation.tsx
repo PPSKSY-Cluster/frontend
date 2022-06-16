@@ -16,6 +16,7 @@ const ClusterCreation: FC = () => {
         description: cluster.description.trim(),
       });
       response.status === 201 ? alert("Success") : alert("Failed");
+      setCluster({ name: "", description: "" });
     } catch (error) {
       console.log(error);
     }

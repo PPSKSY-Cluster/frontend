@@ -18,7 +18,6 @@ const ClusterForm: FC<ClusterFormProps> = ({
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     action.onSubmit();
-    setCurrentItem({ name: "", description: "" });
   };
   return (
     <div className="container-fluid p-4">
