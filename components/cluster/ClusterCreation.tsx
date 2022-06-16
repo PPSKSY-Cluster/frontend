@@ -1,7 +1,7 @@
-import { FormEvent, useLayoutEffect, useRef } from "react";
+import { FC, FormEvent, useLayoutEffect, useRef } from "react";
 import ClusterAPI from "api/cluster";
 
-const ClusterCreation = () => {
+const ClusterCreation: FC = () => {
   const formRef = useRef<HTMLFormElement>();
   const nameRef = useRef<HTMLInputElement>();
   const descriptionRef = useRef<HTMLTextAreaElement>();

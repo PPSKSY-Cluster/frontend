@@ -1,25 +1,26 @@
 import { FC } from "react";
 import Link from "node_modules/next/link";
 import BarItem from "components/sidebar/BarItem";
-import { MobileMenu } from "types/MobileMenu";
+import { IMobileMenu } from "types/MobileMenu";
+import { ILinks } from "types/Links";
 
-const pages = [
+const links: ILinks[] = [
   {
     id: "cluster",
-    title: "Cluster",
+    caption: "Cluster",
     href: "/cluster",
   },
   {
     id: "options",
-    title: "Options",
+    caption: "Options",
     href: "/options",
   },
 ];
-interface Props {
-  mobileMenu?: MobileMenu;
+interface NavbarProps {
+  mobileMenu?: IMobileMenu;
 }
 
-const Navbar: FC<Props> = ({ mobileMenu }) => {
+const Navbar: FC<NavbarProps> = ({ mobileMenu }) => {
   return (
     <>
       <nav className="navbar navbar-expand-md border-bottom border-primary fixed-top bg-white">
@@ -45,14 +46,14 @@ const Navbar: FC<Props> = ({ mobileMenu }) => {
           </div>
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <div className="navbar-nav me-auto mb-lg-0">
-              {pages.map((el) => {
+              {links.map((el, index) => {
                 return (
-                  <Link href={el.href}>
+                  <Link href={el.href} key={index}>
                     <a
                       className="list-group-item list-group-item-action rounded"
                       href="#"
                     >
-                      {el.title}
+                      {el.caption}
                     </a>
                   </Link>
                 );
@@ -73,22 +74,23 @@ const Navbar: FC<Props> = ({ mobileMenu }) => {
             <i className="bi bi-box-arrow-in-right" />
             &nbsp; Abmelden
           </button>
-          {pages.map((el) => {
+          {links.map((el, index) => {
             return (
-              <>
+              <div key={index}>
                 <Link href={el.href}>
                   <a
                     className="list-group-item list-group-item-action"
                     href="#"
                   >
-                    {el.title}
+                    {el.caption}
                   </a>
                 </Link>
                 {mobileMenu && mobileMenu.id === el.id && (
                   <ul>
-                    {mobileMenu.mobileSubPages.map((element) => {
+                    {mobileMenu.mobileSubPages.map((element, index) => {
                       return (
                         <BarItem
+                          key={index}
                           element={element}
                           onClickHandler={mobileMenu.onClickHandler}
                         />
@@ -96,7 +98,7 @@ const Navbar: FC<Props> = ({ mobileMenu }) => {
                     })}
                   </ul>
                 )}
-              </>
+              </div>
             );
           })}
         </div>

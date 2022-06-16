@@ -1,13 +1,13 @@
-import { FC } from "react";
-import { MobileMenu } from "types/MobileMenu";
+import React, { FC } from "react";
+import { IMobileMenu } from "types/MobileMenu";
 import Navbar from "../navbar/Navbar";
 
-interface Props {
-  children?: any;
-  mobileMenu?: MobileMenu;
+interface MainProps {
+  children?: React.ReactNode;
+  mobileMenu?: IMobileMenu;
 }
 
-const Main: FC<Props> = ({ children, mobileMenu }) => {
+const Main: FC<MainProps> = ({ children, mobileMenu }) => {
   return (
     <div style={{ paddingTop: "60px" }}>
       <Navbar mobileMenu={mobileMenu} />

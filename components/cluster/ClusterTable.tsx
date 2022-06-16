@@ -5,8 +5,8 @@ import ClusterItem from "./ClusterItem";
 
 const ClusterTable = () => {
   const clusterB: ICluster[] = [
-    { _id: 1, name: "Cluster 1", description: "RAM" },
-    { _id: 2, name: "Cluster 2", description: "CPU" },
+    { _id: "1", name: "Cluster 1", description: "RAM" },
+    { _id: "2", name: "Cluster 2", description: "CPU" },
   ];
   const [cluster, setCluster] = useState(clusterB);
 

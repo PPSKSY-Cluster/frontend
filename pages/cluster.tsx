@@ -3,15 +3,16 @@ import Main from "components/main/Main";
 import Sidebar from "components/sidebar/Sidebar";
 import ClusterCreation from "components/cluster/ClusterCreation";
 import ClusterTable from "components/cluster/ClusterTable";
+import { IMobileMenu, PageType } from "types/MobileMenu";
 
-const pages = [
+const pages: PageType[] = [
   { caption: "Alle Cluster anzeigen", action: "showTable" },
   { caption: "Neues Cluster erstellen", action: "showCreation" },
 ];
 
 const Cluster = () => {
   const [subPage, setSubPage] = useState(pages[0]);
-  const mobileMenu = {
+  const mobileMenu: IMobileMenu = {
     id: "cluster",
     mobileSubPages: pages,
     onClickHandler: setSubPage,
