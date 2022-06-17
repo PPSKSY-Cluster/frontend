@@ -9,9 +9,9 @@ import axios from "node_modules/axios/index";
 
   const Options: FC<Props> = ({}) => {
     const nameRef = useRef<HTMLInputElement>();
+    const pwRef = useRef<HTMLInputElement>();
     const email = "foo@mail.de"
-    const password = "*********"
-    const [user, setUsers] = useState({username:""});
+    const [user, setUsers] = useState({username:"", password:""});
 
     useEffect(() => {
       async function getUsers(){
@@ -21,13 +21,13 @@ import axios from "node_modules/axios/index";
     },[])
 
     const editUser = async () => {
-        const response = await axios.put("http://localhost:8080/api/users/62a5ef5f9b388bcfc925fcdc", {username:nameRef.current.value.trim()}, {headers:{'Content-Type': 'application/json',
+        const response = await axios.put("http://localhost:8080/api/users/62a6f3a85e59b4912e234457", {username:nameRef.current.value.trim()}, {headers:{'Content-Type': 'application/json',
         'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbiI6dHJ1ZSwiZXhwIjoxNjU1MTI4MzM2LCJ1c2VybmFtZSI6ImZvbyJ9.RmKj9VTsxjMR1JnMHaE4bO6wbMF8tCoGt7e3EterseU'}
         })
     }
     
     const getUser = async () => {
-        const response = await axios.get("http://localhost:8080/api/users/62a5ef5f9b388bcfc925fcdc", {headers:{'Content-Type': 'application/json',
+        const response = await axios.get("http://localhost:8080/api/users/62a6f3a85e59b4912e234457", {headers:{'Content-Type': 'application/json',
         'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbiI6dHJ1ZSwiZXhwIjoxNjU1MTI4MzM2LCJ1c2VybmFtZSI6ImZvbyJ9.RmKj9VTsxjMR1JnMHaE4bO6wbMF8tCoGt7e3EterseU'}
         })
         return response.data
@@ -54,11 +54,6 @@ import axios from "node_modules/axios/index";
                         Daten ändern
                     </button>
                 </p>
-                <p>
-                    <button className="btn btn-lg btn-primary"  type="button" data-bs-toggle="collapse" data-bs-target="#delete" aria-expanded="false" aria-controls="delete">
-                        Account löschen
-                    </button>
-                </p>
                 <div className="collapse" id="edit">
                     <div className="card card-body" margin-left="0 auto">
                         <label>Name { }</label>
@@ -74,7 +69,10 @@ import axios from "node_modules/axios/index";
                         ></input>
                         <th>Passwort { }</th>
                         <input
-                            placeholder={password}
+                            type="text"
+                            className="form-control"
+                            placeholder={user.password}
+                            ref={pwRef}
                         ></input>
                         <th>Rolle { }</th>
                         <select>
@@ -87,6 +85,11 @@ import axios from "node_modules/axios/index";
                         </div>
                     </div>
                 </div>
+                <p>
+                    <button className="btn btn-lg btn-primary"  type="button" data-bs-toggle="collapse" data-bs-target="#delete" aria-expanded="false" aria-controls="delete">
+                        Account löschen
+                    </button>
+                </p>
                 <div className="collapse" id="delete">
                     <div className="card card-body" margin-left="0 auto">
                         <th>Passwort: { }
@@ -95,7 +98,7 @@ import axios from "node_modules/axios/index";
                             placeholder="Bitte Passwort eingeben"
                         ></input>
                         <div className="btn-group">
-                            <button className="btn btn-lg btn-primary" type="submit" onClick={deleteUser}>Account löschen</button>
+                            <button className="btn btn-lg btn-success" type="submit" onClick={deleteUser}>Account löschen</button>
                         </div>
                     </div>
                 </div>
