@@ -6,6 +6,7 @@ interface Props {
   children?: any;
   mobileMenu?: MobileMenu;
 }
+
 const Main: FC<Props> = ({ children, mobileMenu }) => {
   return (
     <div style={{ paddingTop: "60px" }}>
