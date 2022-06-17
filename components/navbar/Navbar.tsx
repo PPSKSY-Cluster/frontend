@@ -58,11 +58,6 @@ const Navbar: FC<Props> = ({ mobileMenu }) => {
                 );
               })}
             </div>
-            <div className ="pull-right">
-              <button className="list-group-item list-group-item-action rounded" onClick ={opt}>
-                  Options
-              </button>
-            </div>  
             <button className="btn btn-sm btn-outline-grey" type="button">
               Abmelden
             </button>
