@@ -1,6 +1,6 @@
 // reserved time slots?,
 export interface ICluster {
-  id: number;
+  _id: number;
   name: string;
   description: string;
   icon?: string;

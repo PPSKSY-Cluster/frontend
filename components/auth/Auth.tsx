@@ -1,30 +1,38 @@
-import { FC } from "react";
-import styles from "../../styles/Home.module.css";
+import { FC, useState } from "react";
+import SignIn from "./SignIn";
+import SignUp from "./SignUp";
 
 interface Props {
   authenticate: () => void;
 }
 
 const Auth: FC<Props> = ({ authenticate }) => {
-  return (
-    <div className={styles.container}>
-      <main className={styles.main}>
-        <h2 className={styles.title}>Cluster Thruster</h2>
-        <h2>Sign In</h2>
-        <form>
-          <input type="text" name="email" required placeholder="email" />
-          <input
-            type="password"
-            name="password"
-            required
-            placeholder="password"
-          />
-          <input type="checkbox" /> <a>stay signed in?</a>
-          <button onClick={authenticate}> sign in</button>
-        </form>
-      </main>
+  const [showSignIn, setShowSignIn] = useState(true);
 
-      <footer className={styles.footer}></footer>
+  const changeSignType = () => {
+    setShowSignIn(!showSignIn);
+  };
+
+  return (
+    <div className="min-vh-100 d-flex flex-row">
+      <div className="bg-grey bg-gradient d-none d-lg-block">
+        <img src="bg_bogen.png" alt="banner" className="mt-5" />
+      </div>
+      <div className="d-flex justify-content-center w-100">
+        <div className="border border-grey rounded p-4 position-absolute mt-5">
+          {showSignIn ? (
+            <SignIn
+              authenticate={authenticate}
+              showSignUp={changeSignType}
+            ></SignIn>
+          ) : (
+            <SignUp
+              authenticate={authenticate}
+              showSignIn={changeSignType}
+            ></SignUp>
+          )}
+        </div>
+      </div>
     </div>
   );
 };
