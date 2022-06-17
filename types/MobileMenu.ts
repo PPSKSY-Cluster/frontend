@@ -1,5 +1,9 @@
-export interface MobileMenu {
+export type PageType = {
+  caption: string;
+  action: string;
+};
+export interface IMobileMenu {
   id: string;
-  mobileSubPages: any;
-  onClickHandler: any;
+  mobileSubPages: PageType[];
+  onClickHandler: (page: PageType) => void;
 }

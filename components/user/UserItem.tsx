@@ -1,25 +1,37 @@
 import { FC } from "react";
 import { IUser } from "../../types/User";
 
-interface Props {
+interface UserItemProps {
   userItem: IUser;
   count: number;
-  opt: Function;
+  setCurrentItem: (item: IUser) => void;
 }
 
-const UserItem: FC<Props> = ({userItem, count}) => {
-    /*const callOpt = () => {
-        return opt;
-    }*/
+const UserItem: FC<UserItemProps> = ({userItem, count, setCurrentItem}) => {
   return (
     <>
       <tr>
         <td>{count}</td>
-        <td>{userItem.username}</td>
+        <td className="text-center">{userItem.username}</td>
         <td>User</td>
-        <div className="d-grid gap-2 d-lg-flex justify-content-lg-front">
-        <a><i className="bi bi-pencil-square"></i></a>
-        </div>
+        <td className="text-center">
+          <a onClick={() => setCurrentItem(userItem)}>
+            <i
+              className="bi bi-pencil-square"
+              data-bs-toggle="modal"
+              data-bs-target="#userUpdate"
+            />
+          </a>
+        </td>
+        <td className="text-center">
+          <a onClick={() => setCurrentItem(userItem)}>
+            <i
+              className="bi bi-trash-fill"
+              data-bs-toggle="modal"
+              data-bs-target="#userDeletion"
+            />
+          </a>
+        </td>
       </tr>
     </>
   );
