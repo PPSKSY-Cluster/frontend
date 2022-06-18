@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { ICluster } from "../../types/Cluster";
 import ClusterItem from "./ClusterItem";
 import ClusterUpdate from "./ClusterUpdate";
+import ClusterReserve from "./ClusterReserve";
 
 const ClusterTable = () => {
   const clusterB: ICluster[] = [
@@ -26,7 +27,7 @@ const ClusterTable = () => {
       }
     }
     getCluster();
-  }, [cluster]);
+  }, []);
 
   const onDeleteClick = async () => {
     try {
@@ -49,16 +50,27 @@ const ClusterTable = () => {
     }
   };
 
+  const onReserveClick = async () => {
+    try {
+      const response = await ClusterAPI.update(currentItem);
+      response.status === 202
+        ? alert("Cluster successfully updated!")
+        : alert("Uups! Something went wrong!");
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <>
       <table className="table table-hover m-3">
         <thead>
           <tr>
-            <th>Nr</th>
-            <th className="text-center">Name</th>
-            <th className="text-center">Beschreibung</th>
-            <th className="text-center">Bearbeiten</th>
-            <th className="text-center">Löschen</th>
+            <th className="text-center col-md-1">Nr</th>
+            <th className="text-center col-md-2">Name</th>
+            <th className="text-center col-md-6">Beschreibung</th>
+            <th className="text-center col-md-1">Reservieren</th>
+            <th className="text-center col-md-1">Bearbeiten</th>
+            <th className="text-center col-md-1">Löschen</th>
           </tr>
         </thead>
         <tbody>
@@ -85,6 +97,11 @@ const ClusterTable = () => {
         currentItem={currentItem}
         setCurrentItem={setCurrentItem}
         onSubmit={onUpdateClick}
+      />
+      <ClusterReserve
+        currentItem={currentItem}
+        setCurrentItem={setCurrentItem}
+        onSubmit={onReserveClick}
       />
     </>
   );

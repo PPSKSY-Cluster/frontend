@@ -1,5 +1,5 @@
 import { FC, useRef } from "react";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 
 interface Props {
   authenticate: () => void;
@@ -16,15 +16,21 @@ const SignUp: FC<Props> = ({ authenticate, showSignIn }) => {
   const nameEl = useRef(null);
   const passwordEl = useRef(null);
 
-  const followUpSignIn = () => {
-    console.log("sign in");
+  const saveJWTAndSignIn = (res: AxiosResponse<any, any>) => {
+    const { jwtToken, refreshToken } = res.data;
+
+    console.log(res.data);
+    console.log(jwtToken);
     authenticate();
+  };
+
+  const followUpSignIn = () => {
     axios
       .post("http://localhost:8080/api/login", {
         username: nameEl.current.value,
         password: passwordEl.current.value,
       })
-      .then((res) => authenticate())
+      .then((res) => saveJWTAndSignIn(res))
       .catch((err) => console.log(err));
   };
 
