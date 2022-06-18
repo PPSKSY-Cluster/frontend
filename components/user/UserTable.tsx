@@ -9,7 +9,11 @@ import UserUpdate from "./UserUpdate";
 
   const UserTable =  () => {
     var searchName;
-    const [users, setUser] = useState([]);
+    const testuser: IUser[] = [
+      { _id: 1, username: "Alice"},
+      { _id: 2, username: "Bob"},
+    ];
+    const [users, setUser] = useState(testuser);
 
     /*useEffect(() => {
       async function getUsers(){
@@ -82,7 +86,7 @@ import UserUpdate from "./UserUpdate";
             <tr>
               <th>Nr</th>
               <th className="text-center">Name</th>
-              <th className="text-center">Beschreibung</th>
+              <th className="text-center">Rolle</th>
               <th className="text-center">Bearbeiten</th>
               <th className="text-center">Löschen</th>
             </tr>

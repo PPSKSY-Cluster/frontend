@@ -13,7 +13,7 @@ const UserItem: FC<UserItemProps> = ({userItem, count, setCurrentItem}) => {
       <tr>
         <td>{count}</td>
         <td className="text-center">{userItem.username}</td>
-        <td>User</td>
+        <td className="text-center">User</td>
         <td className="text-center">
           <a onClick={() => setCurrentItem(userItem)}>
             <i

@@ -11,14 +11,14 @@ const links: ILinks[] = [
     href: "/cluster",
   },
   {
-    id: "options",
-    caption: "Options",
-    href: "/options",
-  },
-  {
     id: "users",
     caption: "Users",
     href: "/users",
+  },
+  {
+    id: "options",
+    caption: "Options",
+    href: "/options",
   },
 ];
 
