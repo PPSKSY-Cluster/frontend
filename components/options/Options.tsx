@@ -77,20 +77,19 @@ import OptionsAPI from "api/options";
                                 defaultValue={user.username}
                                 ref={nameRef}>
                             </input>
-                            <th>Email { }</th>
+                            <div>Email { }</div>
                             <input
                                 defaultValue={email}
                             ></input>
-                            <th>Passwort { }</th>
+                            <div>Passwort { }</div>
                             <input
                                 type="text"
                                 className="form-control"
                                 placeholder={"*".repeat(user.password.length)}
                                 ref={pwRef}
                             ></input>
-                            <th>Rolle { }</th>
-                            <select>
-                                <option disabled selected><del> -- Rolle -- </del> </option>
+                            <div>Rolle { }</div>
+                            <select defaultValue={"User"}>
                                 <option>Admin</option>
                                 <option>User</option>
                             </select>
@@ -106,8 +105,8 @@ import OptionsAPI from "api/options";
                     </p>
                     <div className="collapse" id="delete">
                         <div className="card card-body" margin-left="0 auto">
-                            <th>Passwort: { }
-                            </th>
+                            <div>Passwort: { }
+                            </div>
                             <input
                                 placeholder="Bitte Passwort eingeben"
                             ></input>
