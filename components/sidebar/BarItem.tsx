@@ -1,11 +1,22 @@
-const BarItem = (props) => {
-  const { element, onClickHandler } = props;
+import { FC } from "react";
+import { PageType } from "types/MobileMenu";
+
+interface BarItemProps {
+  element: PageType;
+  onClickHandler: (page: PageType) => void;
+}
+const BarItem: FC<BarItemProps> = ({
+  element,
+  onClickHandler,
+  ...otherProps
+}) => {
   return (
     <li
       className="list-group-item list-group-item-action rounded"
       onClick={() => {
         onClickHandler(element);
       }}
+      {...otherProps}
     >
       {element.caption}
     </li>
