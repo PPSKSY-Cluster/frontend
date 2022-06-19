@@ -9,6 +9,7 @@ const SingleCluster: FC<Props> = ({ cluster }) => {
   return (
     <>
       <h2 className="text-center">Cluster {cluster.name}</h2>
+      <span>{}</span>
       <div>
         <p>{cluster.name}</p>
         <p>{cluster.description}</p>
