@@ -39,20 +39,6 @@ const UserForm: FC<UserFormProps> = ({
             required
           />
         </div>
-        <div className="form-group mb-4">{/*
-          <label htmlFor="exampleInputPassword1"></label>
-          <textarea
-            className="form-control"
-            value={currentItem?.description}
-            onChange={(e) => {
-              setCurrentItem({
-                ...currentItem,
-                description: e.target.value,
-              });
-            }}
-            required
-        />*/}
-        </div>
         <div className="d-grid gap-2 d-lg-flex justify-content-lg-end">
           <button type="submit" className="btn btn-primary float-right">
             {action.title}
