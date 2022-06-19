@@ -9,7 +9,7 @@ interface UserItemProps {
 
 const UserItem: FC<UserItemProps> = ({userItem, count, setCurrentItem}) => {
   return (
-    <>
+    
       <tr>
         <td>{count}</td>
         <td className="text-center">{userItem.username}</td>
