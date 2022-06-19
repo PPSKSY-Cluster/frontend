@@ -13,39 +13,11 @@ import OptionsAPI from "api/options";
     const nameRef = useRef<HTMLInputElement>();
     const pwRef = useRef<HTMLInputElement>();
     const email = "foo@mail.de"
-    const [user, setUsers] = useState({username:"foo", password:"12345"});
+    const [users, setUsers] = useState<IUser>({username:"foo", password:"12345"});
     const [currentItem, setCurrentItem] = useState<IUser>({
         username: "foo",
         _id:0,
       });
-
-    /*useEffect(() => {
-      async function getUsers(){
-        setUsers(await getUser())
-      } 
-      getUsers();
-    },[])
-
-    const editUser = async () => {
-        const response = await axios.put("http://localhost:8080/api/users/62a6f3a85e59b4912e234457", {username:nameRef.current.value.trim()}, {headers:{'Content-Type': 'application/json',
-        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbiI6dHJ1ZSwiZXhwIjoxNjU1MTI4MzM2LCJ1c2VybmFtZSI6ImZvbyJ9.RmKj9VTsxjMR1JnMHaE4bO6wbMF8tCoGt7e3EterseU'}
-        })
-    }
-    
-    const getUser = async () => {
-        const response = await axios.get("http://localhost:8080/api/users/62a6f3a85e59b4912e234457", {headers:{'Content-Type': 'application/json',
-        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbiI6dHJ1ZSwiZXhwIjoxNjU1MTI4MzM2LCJ1c2VybmFtZSI6ImZvbyJ9.RmKj9VTsxjMR1JnMHaE4bO6wbMF8tCoGt7e3EterseU'}
-        })
-        return response.data
-    }
-
-    const deleteUser = async () => {
-        const response = await axios.delete("http://localhost:8080/api/users/62a5ef5f9b388bcfc925fcdc", {headers:{'Content-Type': 'application/json',
-        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbiI6dHJ1ZSwiZXhwIjoxNjU1MTI4MzM2LCJ1c2VybmFtZSI6ImZvbyJ9.RmKj9VTsxjMR1JnMHaE4bO6wbMF8tCoGt7e3EterseU'}
-        })
-    }
-
-    console.log(getUser());*/
 
     const onDeleteClick = async () => {
         try {
@@ -74,7 +46,7 @@ import OptionsAPI from "api/options";
                             <input
                                 type="text"
                                 className="form-control"
-                                defaultValue={user.username}
+                                defaultValue={users.username}
                                 ref={nameRef}>
                             </input>
                             <div>Email { }</div>
@@ -83,9 +55,9 @@ import OptionsAPI from "api/options";
                             ></input>
                             <div>Passwort { }</div>
                             <input
-                                type="text"
+                                type="password"
                                 className="form-control"
-                                placeholder={"*".repeat(user.password.length)}
+                                placeholder={"*".repeat(users.password.length)}
                                 ref={pwRef}
                             ></input>
                             <div>Rolle { }</div>
