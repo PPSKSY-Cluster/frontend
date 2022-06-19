@@ -33,7 +33,6 @@ const UserItem: FC<UserItemProps> = ({userItem, count, setCurrentItem}) => {
           </a>
         </td>
       </tr>
-    </>
   );
 };
 
