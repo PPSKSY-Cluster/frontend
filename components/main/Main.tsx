@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { FC } from "react";
+=======
+import React, { FC } from "react";
+>>>>>>> main
 import { IMobileMenu } from "types/MobileMenu";
 import Navbar from "../navbar/Navbar";
 

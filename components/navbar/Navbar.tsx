@@ -1,5 +1,5 @@
 import { FC } from "react";
-import Link from "node_modules/next/link";
+import Link from "next/link";
 import BarItem from "components/sidebar/BarItem";
 import { IMobileMenu } from "types/MobileMenu";
 import { ILinks } from "types/Links";
@@ -21,12 +21,16 @@ const links: ILinks[] = [
     href: "/options",
   },
 ];
+<<<<<<< HEAD
 
 interface Props {
+=======
+interface NavbarProps {
+>>>>>>> main
   mobileMenu?: IMobileMenu;
 }
 
-const Navbar: FC<Props> = ({ mobileMenu }) => {
+const Navbar: FC<NavbarProps> = ({ mobileMenu }) => {
   return (
     <>
       <nav className="navbar navbar-expand-md border-bottom border-primary fixed-top bg-white">
