@@ -55,7 +55,7 @@ import OptionsAPI from "api/options";
                             ></input>
                             <div>Passwort { }</div>
                             <input
-                                type="text"
+                                type="password"
                                 className="form-control"
                                 placeholder={"*".repeat(users.password.length)}
                                 ref={pwRef}
