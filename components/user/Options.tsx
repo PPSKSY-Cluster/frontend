@@ -11,7 +11,7 @@ import axios from "node_modules/axios/index";
     const nameRef = useRef<HTMLInputElement>();
     const pwRef = useRef<HTMLInputElement>();
     const email = "foo@mail.de"
-    const [user, setUsers] = useState({username:"", password:""});
+    const [users, setUsers] = useState({username:"", password:""});
 
     useEffect(() => {
       async function getUsers(){
@@ -60,7 +60,7 @@ import axios from "node_modules/axios/index";
                         <input
                             type="text"
                             className="form-control"
-                            defaultValue={user.username}
+                            defaultValue={users.username}
                             ref={nameRef}>
                         </input>
                         <th>Email { }</th>
@@ -69,9 +69,9 @@ import axios from "node_modules/axios/index";
                         ></input>
                         <th>Passwort { }</th>
                         <input
-                            type="text"
+                            type="password"
                             className="form-control"
-                            placeholder={user.password}
+                            placeholder={users.password}
                             ref={pwRef}
                         ></input>
                         <th>Rolle { }</th>
