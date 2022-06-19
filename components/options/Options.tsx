@@ -13,7 +13,7 @@ import OptionsAPI from "api/options";
     const nameRef = useRef<HTMLInputElement>();
     const pwRef = useRef<HTMLInputElement>();
     const email = "foo@mail.de"
-    const [users, setUsers] = useState({username:"foo", password:"12345"});
+    const [users, setUsers] = useState<IUser>({username:"foo", password:"12345"});
     const [currentItem, setCurrentItem] = useState<IUser>({
         username: "foo",
         _id:0,
