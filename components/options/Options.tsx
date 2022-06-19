@@ -13,7 +13,7 @@ import OptionsAPI from "api/options";
     const nameRef = useRef<HTMLInputElement>();
     const pwRef = useRef<HTMLInputElement>();
     const email = "foo@mail.de"
-    const [user, setUsers] = useState({username:"foo", password:"12345"});
+    const [users, setUsers] = useState({username:"foo", password:"12345"});
     const [currentItem, setCurrentItem] = useState<IUser>({
         username: "foo",
         _id:0,
@@ -46,7 +46,7 @@ import OptionsAPI from "api/options";
                             <input
                                 type="text"
                                 className="form-control"
-                                defaultValue={user.username}
+                                defaultValue={users.username}
                                 ref={nameRef}>
                             </input>
                             <div>Email { }</div>
@@ -57,7 +57,7 @@ import OptionsAPI from "api/options";
                             <input
                                 type="text"
                                 className="form-control"
-                                placeholder={"*".repeat(user.password.length)}
+                                placeholder={"*".repeat(users.password.length)}
                                 ref={pwRef}
                             ></input>
                             <div>Rolle { }</div>
