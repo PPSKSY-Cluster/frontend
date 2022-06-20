@@ -1,19 +1,14 @@
 import { FC, useRef, useState } from "react";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 
 interface Props {
-  authenticate: () => void;
+  saveJWTAndSignIn: (res: AxiosResponse<any, any>) => void;
   showSignUp: () => void;
 }
 
-const SignIn: FC<Props> = ({ authenticate, showSignUp }) => {
+const SignIn: FC<Props> = ({ saveJWTAndSignIn, showSignUp }) => {
   const nameEl = useRef(null);
   const passwordEl = useRef(null);
-
-  const saveJWTandSignIn = () => {
-    localStorage.setItem("jwt", "test");
-    authenticate();
-  };
 
   const signIn = (e) => {
     e.preventDefault();
@@ -22,12 +17,13 @@ const SignIn: FC<Props> = ({ authenticate, showSignUp }) => {
       username: nameEl.current.value,
       password: passwordEl.current.value,
     };
-    //
+
     axios
       .post("http://localhost:8080/api/login", data)
-      .then((res) => saveJWTandSignIn)
+      .then((res) => saveJWTAndSignIn(res))
       .catch((err) => console.log(err));
   };
+
   return (
     <>
       <h2 className="mb-3">Anmelden bei Cluster Thruster</h2>

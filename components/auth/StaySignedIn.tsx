@@ -9,8 +9,7 @@ const StaySignedIn = () => {
     const storedJwt = localStorage.getItem("jwt");
     console.log(storedJwt);
     dispatch.jwt.setJWT(storedJwt, storedJwt);
-    //storedJwt = "test2";
-  }, []);
+  }, [dispatch.jwt]);
   return <></>;
 };
 
