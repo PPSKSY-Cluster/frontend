@@ -1,9 +1,6 @@
-import Sidebar from "components/sidebar/Sidebar";
-import { FC, useState, useEffect, useRef, FormEvent } from "react";
+import { FC, useState, useRef } from "react";
 import React from "react";
 import { IUser } from "../../types/User";
-import UserItem from "../user/UserItem";
-import axios from "node_modules/axios/index";
 import ConfirmDialog from "components/dialog/ConfirmDialog";
 import OptionsAPI from "api/options";
 
@@ -16,7 +13,7 @@ import OptionsAPI from "api/options";
     const [users, setUsers] = useState({username:"foo", password:"12345"});
     const [currentItem, setCurrentItem] = useState<IUser>({
         username: "foo",
-        _id:0,
+        _id:'0',
       });
 
     const onDeleteClick = async () => {

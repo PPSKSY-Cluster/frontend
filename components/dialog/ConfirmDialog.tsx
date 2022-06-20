@@ -51,8 +51,4 @@ const ConfirmDialog: FC<ConfirmDialogProps> = ({ id, title, text, accept }) => {
     </div>
   );
 };
-<<<<<<< HEAD
 export default ConfirmDialog;
-=======
-export default ConfirmDialog;
->>>>>>> main

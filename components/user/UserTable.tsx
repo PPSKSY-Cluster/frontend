@@ -1,6 +1,5 @@
 import UserAPI from "api/user";
 import ConfirmDialog from "components/dialog/ConfirmDialog";
-import Sidebar from "components/sidebar/Sidebar";
 import { useEffect, useState } from "react";
 import { IUser } from "../../types/User";
 import UserItem from "./UserItem";
@@ -13,7 +12,7 @@ import UserUpdate from "./UserUpdate";
     
     const [currentItem, setCurrentItem] = useState<IUser>({
       username: "",
-      _id:0,
+      _id:'0',
     });
 
     useEffect(() => {

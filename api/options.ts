@@ -16,7 +16,7 @@ const OptionsAPI = {
   getAll: async () => {
     return await axios.get(`${baseURL}/users`, { headers });
   },
-  delete: async (_id: number) => {
+  delete: async (_id: string) => {
     return await axios.delete(`${baseURL}/users/${_id}`, { headers });
   },
   update: async (user: IUser) => {

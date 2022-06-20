@@ -21,12 +21,7 @@ const links: ILinks[] = [
     href: "/options",
   },
 ];
-<<<<<<< HEAD
-
-interface Props {
-=======
 interface NavbarProps {
->>>>>>> main
   mobileMenu?: IMobileMenu;
 }
 

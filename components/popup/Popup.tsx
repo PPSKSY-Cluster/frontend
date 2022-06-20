@@ -43,8 +43,4 @@ const Popup: FC<PopupProps> = ({ id, title, children, buttons }) => {
   );
 };
 
-<<<<<<< HEAD
 export default Popup;
-=======
-export default Popup;
->>>>>>> main

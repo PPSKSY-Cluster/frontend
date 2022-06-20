@@ -16,7 +16,7 @@ const UserAPI = {
   getAll: async () => {
     return await axios.get(`${baseURL}/cresources`, { headers });
   },
-  delete: async (_id: number) => {
+  delete: async (_id: string) => {
     return await axios.delete(`${baseURL}/cresources/${_id}`, { headers });
   },
   update: async (user: IUser) => {

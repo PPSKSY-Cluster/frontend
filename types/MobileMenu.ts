@@ -6,8 +6,4 @@ export interface IMobileMenu {
   id: string;
   mobileSubPages: PageType[];
   onClickHandler: (page: PageType) => void;
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> main
