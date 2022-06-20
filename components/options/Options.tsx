@@ -1,8 +1,8 @@
-import { FC, useState, useRef } from "react";
+import { FC, useState, useRef} from "react";
 import React from "react";
 import { IUser } from "../../types/User";
 import ConfirmDialog from "components/dialog/ConfirmDialog";
-import OptionsAPI from "api/options";
+import UserAPI from "api/user";
 
   interface Props {}
 
@@ -18,7 +18,7 @@ import OptionsAPI from "api/options";
 
     const onDeleteClick = async () => {
         try {
-          const response = await OptionsAPI.delete(currentItem._id);
+          const response = await UserAPI.delete(currentItem._id);
           response.status === 204
             ? alert("User successfully deleted!")
             : alert("Uups! Something went wrong!");
