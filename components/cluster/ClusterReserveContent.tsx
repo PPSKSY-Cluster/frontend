@@ -14,9 +14,8 @@ const SingleCluster: FC<Props> = ({ cluster }) => {
       <h2 className="text-center">Cluster {cluster.name}</h2>
       <span>{jwt}</span>
       <div>
-        <p>{cluster.name}</p>
-        <p>{cluster.description}</p>
-
+        <p>10-12</p>
+        <p>12-14</p>
         <button className="btn btn-secondary">Reservieren</button>
       </div>
     </>
