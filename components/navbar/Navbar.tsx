@@ -3,6 +3,7 @@ import Link from "next/link";
 import BarItem from "components/sidebar/BarItem";
 import { IMobileMenu } from "types/MobileMenu";
 import { ILinks } from "types/Links";
+import Router from "next/router";
 
 const links: ILinks[] = [
   {
@@ -26,6 +27,11 @@ interface NavbarProps {
 }
 
 const Navbar: FC<NavbarProps> = ({ mobileMenu }) => {
+  const abmelden = () => {
+    localStorage.setItem("jwt", "");
+    Router.push("/");
+  };
+
   return (
     <>
       <nav className="navbar navbar-expand-md border-bottom border-primary fixed-top bg-white">
@@ -64,7 +70,11 @@ const Navbar: FC<NavbarProps> = ({ mobileMenu }) => {
                 );
               })}
             </div>
-            <button className="btn btn-sm btn-outline-grey" type="button">
+            <button
+              className="btn btn-sm btn-outline-grey"
+              type="button"
+              onClick={() => abmelden()}
+            >
               Abmelden
             </button>
           </div>
