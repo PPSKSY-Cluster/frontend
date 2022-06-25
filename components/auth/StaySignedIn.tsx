@@ -7,7 +7,6 @@ const StaySignedIn = () => {
 
   useEffect(() => {
     const storedJwt = localStorage.getItem("jwt");
-    console.log(storedJwt);
     dispatch.jwt.setJWT(storedJwt, storedJwt);
   }, [dispatch.jwt]);
   return <></>;

@@ -12,11 +12,38 @@ const SingleCluster: FC<Props> = ({ cluster }) => {
   return (
     <>
       <h2 className="text-center">Cluster {cluster.name}</h2>
-      <span>{jwt}</span>
       <div>
-        <p>10-12</p>
-        <p>12-14</p>
-        <button className="btn btn-secondary">Reservieren</button>
+        Anzahl der Nodes:
+        {/*
+        TODO only show the maximum availbe number
+        onyl
+        */}
+        <div className="form-group">
+          <select className="form-control" id="exampleFormControlSelect1">
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+          </select>
+        </div>
+        <p>Von:</p>
+        <input
+          className="form-control"
+          type="date"
+          name="due-date"
+          id="due-date"
+          v-model="date"
+        ></input>
+        <p>Bis:</p>
+        <input
+          className="form-control"
+          type="date"
+          name="due-date"
+          id="due-date"
+          v-model="date"
+        ></input>
+        <button className="btn btn-primary">Reservieren</button>
       </div>
     </>
   );

@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useState, useEffect } from "react";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
 import axios, { AxiosResponse } from "axios";
@@ -10,6 +10,11 @@ interface Props {
 
 const Auth: FC<Props> = ({ authenticate }) => {
   const [showSignIn, setShowSignIn] = useState(true);
+
+  useEffect(() => {
+    const storedJwt = localStorage.getItem("jwt");
+    if (storedJwt != "") Router.push("/cluster");
+  }, []);
 
   const changeSignType = () => {
     setShowSignIn(!showSignIn);
