@@ -1,5 +1,6 @@
 import { FC, useRef, useState } from "react";
 import axios from "axios";
+import { currentUser } from "../../types/User"
 
 interface Props {
   authenticate: () => void;
@@ -23,6 +24,10 @@ const SignIn: FC<Props> = ({ authenticate, showSignUp }) => {
       .post("http://localhost:8080/api/login", data)
       .then((res) => authenticate())
       .catch((err) => console.log(err));
+
+      currentUser.username = data.username;
+      currentUser.password = data.password;
+    
   };
   return (
     <>

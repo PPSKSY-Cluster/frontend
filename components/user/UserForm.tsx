@@ -39,6 +39,14 @@ const UserForm: FC<UserFormProps> = ({
             required
           />
         </div>
+        <div className="form-group mb-2">
+          <label htmlFor="exampleInputEmail1">Rolle</label>
+          <select className="form-select" aria-label="Default select example">
+            <option selected>User</option>
+            <option value="1">Admin</option>
+            <option value="2">Tutor</option>
+          </select>
+        </div>
         <div className="d-grid gap-2 d-lg-flex justify-content-lg-end">
           <button type="submit" className="btn btn-primary float-right">
             {action.title}

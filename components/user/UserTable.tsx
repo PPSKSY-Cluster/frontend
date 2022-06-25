@@ -8,7 +8,8 @@ import UserUpdate from "./UserUpdate";
 
   const UserTable =  () => {
     var searchName;
-    const [users, setUser] = useState([]);
+    const [users, setUser] = useState([    { _id: "1", username: "Cluster 1", description: "RAM" },
+    { _id: "2", username: "Cluster 2", description: "CPU" },]);
     
     const [currentItem, setCurrentItem] = useState<IUser>({
       username: "",
@@ -55,7 +56,7 @@ import UserUpdate from "./UserUpdate";
             <tr>
               <th>Nr</th>
               <th className="text-center">Name</th>
-              <th className="text-center">Beschreibung</th>
+              <th className="text-center">Rolle</th>
               <th className="text-center">Bearbeiten</th>
               <th className="text-center">Löschen</th>
             </tr>

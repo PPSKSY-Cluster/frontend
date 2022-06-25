@@ -3,6 +3,7 @@ import React from "react";
 import { IUser } from "../../types/User";
 import ConfirmDialog from "components/dialog/ConfirmDialog";
 import UserAPI from "api/user";
+import { currentUser } from "../../types/User"
 
   interface Props {}
 
@@ -19,6 +20,17 @@ import UserAPI from "api/user";
     const onDeleteClick = async () => {
         try {
           const response = await UserAPI.delete(currentItem._id);
+          response.status === 204
+            ? alert("User successfully deleted!")
+            : alert("Uups! Something went wrong!");
+        } catch (error) {
+          console.log(error);
+        }
+      };
+
+    const onEditClick = async () => {
+        try {
+          const response = await UserAPI.update(currentItem);
           response.status === 204
             ? alert("User successfully deleted!")
             : alert("Uups! Something went wrong!");
@@ -43,28 +55,23 @@ import UserAPI from "api/user";
                             <input
                                 type="text"
                                 className="form-control"
-                                defaultValue={users.username}
+                                defaultValue={currentUser.username}
                                 ref={nameRef}>
                             </input>
                             <div>Email { }</div>
                             <input
                                 defaultValue={email}
+                                className="form-control"
                             ></input>
                             <div>Passwort { }</div>
                             <input
                                 type="password"
                                 className="form-control"
-                                placeholder={"*".repeat(users.password.length)}
+                                defaultValue={currentUser.password}
                                 ref={pwRef}
                             ></input>
-                            <div>Rolle { }</div>
-                            <select defaultValue={"User"}>
-                                <option>Admin</option>
-                                <option>User</option>
-                            </select>
-                            <div className="btn-group">
-                                <button className="btn btn-lg btn-success" type="submit">Änderungen speichern</button>
-                            </div>
+                                <a className="btn btn-lg btn-success" onClick={() => setCurrentItem(currentItem)} data-bs-toggle="modal" data-bs-target="#userEdit">
+                                Änderungen speichern</a>
                         </div>
                     </div>
                     <p>
@@ -79,9 +86,10 @@ import UserAPI from "api/user";
                             <input
                                 placeholder="Bitte Passwort eingeben"
                             ></input>
+                            
                             <div className="btn-group">
-                                <p className="btn btn-lg btn-success" onClick={() => setCurrentItem(currentItem)}>
-                                Account löschen</p>
+                                <a className="btn btn-lg btn-success" onClick={() => setCurrentItem(currentItem)} data-bs-toggle="modal" data-bs-target="#userDeletion">
+                                Account löschen</a>
                             </div>
                         </div>
                     </div>
@@ -92,6 +100,12 @@ import UserAPI from "api/user";
                 accept={{ caption: "Löschen", onClick: onDeleteClick }}
                 title={"User Löschen"}
                 text={`Möchten Sie diesen Account wirklich löschen?`}
+            />
+                <ConfirmDialog
+                id={"userEdit"}
+                accept={{ caption: "Speichern", onClick: onEditClick }}
+                title={"Daten ändern"}
+                text={`Änderungen speichern?`}
             />
         </>
     );

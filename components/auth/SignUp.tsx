@@ -1,5 +1,6 @@
 import { FC, useRef } from "react";
 import axios from "axios";
+import { currentUser } from "../../types/User"
 
 interface Props {
   authenticate: () => void;
@@ -26,6 +27,9 @@ const SignUp: FC<Props> = ({ authenticate, showSignIn }) => {
       })
       .then((res) => authenticate())
       .catch((err) => console.log(err));
+
+    currentUser.username = nameEl.current.value;
+    currentUser.password = passwordEl.current.value;
   };
 
   const signUp = (e) => {
