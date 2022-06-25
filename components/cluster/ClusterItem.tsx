@@ -15,9 +15,18 @@ const ClusterItem: FC<ClusterItemProps> = ({
   return (
     <>
       <tr>
-        <td>{count}</td>
+        <td className="text-center">{count}</td>
         <td className="text-center">{clusterItem.name}</td>
         <td className="text-center">{clusterItem.description}</td>
+        <td className="text-center">
+          <a onClick={() => setCurrentItem(clusterItem)}>
+            <i
+              className="bi bi-calendar-plus"
+              data-bs-toggle="modal"
+              data-bs-target="#clusterReserve"
+            />
+          </a>
+        </td>
         <td className="text-center">
           <a onClick={() => setCurrentItem(clusterItem)}>
             <i

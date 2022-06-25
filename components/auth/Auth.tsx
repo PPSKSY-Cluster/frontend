@@ -1,6 +1,8 @@
 import { FC, useState } from "react";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
+import axios, { AxiosResponse } from "axios";
+import Router from "next/router";
 
 interface Props {
   authenticate: () => void;
@@ -13,6 +15,13 @@ const Auth: FC<Props> = ({ authenticate }) => {
     setShowSignIn(!showSignIn);
   };
 
+  const saveJWTAndSignIn = (res: AxiosResponse<any, any>) => {
+    const jwtToken = res.data.token;
+    localStorage.setItem("jwt", jwtToken);
+    authenticate();
+    Router.push("/cluster");
+  };
+
   return (
     <div className="min-vh-100 d-flex flex-row">
       <div className="bg-grey bg-gradient d-none d-lg-block">
@@ -22,12 +31,12 @@ const Auth: FC<Props> = ({ authenticate }) => {
         <div className="border border-grey rounded p-4 position-absolute mt-5">
           {showSignIn ? (
             <SignIn
-              authenticate={authenticate}
+              saveJWTAndSignIn={saveJWTAndSignIn}
               showSignUp={changeSignType}
             ></SignIn>
           ) : (
             <SignUp
-              authenticate={authenticate}
+              saveJWTAndSignIn={saveJWTAndSignIn}
               showSignIn={changeSignType}
             ></SignUp>
           )}
