@@ -10,6 +10,7 @@ interface Props {
 const SignIn: FC<Props> = ({ saveJWTAndSignIn, showSignUp }) => {
   const nameEl = useRef(null);
   const passwordEl = useRef(null);
+  const [ wrongUser, setWrongUser ] = useState(false);
 
   const signIn = (e) => {
     e.preventDefault();
@@ -22,15 +23,22 @@ const SignIn: FC<Props> = ({ saveJWTAndSignIn, showSignUp }) => {
     axios
       .post("http://localhost:8080/api/login", data)
       .then((res) => saveJWTAndSignIn(res))
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        setWrongUser(true);
+      });
+      
 
-      currentUser.username = data.username;
-      currentUser.password = data.password;
+    currentUser.username = data.username;
+    currentUser.password = data.password;
+
+    //const wrongUser = false;
     
   };
 
   return (
     <>
+      <link rel="stylesheet" href="global.css"></link>
       <h2 className="mb-3">Anmelden bei Cluster Thruster</h2>
       <form onSubmit={signIn}>
         <div className="form-group mb-2">
@@ -74,6 +82,12 @@ const SignIn: FC<Props> = ({ saveJWTAndSignIn, showSignUp }) => {
           className="btn btn-primary btn-block mb-4"
         />
       </form>
+      <div>
+        {wrongUser &&
+        <p>
+          <span style={{color : "red"}}>Kontoname oder Passwort ist nicht korrekt.</span>
+        </p>}
+        </div>
       <hr></hr>
       <div className="text-center">
         <p>
