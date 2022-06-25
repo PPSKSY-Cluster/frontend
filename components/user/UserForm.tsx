@@ -42,7 +42,7 @@ const UserForm: FC<UserFormProps> = ({
         <div className="form-group mb-2">
           <label htmlFor="exampleInputEmail1">Rolle</label>
           <select className="form-select" aria-label="Default select example">
-            <option selected>User</option>
+            <option value="0">User</option>
             <option value="1">Admin</option>
             <option value="2">Tutor</option>
           </select>
