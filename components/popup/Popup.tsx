@@ -3,11 +3,12 @@ import React, { FC } from "react";
 interface PopupProps {
   id: string;
   title: string;
+  size?: "modal-sm" | "modal-lg" | "modal-xl" | "";
   children?: React.ReactNode;
   buttons?: React.ReactNode;
 }
 
-const Popup: FC<PopupProps> = ({ id, title, children, buttons }) => {
+const Popup: FC<PopupProps> = ({ id, title, size = "", children, buttons }) => {
   return (
     <div
       className="modal fade"
@@ -16,7 +17,7 @@ const Popup: FC<PopupProps> = ({ id, title, children, buttons }) => {
       role="dialog"
       aria-hidden="true"
     >
-      <div className="modal-dialog" role="document">
+      <div className={`modal-dialog ${size}`} role="document">
         <div className="modal-content">
           <div className="modal-header">
             <h5 className="modal-title">{title}</h5>

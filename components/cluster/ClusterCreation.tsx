@@ -4,19 +4,19 @@ import ClusterForm from "./ClusterForm";
 import { ICluster } from "types/Cluster";
 
 const ClusterCreation: FC = () => {
-  const [cluster, setCluster] = useState<ICluster>({
+  const initCluster = {
     name: "",
     description: "",
-  });
+    nodes: 1,
+    operatingSystem: 0,
+    type: 0,
+  };
+  const [cluster] = useState<ICluster>(initCluster);
 
-  const onSubmit = async () => {
+  const onSubmit = async (updatedItem: ICluster) => {
     try {
-      const response = await ClusterAPI.create({
-        name: cluster.name.trim(),
-        description: cluster.description.trim(),
-      });
+      const response = await ClusterAPI.create(updatedItem);
       response.status === 201 ? alert("Success") : alert("Failed");
-      setCluster({ name: "", description: "" });
     } catch (error) {
       console.log(error);
     }
@@ -27,7 +27,6 @@ const ClusterCreation: FC = () => {
       title="Neues Cluster erstellen"
       action={{ title: "Erstellen", onSubmit }}
       currentItem={cluster}
-      setCurrentItem={setCluster}
     />
   );
 };
