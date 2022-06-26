@@ -22,7 +22,9 @@ const SignIn: FC<Props> = ({ saveJWTAndSignIn, showSignUp }) => {
 
     axios
       .post("http://localhost:8080/api/login", data)
-      .then((res) => saveJWTAndSignIn(res))
+      .then((res) => {
+        saveJWTAndSignIn(res);
+        currentUser.token = res.data.token})
       .catch((err) => {
         console.log(err);
         setWrongUser(true);

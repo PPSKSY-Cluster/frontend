@@ -23,7 +23,9 @@ const SignUp: FC<Props> = ({ saveJWTAndSignIn, showSignIn }) => {
         username: nameEl.current.value,
         password: passwordEl.current.value,
       })
-      .then((res) => saveJWTAndSignIn(res))
+      .then((res) => {
+        saveJWTAndSignIn(res);
+        currentUser.token = res.data.token})
       .catch((err) => console.log(err));
 
     currentUser.username = nameEl.current.value;

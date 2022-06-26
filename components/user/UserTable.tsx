@@ -7,7 +7,7 @@ import UserUpdate from "./UserUpdate";
 
 
   const UserTable =  () => {
-    var searchName;
+    const [rerender, setRerender ] = useState(null)
     const [users, setUser] = useState([    { _id: "1", username: "foo" },
     { _id: "2", username: "bar"},]);
     
@@ -26,27 +26,29 @@ import UserUpdate from "./UserUpdate";
         }
       }
       getUser();
-    }, [users]);
+    }, []);
 
     const onDeleteClick = async () => {
       try {
         const response = await UserAPI.delete(currentItem._id);
-        response.status === 204
+        response.status === 200
           ? alert("User successfully deleted!")
           : alert("Uups! Something went wrong!");
       } catch (error) {
         console.log(error);
       }
+      setRerender(true);
     };
     const onUpdateClick = async () => {
       try {
         const response = await UserAPI.update(currentItem);
-        response.status === 202
+        response.status === 200
           ? alert("User successfully updated!")
           : alert("Uups! Something went wrong!");
       } catch (error) {
         console.log(error);
       }
+      setRerender(true);
     };
 
     return (

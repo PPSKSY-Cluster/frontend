@@ -11,16 +11,17 @@ import { currentUser } from "../../types/User"
     const nameRef = useRef<HTMLInputElement>();
     const pwRef = useRef<HTMLInputElement>();
     const email = "foo@mail.de"
-    const [users, setUsers] = useState({username:"foo", password:"12345"});
+    const [user, setUser] = useState([]);
     const [currentItem, setCurrentItem] = useState<IUser>({
-        username: "foo",
-        _id:'0',
+        username: "",
+        _id:'',
       });
 
     const onDeleteClick = async () => {
+        getCurrentUser();
         try {
           const response = await UserAPI.delete(currentItem._id);
-          response.status === 204
+          response.status === 200
             ? alert("User successfully deleted!")
             : alert("Uups! Something went wrong!");
         } catch (error) {
@@ -29,16 +30,32 @@ import { currentUser } from "../../types/User"
       };
 
     const onEditClick = async () => {
+        getCurrentUser();
         try {
           const response = await UserAPI.update(currentItem);
-          response.status === 204
+          response.status === 200
             ? alert("User successfully deleted!")
             : alert("Uups! Something went wrong!");
         } catch (error) {
           console.log(error);
         }
       };
-  
+
+
+    const getCurrentUser = async () => {
+        try {
+            const response = await UserAPI.getAll();
+            if (response.data > 0) setUser(response.data)
+        } catch (error) {
+            console.log(error);
+        }
+        user.map((user) => {
+            if(user.username != currentUser.username) {
+                setCurrentItem(user);
+                console.log("user")
+            }   
+        })
+    };
     return (
         <>
             <div className="d-flex flex-row">
@@ -70,7 +87,7 @@ import { currentUser } from "../../types/User"
                                 defaultValue={currentUser.password}
                                 ref={pwRef}
                             ></input>
-                                <a className="btn btn-lg btn-success" onClick={() => setCurrentItem(currentItem)} data-bs-toggle="modal" data-bs-target="#userEdit">
+                                <a className="btn btn-lg btn-success" onClick={() => setCurrentItem(currentUser)} data-bs-toggle="modal" data-bs-target="#userEdit">
                                 Änderungen speichern</a>
                         </div>
                     </div>
@@ -88,7 +105,7 @@ import { currentUser } from "../../types/User"
                             ></input>
                             
                             <div className="btn-group">
-                                <a className="btn btn-lg btn-success" onClick={() => setCurrentItem(currentItem)} data-bs-toggle="modal" data-bs-target="#userDeletion">
+                                <a className="btn btn-lg btn-success" onClick={() => setCurrentItem(currentUser)} data-bs-toggle="modal" data-bs-target="#userDeletion">
                                 Account löschen</a>
                             </div>
                         </div>

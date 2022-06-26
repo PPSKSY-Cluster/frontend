@@ -1,9 +1,9 @@
 import axios from "axios";
-import { IUser } from "types/User";
+import { currentUser, IUser } from "types/User";
 const baseURL = "http://localhost:8080/api";
 const headers = {
   "Content-Type": "application/json",
-  Authorization: "Bearer ${token}",
+  Authorization: "Bearer " + currentUser.token,
 };
 
 const UserAPI = {
