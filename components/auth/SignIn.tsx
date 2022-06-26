@@ -32,13 +32,11 @@ const SignIn: FC<Props> = ({ saveJWTAndSignIn, showSignUp }) => {
     currentUser.username = data.username;
     currentUser.password = data.password;
 
-    //const wrongUser = false;
     
   };
 
   return (
     <>
-      <link rel="stylesheet" href="global.css"></link>
       <h2 className="mb-3">Anmelden bei Cluster Thruster</h2>
       <form onSubmit={signIn}>
         <div className="form-group mb-2">

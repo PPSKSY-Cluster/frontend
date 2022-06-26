@@ -3,7 +3,7 @@ import { IUser } from "types/User";
 const baseURL = "http://localhost:8080/api";
 const headers = {
   "Content-Type": "application/json",
-  Authorization: "Bearer ",
+  Authorization: "Bearer ${token}",
 };
 
 const UserAPI = {
