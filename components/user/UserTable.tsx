@@ -7,8 +7,7 @@ import UserUpdate from "./UserUpdate";
 
 
   const UserTable =  () => {
-    const [rerender, setRerender ] = useState(null)
-    const [users, setUser] = useState([    { _id: "1", username: "foo" },
+    const [users, setUsers] = useState<IUser[]>([    { _id: "1", username: "foo" },
     { _id: "2", username: "bar"},]);
     
     const [currentItem, setCurrentItem] = useState<IUser>({
@@ -17,15 +16,15 @@ import UserUpdate from "./UserUpdate";
     });
 
     useEffect(() => {
-      async function getUser() {
+      async function getUsers() {
         try {
           const response = await UserAPI.getAll();
-          if (response.data.length > 0) setUser(response.data);
+          if (response.data.length > 0) setUsers(response.data);
         } catch (error) {
           console.log(error);
         }
       }
-      getUser();
+      getUsers();
     }, []);
 
     const onDeleteClick = async () => {
@@ -37,7 +36,7 @@ import UserUpdate from "./UserUpdate";
       } catch (error) {
         console.log(error);
       }
-      setRerender(true);
+      setUsers(users.filter(el => el._id!= currentItem._id))
     };
     const onUpdateClick = async () => {
       try {
@@ -48,7 +47,12 @@ import UserUpdate from "./UserUpdate";
       } catch (error) {
         console.log(error);
       }
-      setRerender(true);
+      //const updatedUsers = { ...users };
+      setUsers(
+        users.map((el) => {
+          return el._id === currentItem._id ? currentItem : el;
+        })
+      );
     };
 
     return (

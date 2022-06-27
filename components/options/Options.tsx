@@ -49,10 +49,9 @@ import { currentUser } from "../../types/User"
         } catch (error) {
             console.log(error);
         }
-        user.map((user) => {
-            if(user.username != currentUser.username) {
+        user.forEach((user) => {
+            if(user.username === currentUser.username) {
                 setCurrentItem(user);
-                console.log("user")
             }   
         })
     };
@@ -87,7 +86,7 @@ import { currentUser } from "../../types/User"
                                 defaultValue={currentUser.password}
                                 ref={pwRef}
                             ></input>
-                                <a className="btn btn-lg btn-success" onClick={() => setCurrentItem(currentUser)} data-bs-toggle="modal" data-bs-target="#userEdit">
+                                <a className="btn btn-lg btn-success" onClick={() => setCurrentItem(currentItem)} data-bs-toggle="modal" data-bs-target="#userEdit">
                                 Änderungen speichern</a>
                         </div>
                     </div>
