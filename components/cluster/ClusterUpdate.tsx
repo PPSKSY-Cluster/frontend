@@ -5,21 +5,17 @@ import ClusterForm from "./ClusterForm";
 
 interface ClusterUpdateProps {
   currentItem: ICluster;
-  setCurrentItem: Dispatch<SetStateAction<ICluster>>;
-  onSubmit: () => {};
+  onSubmit: (updatedItem: ICluster) => {};
 }
-const ClusterUpdate: FC<ClusterUpdateProps> = ({
-  currentItem,
-  onSubmit,
-  setCurrentItem,
-}) => {
+const ClusterUpdate: FC<ClusterUpdateProps> = ({ currentItem, onSubmit }) => {
   return (
-    <Popup id={"clusterUpdate"} title={"Cluster verändern"}>
+    <Popup id={"clusterUpdate"} title={"Cluster verändern"} size="modal-xl">
       <ClusterForm
         title={""}
         currentItem={currentItem}
-        setCurrentItem={setCurrentItem}
         action={{ title: "Änderungen speichern", onSubmit }}
+        data-bs-toggle="modal"
+        data-bs-target="#clusterUpdate"
       />
     </Popup>
   );

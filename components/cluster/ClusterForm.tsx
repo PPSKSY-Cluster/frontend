@@ -1,60 +1,136 @@
-import React, { Dispatch, FC, FormEvent, SetStateAction, useRef } from "react";
+import React, {
+  Dispatch,
+  FC,
+  FormEvent,
+  SetStateAction,
+  useEffect,
+  useState,
+} from "react";
 import { ICluster } from "types/Cluster";
+import Counter from "./fields/Counter";
+import OsSelect from "./fields/OS";
+import TypeSelect from "./fields/Type";
+
 interface ClusterFormProps {
   title: string;
   action: {
     title: string;
-    onSubmit: () => void;
+    onSubmit: (updatedItem: ICluster) => {};
   };
   currentItem?: ICluster;
   setCurrentItem?: Dispatch<SetStateAction<ICluster>>;
 }
+
 const ClusterForm: FC<ClusterFormProps> = ({
   title,
   action,
   currentItem,
-  setCurrentItem,
+  ...otherProps
 }) => {
-  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const [name, setName] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
+  const [nodes, setNodes] = useState<number>(1);
+  const [operatingSystem, setOperatingSystem] = useState<number>(1);
+  const [type, setType] = useState<number>(1);
+
+  const init = () => {
+    setName(currentItem.name);
+    setDescription(currentItem.description);
+    setNodes(currentItem.nodes);
+    setOperatingSystem(currentItem.operatingSystem);
+    setType(currentItem.type);
+  };
+
+  useEffect(() => {
+    init();
+  }, [currentItem]);
+
+  const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    action.onSubmit();
+    const updatedItem = {
+      _id: currentItem._id,
+      name,
+      description,
+      nodes,
+      operatingSystem,
+      type,
+    };
+    action.onSubmit(updatedItem);
+    if (!currentItem._id) init();
   };
   return (
     <div className="container-fluid p-4">
       <h2 className="mb-3">{title}</h2>
-      <form onSubmit={onSubmit}>
-        <div className="form-group mb-2">
-          <label htmlFor="exampleInputEmail1">Name</label>
-          <input
-            type="text"
-            className="form-control"
-            value={currentItem?.name}
-            onChange={(e) => {
-              setCurrentItem({
-                ...currentItem,
-                name: e.target.value,
-              });
-            }}
-            autoFocus
-            required
-          />
+      <form onSubmit={onSubmitHandler}>
+        <div className="d-none d-lg-block">
+          <div className="row g-3">
+            <div className="form-group col mb-2">
+              <label>Name</label>
+              <input
+                type="text"
+                className="form-control"
+                value={name}
+                onChange={(e) => {
+                  setName(e.target.value);
+                }}
+                autoFocus
+                required
+              />
+            </div>
+            <div className="form-group col-3">
+              <label>Anzahl der Nodes</label>
+              <Counter counter={nodes} setCounter={setNodes} min={1} />
+            </div>
+          </div>
+          <div className="row">
+            <OsSelect os={operatingSystem} setOs={setOperatingSystem} />
+            <TypeSelect type={type} setType={setType} />
+          </div>
+        </div>
+
+        {
+          //mobile version
+        }
+        <div className="d-lg-none">
+          <div className="form-group mb-2">
+            <label>Name</label>
+            <input
+              type="text"
+              className="form-control"
+              value={name}
+              onChange={(e) => {
+                setName(e.target.value);
+              }}
+              autoFocus
+              required
+            />
+          </div>
+          <div className="form-group col-sm-4 mb-2">
+            <label>Anzahl der Nodes</label>
+            <Counter counter={nodes} setCounter={setNodes} min={1} />
+          </div>
+          <div className="row">
+            <OsSelect os={operatingSystem} setOs={setOperatingSystem} />
+            <TypeSelect type={type} setType={setType} />
+          </div>
         </div>
         <div className="form-group mb-4">
-          <label htmlFor="exampleInputPassword1">Beschreibung</label>
+          <label>Beschreibung</label>
           <textarea
             className="form-control"
-            value={currentItem?.description}
+            value={description}
             onChange={(e) => {
-              setCurrentItem({
-                ...currentItem,
-                description: e.target.value,
-              });
+              setDescription(e.target.value);
             }}
             required
           />
         </div>
         <div className="d-grid gap-2 d-lg-flex justify-content-lg-end">
-          <button type="submit" className="btn btn-primary float-right">
+          <button
+            type="submit"
+            className="btn btn-primary float-right"
+            {...otherProps}
+          >
             {action.title}
           </button>
         </div>
