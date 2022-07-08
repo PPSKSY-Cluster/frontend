@@ -1,25 +1,32 @@
 import { useState } from "react";
 import Main from "components/main/Main";
 import Sidebar from "components/sidebar/Sidebar";
-import ClusterTable from "components/reservations/ReservationsTable";
+import ReservationTable from "components/reservations/ReservationsTable";
 import { IMobileMenu, PageType } from "types/MobileMenu";
 
 const pages: PageType[] = [
-  { caption: "Alle Cluster anzeigen", action: "showTable" },
-  { caption: "Neues Cluster erstellen", action: "showCreation" },
+  { caption: "Alle Reservierungen anzeigen", action: "showTable" },
+  // { caption: "Neues Cluster erstellen", action: "showCreation" },
 ];
 
 const Cluster = () => {
   const [subPage, setSubPage] = useState(pages[0]);
   const mobileMenu: IMobileMenu = {
-    id: "cluster",
+    id: "reservations",
     mobileSubPages: pages,
     onClickHandler: setSubPage,
   };
   return (
     <Main mobileMenu={mobileMenu}>
       <div className="d-flex flex-row">
-        {subPage.action === "showTable" && <ClusterTable />}
+        <div className="d-none d-md-block">
+          <Sidebar
+            title="Cluster"
+            elements={pages}
+            onClickHandler={setSubPage}
+          />
+        </div>
+        {subPage.action === "showTable" && <ReservationTable />}
       </div>
     </Main>
   );

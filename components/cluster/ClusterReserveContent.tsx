@@ -54,7 +54,7 @@ const SingleCluster: FC<Props> = ({ cluster }) => {
     <>
       <div className="form-group form-outline mb-4">
         <button
-          className="btn btn-secondary"
+          className="btn btn-link"
           onClick={() => setShowAllReservations(!showAllReservations)}
         >
           Bisherige Reservierungen anzeigen
@@ -112,10 +112,10 @@ const SingleCluster: FC<Props> = ({ cluster }) => {
     <>
       <div className="form-group form-outline mb-4">
         <button
-          className="btn btn-secondary"
+          className="btn btn-link"
           onClick={() => setShowAllReservations(!showAllReservations)}
         >
-          Reservierungen erstellen
+          Reservierung erstellen
         </button>
       </div>
       <div>
