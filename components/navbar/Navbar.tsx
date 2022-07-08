@@ -12,6 +12,11 @@ const links: ILinks[] = [
     href: "/cluster",
   },
   {
+    id: "reservations",
+    caption: "Reservierungen",
+    href: "/reservations",
+  },
+  {
     id: "users",
     caption: "Users",
     href: "/users",
