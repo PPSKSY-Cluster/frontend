@@ -1,5 +1,5 @@
 import Popup from "components/popup/Popup";
-import React, { Dispatch, FC, SetStateAction } from "react";
+import React, { FC } from "react";
 import { ICluster } from "types/Cluster";
 import ClusterForm from "./ClusterForm";
 

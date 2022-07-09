@@ -1,14 +1,11 @@
 import { FC, useState } from "react";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
-import axios, { AxiosResponse } from "axios";
-import Router from "next/router";
+import { AxiosResponse } from "axios";
+import { setDefaultHeader } from "./API";
+import { openCluster } from "jobs/afterSignIn";
 
-interface Props {
-  authenticate: () => void;
-}
-
-const Auth: FC<Props> = ({ authenticate }) => {
+const Auth: FC = () => {
   const [showSignIn, setShowSignIn] = useState(true);
 
   const changeSignType = () => {
@@ -18,8 +15,8 @@ const Auth: FC<Props> = ({ authenticate }) => {
   const saveJWTAndSignIn = (res: AxiosResponse<any, any>) => {
     const jwtToken = res.data.token;
     localStorage.setItem("jwt", jwtToken);
-    authenticate();
-    Router.push("/cluster");
+    setDefaultHeader("Authorization", `Bearer ${jwtToken}`);
+    openCluster();
   };
 
   return (
