@@ -1,28 +1,22 @@
-import axios from "axios";
+import { axios } from "../components/auth/API";
 import { ICluster } from "types/Cluster";
-const baseURL = "http://localhost:8080/api";
-const headers = {
-  "Content-Type": "application/json",
-  Authorization: "Bearer ",
-};
+import config from "config.json";
 
 const ClusterAPI = {
-  create: async (cluster: ICluster) => {
-    return await axios.post(`${baseURL}/cresources`, cluster, { headers });
+  create: (cluster: ICluster) => {
+    return axios.post(`${config.BASE_URL}/cresources`, cluster);
   },
-  getById: async (_id: string) => {
-    return await axios.get(`${baseURL}/cresources/${_id}`, { headers });
+  getById: (_id: string) => {
+    return axios.get(`${config.BASE_URL}/cresources/${_id}`);
   },
-  getAll: async () => {
-    return await axios.get(`${baseURL}/cresources`, { headers });
+  getAll: () => {
+    return axios.get(`${config.BASE_URL}/cresources`);
   },
-  delete: async (_id: string) => {
-    return await axios.delete(`${baseURL}/cresources/${_id}`, { headers });
+  delete: (_id: string) => {
+    return axios.delete(`${config.BASE_URL}/cresources/${_id}`);
   },
-  update: async (cluster: ICluster) => {
-    return await axios.put(`${baseURL}/cresources/${cluster._id}`, cluster, {
-      headers,
-    });
+  update: (cluster: ICluster) => {
+    return axios.put(`${config.BASE_URL}/cresources/${cluster._id}`, cluster);
   },
 };
 export default ClusterAPI;
