@@ -4,6 +4,7 @@ import { IUser } from "../../types/User";
 import ConfirmDialog from "components/dialog/ConfirmDialog";
 import UserAPI from "api/user";
 import { currentUser } from "../../types/User"
+import Router from "next/router"
 
   interface Props {}
 
@@ -13,7 +14,7 @@ import { currentUser } from "../../types/User"
     const email = "foo@mail.de"
     const [user, setUser] = useState([]);
     const [currentItem, setCurrentItem] = useState<IUser>({
-        username: "",
+        username: "eg",
         _id:'',
       });
 
@@ -21,19 +22,20 @@ import { currentUser } from "../../types/User"
         getCurrentUser();
         try {
           const response = await UserAPI.delete(currentItem._id);
-          response.status === 200
+          response.status !== 200
             ? alert("User successfully deleted!")
             : alert("Uups! Something went wrong!");
         } catch (error) {
           console.log(error);
         }
+        abmelden();
       };
 
     const onEditClick = async () => {
         getCurrentUser();
         try {
           const response = await UserAPI.update(currentItem);
-          response.status === 200
+          response.status !== 200
             ? alert("User successfully deleted!")
             : alert("Uups! Something went wrong!");
         } catch (error) {
@@ -49,12 +51,17 @@ import { currentUser } from "../../types/User"
         } catch (error) {
             console.log(error);
         }
-        user.forEach((user) => {
-            if(user.username === currentUser.username) {
-                setCurrentItem(user);
-            }   
-        })
+        setCurrentItem(user.find((user) => {
+            user.username == currentUser.username  
+        }))
+        console.log(user)
     };
+
+    const abmelden = () => {
+        localStorage.setItem("jwt", "");
+        Router.push("/");
+      };
+
     return (
         <>
             <div className="d-flex flex-row">
@@ -76,7 +83,7 @@ import { currentUser } from "../../types/User"
                             </input>
                             <div>Email { }</div>
                             <input
-                                defaultValue={email}
+                                defaultValue={currentUser.email}
                                 className="form-control"
                             ></input>
                             <div>Passwort { }</div>
@@ -91,29 +98,14 @@ import { currentUser } from "../../types/User"
                         </div>
                     </div>
                     <p>
-                        <button className="btn btn-lg btn-primary"  type="button" data-bs-toggle="collapse" data-bs-target="#delete" aria-expanded="false" aria-controls="delete">
-                            Account löschen
-                        </button>
-                    </p>
-                    <div className="collapse" id="delete">
-                        <div className="card card-body" margin-left="0 auto">
-                            <div>Passwort: { }
-                            </div>
-                            <input
-                                placeholder="Bitte Passwort eingeben"
-                            ></input>
-                            
-                            <div className="btn-group">
-                                <a className="btn btn-lg btn-success" onClick={() => setCurrentItem(currentUser)} data-bs-toggle="modal" data-bs-target="#userDeletion">
+                    <a className="btn btn-lg btn-primary" onClick={() => setCurrentItem(currentUser)} data-bs-toggle="modal" data-bs-target="#userDeletion">
                                 Account löschen</a>
-                            </div>
-                        </div>
-                    </div>
+                    </p>
                 </div>
             </div>
             <ConfirmDialog
                 id={"userDeletion"}
-                accept={{ caption: "Löschen", onClick: onDeleteClick }}
+                accept={{ caption: "Löschen", onClick: onDeleteClick}}
                 title={"User Löschen"}
                 text={`Möchten Sie diesen Account wirklich löschen?`}
             />

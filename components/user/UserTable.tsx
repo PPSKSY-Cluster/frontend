@@ -1,14 +1,16 @@
 import UserAPI from "api/user";
 import ConfirmDialog from "components/dialog/ConfirmDialog";
 import { useEffect, useState } from "react";
-import { IUser } from "../../types/User";
+import { currentUser, IUser } from "../../types/User";
 import UserItem from "./UserItem";
 import UserUpdate from "./UserUpdate";
 
 
   const UserTable =  () => {
-    const [users, setUsers] = useState<IUser[]>([    { _id: "1", username: "foo" },
+    const [allUsers, setAllUsers] = useState<IUser[]>([    { _id: "1", username: "foo" },
     { _id: "2", username: "bar"},]);
+    const [users, setUsers] = useState<IUser[]>(allUsers);
+    const [inputname, setInputname] = useState("");
     
     const [currentItem, setCurrentItem] = useState<IUser>({
       username: "",
@@ -19,7 +21,9 @@ import UserUpdate from "./UserUpdate";
       async function getUsers() {
         try {
           const response = await UserAPI.getAll();
-          if (response.data.length > 0) setUsers(response.data);
+          if (response.data.length > 0) {
+            setAllUsers(response.data);
+            setUsers(response.data)}
         } catch (error) {
           console.log(error);
         }
@@ -36,7 +40,8 @@ import UserUpdate from "./UserUpdate";
       } catch (error) {
         console.log(error);
       }
-      setUsers(users.filter(el => el._id!= currentItem._id))
+      setAllUsers(allUsers.filter(el => el._id!= currentItem._id))
+      setUsers(allUsers);
     };
     const onUpdateClick = async () => {
       try {
@@ -47,28 +52,67 @@ import UserUpdate from "./UserUpdate";
       } catch (error) {
         console.log(error);
       }
-      //const updatedUsers = { ...users };
-      setUsers(
-        users.map((el) => {
+      setAllUsers(
+        allUsers.map((el) => {
           return el._id === currentItem._id ? currentItem : el;
         })
       );
+      currentUser.username = currentItem.username
+      setUsers(allUsers);
     };
 
+    const onSearchClick = (input) => {
+      setUsers(
+        allUsers.filter(
+          (el) => el.username.includes(input))
+      )
+    }
+
+    const setCurrentUser = (userItem) => {
+      if(userItem.username === currentUser.username){
+        currentUser.email = userItem.email;
+        currentUser._id = userItem._id;
+      }
+    }
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'Enter'){
+        e.preventDefault();
+        onSearchClick(inputname);
+      }
+    }
+
     return (
-      <>
+      <> 
+        <div className="form-control" style={{border: "none"}}>
+          <div className="input-group" pb-value="2">
+            <div className="form-outline">
+              <form>
+                <input placeholder="Benutzername" value={inputname} onChange={evt =>setInputname(evt.target.value)}
+                type="search" className="form-control" autoComplete="off" onKeyDown={handleKeyDown} style={{outlineColor:"red"}}/>
+              </form>
+            </div>
+            <a type="button" className="btn btn-primary " onClick={() => onSearchClick(inputname)}>
+              <i
+                className="bi bi-search"
+                vertical-align="middle"
+              />
+            </a>
+          </div>
         <table className="table table-hover m-3">
           <thead>
             <tr>
               <th>Nr</th>
               <th className="text-center">Name</th>
               <th className="text-center">Rolle</th>
+              <th className="text-center">Reservierungen</th>
               <th className="text-center">Bearbeiten</th>
               <th className="text-center">Löschen</th>
             </tr>
           </thead>
           <tbody>
             {users?.map((userItem, index) => {
+              setCurrentUser(userItem);
               return (
                 <UserItem
                   key={userItem._id}
@@ -92,6 +136,7 @@ import UserUpdate from "./UserUpdate";
           setCurrentItem={setCurrentItem}
           onSubmit={onUpdateClick}
         />
+        </div>
       </>
     );
   };

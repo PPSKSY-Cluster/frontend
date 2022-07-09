@@ -4,6 +4,7 @@ import BarItem from "components/sidebar/BarItem";
 import { IMobileMenu } from "types/MobileMenu";
 import { ILinks } from "types/Links";
 import Router from "next/router";
+import { currentUser } from "types/User";
 
 const links: ILinks[] = [
   {
@@ -70,6 +71,7 @@ const Navbar: FC<NavbarProps> = ({ mobileMenu }) => {
                 );
               })}
             </div>
+            <text style={{marginRight:"25px", marginTop:"20px", color:"grey"}}>Signed in as: <text style={{color:"blue"}}> {currentUser.username} </text>({currentUser.type})</text>
             <button
               className="btn btn-sm btn-outline-grey"
               type="button"
