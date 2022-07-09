@@ -2,8 +2,8 @@ import { FC, useState } from "react";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
 import { AxiosResponse } from "axios";
-import Router from "next/router";
 import { setDefaultHeader } from "./API";
+import { openCluster } from "jobs/afterSignIn";
 
 const Auth: FC = () => {
   const [showSignIn, setShowSignIn] = useState(true);
@@ -16,7 +16,7 @@ const Auth: FC = () => {
     const jwtToken = res.data.token;
     localStorage.setItem("jwt", jwtToken);
     setDefaultHeader("Authorization", `Bearer ${jwtToken}`);
-    Router.push("/cluster");
+    openCluster();
   };
 
   return (
