@@ -8,14 +8,33 @@ import ClusterReserve from "./ClusterReserve";
 
 const ClusterTable = () => {
   const clusterB: ICluster[] = [
-    { _id: "1", name: "Cluster 1", description: "RAM" },
-    { _id: "2", name: "Cluster 2", description: "CPU" },
+    {
+      _id: "1",
+      name: "Cluster 1",
+      description: "RAM",
+      nodes: 2,
+      operatingSystem: 1,
+      type: 2,
+    },
+    {
+      _id: "2",
+      name: "Cluster 2",
+      description: "CPU",
+      nodes: 3,
+      operatingSystem: 2,
+      type: 1,
+    },
   ];
-  const [cluster, setCluster] = useState(clusterB);
-  const [currentItem, setCurrentItem] = useState<ICluster>({
+  const initCluster = {
     name: "",
     description: "",
-  });
+    nodes: 1,
+    operatingSystem: 0,
+    type: 0,
+  };
+  
+  const [cluster, setCluster] = useState(clusterB);
+  const [currentItem, setCurrentItem] = useState<ICluster>(initCluster);
 
   useEffect(() => {
     async function getCluster() {
@@ -33,18 +52,24 @@ const ClusterTable = () => {
     try {
       const response = await ClusterAPI.delete(currentItem._id);
       response.status === 204
-        ? alert("Cluster successfully deleted!")
+        ? setCluster(cluster.filter((el) => el._id != currentItem._id))
         : alert("Uups! Something went wrong!");
     } catch (error) {
       console.log(error);
     }
   };
-  const onUpdateClick = async () => {
+
+  const onUpdateClick = async (updatedItem: ICluster) => {
     try {
-      const response = await ClusterAPI.update(currentItem);
-      response.status === 202
-        ? alert("Cluster successfully updated!")
-        : alert("Uups! Something went wrong!");
+      const response = await ClusterAPI.update(updatedItem);
+      if (response.status === 200) {
+        const newCluster = cluster.map((el) => {
+          return el._id === updatedItem._id ? updatedItem : el;
+        });
+        setCluster(newCluster);
+      } else {
+        alert("Uups! Something went wrong!");
+      }
     } catch (error) {
       console.log(error);
     }
@@ -95,7 +120,6 @@ const ClusterTable = () => {
       />
       <ClusterUpdate
         currentItem={currentItem}
-        setCurrentItem={setCurrentItem}
         onSubmit={onUpdateClick}
       />
       <ClusterReserve
