@@ -5,7 +5,7 @@ import { IReservation } from "../../types/Reservation";
 interface ClusterItemProps {
   clusterItem: IReservation;
   count: number;
-  setCurrentItem: (item: ICluster) => void;
+  setCurrentItem: (item: IReservation) => void;
 }
 
 const ClusterItem: FC<ClusterItemProps> = ({

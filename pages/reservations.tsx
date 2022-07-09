@@ -5,7 +5,7 @@ import ReservationTable from "components/reservations/ReservationsTable";
 import { IMobileMenu, PageType } from "types/MobileMenu";
 
 const pages: PageType[] = [
-  { caption: "Alle Reservierungen anzeigen", action: "showTable" },
+  { caption: "Reservierungen", action: "showTable" },
   // { caption: "Neues Cluster erstellen", action: "showCreation" },
 ];
 

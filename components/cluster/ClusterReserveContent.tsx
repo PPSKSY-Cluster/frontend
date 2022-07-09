@@ -14,6 +14,8 @@ const SingleCluster: FC<Props> = ({ cluster }) => {
   const from = useRef(null);
   const to = useRef(null);
 
+  const jwt: string = useSelector((state: RootState) => state.jwt);
+
   const createReservation = (e) => {
     e.preventDefault();
 
@@ -21,20 +23,27 @@ const SingleCluster: FC<Props> = ({ cluster }) => {
 
     const data = {
       clusterId: cluster._id,
-      nodes: nodes.current.value,
+      nodes: parseInt(nodes.current.value),
       startTime: Math.floor(new Date(from.current.value).getTime() / 1000),
       endTime: Math.floor(new Date(to.current.value).getTime() / 1000),
     };
 
     console.log(data);
 
+    const token =
+      "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbiI6dHJ1ZSwiZXhwIjoxNjU3NDM4Mjg3LCJ1c2VybmFtZSI6ImZvbyJ9.QgQk8lxRRZCVQAlSnZcfjvDPrBSNIs5F4viLY6IPYiB2_6YVs4RQ4L4ibfr840RjkgIMgfwsfK5O0Rwp_mWGEcVbpOnX8OxyHYI2HYTlkoJLwWsdZk406W4dOWeW7TP_22WzEx5xEmPYGbNU7gymKsBuxQmydEc_8UQJUTbTf_PJeMawzhzrYEfIqD1Tz8CRpbWsY9judYJEVitpgNXiL5MYWgiaqSC_OFnzN-IhoBNGMlGrhoam8UKP6ePk-BKtWHHjhYhuItDGPfWSk2FMKxYT4xS_S2_k4zHlNADI2zYmOdCDEbrWXNGpIf5cKzGg1UJcg-XM1uAsIBiqFvWUMg";
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
     axios
-      .post("http://localhost:8080/api/reservations", data)
+      .post("http://localhost:8080/api/reservations", data, config)
       .then()
       .catch((err) => console.log(err));
   };
 
-  const jwt: string = useSelector((state: RootState) => state.jwt);
   /*
     "_id": "62c0496dd81c6ccc8531d1f1",
     "clusterID": "000000000000000000000000",
@@ -60,6 +69,7 @@ const SingleCluster: FC<Props> = ({ cluster }) => {
           Bisherige Reservierungen anzeigen
         </button>
       </div>
+      <p>{jwt}</p>
       <h2 className="text-center">{cluster.name}</h2>
       <div>
         <form onSubmit={createReservation}>
@@ -100,7 +110,7 @@ const SingleCluster: FC<Props> = ({ cluster }) => {
             ></input>
           </div>
           <div className="form-group mb-2"></div>
-          <div className="form-group form-outline mb-4">
+          <div className="d-grid gap-2 d-lg-flex justify-content-lg-end">
             <button className="btn btn-primary">Reservieren</button>
           </div>
         </form>

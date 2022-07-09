@@ -67,41 +67,43 @@ const ClusterForm: FC<ClusterFormProps> = ({
       <h2 className="mb-3">{cluster.name}</h2>
 
       <form onSubmit={createReservation}>
-        <label className="form-label">Anzahl der Nodes:</label>
-        <div className="form-group mb-2">
-          <select
-            className="form-control"
-            id="exampleFormControlSelect1"
-            ref={nodes}
-          >
-            {nodesOptions}
-          </select>
-        </div>
-        <div className="form-group g-3 mb-2">
-          <label className="form-label">Von:</label>
-          <input
-            className="form-control"
-            type="date"
-            name="due-date"
-            id="due-date"
-            v-model="date"
-            ref={from}
-          ></input>
-        </div>
-        <div className="form-group">
-          <label className="form-label">Bis:</label>
-          <input
-            className="form-control"
-            type="date"
-            name="due-date"
-            id="due-date"
-            v-model="date"
-            ref={to}
-          ></input>
-        </div>
-        <div className="form-group mb-2"></div>
-        <div className="form-group form-outline mb-4">
-          <button className="btn btn-primary">Reservierung ändern</button>
+        <div className="d-none d-lg-block">
+          <label className="form-label">Anzahl der Nodes:</label>
+          <div className="form-group mb-2">
+            <select
+              className="form-control"
+              id="exampleFormControlSelect1"
+              ref={nodes}
+            >
+              {nodesOptions}
+            </select>
+          </div>
+          <div className="form-group g-3 mb-2">
+            <label className="form-label">Von:</label>
+            <input
+              className="form-control"
+              type="date"
+              name="due-date"
+              id="due-date"
+              v-model="date"
+              ref={from}
+            ></input>
+          </div>
+          <div className="form-group">
+            <label className="form-label">Bis:</label>
+            <input
+              className="form-control"
+              type="date"
+              name="due-date"
+              id="due-date"
+              v-model="date"
+              ref={to}
+            ></input>
+          </div>
+          <div className="form-group mb-2"></div>
+          <div className="d-grid gap-2 d-lg-flex justify-content-lg-end">
+            <button className="btn btn-primary">Reservierung ändern</button>
+          </div>
         </div>
       </form>
     </div>
