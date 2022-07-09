@@ -25,7 +25,7 @@ import UserUpdate from "./UserUpdate";
         }
       }
       getUser();
-    }, [users]);
+    }, []);
 
     const onDeleteClick = async () => {
       try {

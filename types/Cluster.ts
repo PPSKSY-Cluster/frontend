@@ -4,7 +4,7 @@ export interface ICluster {
   description: string;
   nodes: number;
   type: number;
-  operatingSystem: number;
+  operatingSystem: string;
   admins?: number[];
   reservations?: number[];
 }
