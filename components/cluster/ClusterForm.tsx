@@ -15,7 +15,7 @@ interface ClusterFormProps {
   title: string;
   action: {
     title: string;
-    onSubmit: (updatedItem: ICluster) => {};
+    onSubmit: (updatedItem: ICluster) => void;
   };
   currentItem?: ICluster;
   setCurrentItem?: Dispatch<SetStateAction<ICluster>>;
@@ -30,7 +30,7 @@ const ClusterForm: FC<ClusterFormProps> = ({
   const [name, setName] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [nodes, setNodes] = useState<number>(1);
-  const [operatingSystem, setOperatingSystem] = useState<number>(1);
+  const [operatingSystem, setOperatingSystem] = useState<string>("");
   const [type, setType] = useState<number>(1);
 
   const init = () => {

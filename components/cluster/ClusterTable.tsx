@@ -13,7 +13,7 @@ const ClusterTable = () => {
       name: "Cluster 1",
       description: "RAM",
       nodes: 2,
-      operatingSystem: 1,
+      operatingSystem: "",
       type: 2,
     },
     {
@@ -21,7 +21,7 @@ const ClusterTable = () => {
       name: "Cluster 2",
       description: "CPU",
       nodes: 3,
-      operatingSystem: 2,
+      operatingSystem: "",
       type: 1,
     },
   ];
@@ -29,7 +29,7 @@ const ClusterTable = () => {
     name: "",
     description: "",
     nodes: 1,
-    operatingSystem: 0,
+    operatingSystem: "",
     type: 0,
   };
   
