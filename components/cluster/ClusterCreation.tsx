@@ -8,7 +8,7 @@ const ClusterCreation: FC = () => {
     name: "",
     description: "",
     nodes: 1,
-    operatingSystem: 0,
+    operatingSystem: "",
     type: 0,
   };
   const [cluster] = useState<ICluster>(initCluster);
