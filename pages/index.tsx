@@ -6,7 +6,7 @@ export default function Home() {
   const [authenticated, setAuthenticated] = useState(false);
 
   useEffect(() => {
-    if (localStorage.getItem("jwt") !== "") {
+    if (localStorage.getItem("jwt") && localStorage.getItem("jwt") !== "") {
       setAuthenticated(true);
     }
   }, []);

@@ -1,51 +1,99 @@
-import React, { Dispatch, FC, FormEvent, SetStateAction, useRef } from "react";
+import UserAPI from "api/user";
+import ConfirmDialog from "components/dialog/ConfirmDialog";
+import Router from "next/router";
+import React, { FC, FormEvent, useEffect, useRef, useState } from "react";
 import { IUser } from "types/User";
-interface OptionsFormProps {
-  title: string;
-  action: {
-    title: string;
-    onSubmit: () => void;
-  };
-  currentItem?: IUser;
-  setCurrentItem?: Dispatch<SetStateAction<IUser>>;
-}
-const OptionsForm: FC<OptionsFormProps> = ({
-  title,
-  action,
-  currentItem,
-  setCurrentItem,
-}) => {
-  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+
+const OptionsForm: FC = () => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState<string>(null);
+  const pwCheckRef = useRef(null);
+  const confirmRef = useRef(null);
+
+  useEffect(() => {
+    setUsername(localStorage.getItem("username"));
+  }, []);
+
+  const checkSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    action.onSubmit();
+    if (!username && !password) {
+      return;
+    }
+    if (password && password !== pwCheckRef.current.value) {
+      return alert("Passwörter stimmen nicht überein!");
+    }
+    confirmRef.current.click();
+  };
+
+  const onSubmit = async () => {
+    let updatedUser: IUser = {
+      _id: localStorage.getItem("userId"),
+      username,
+      password: password !== "" ? password : localStorage.getItem("userPw"),
+    };
+    try {
+      const response = await UserAPI.update(updatedUser);
+      if (response.status !== 200) {
+        return alert(response.statusText);
+      }
+      localStorage.setItem("username", response.data.username);
+      localStorage.setItem("userPw", response.data.password);
+      Router.push('/options')
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <div className="container-fluid p-4">
-      <h2 className="mb-3">{title}</h2>
-      <form onSubmit={onSubmit}>
+      <h2 className="mb-3">Daten ändern</h2>
+      <form onSubmit={checkSubmit}>
         <div className="form-group mb-2">
-          <label htmlFor="exampleInputEmail1">Name</label>
+          <label>Benutzername</label>
           <input
             type="text"
             className="form-control"
-            value={currentItem?.username}
+            value={username}
             onChange={(e) => {
-              setCurrentItem({
-                ...currentItem,
-                username: e.target.value,
-              });
+              setUsername(e.target.value);
             }}
             autoFocus
-            required
           />
         </div>
-        <div className="form-group mb-4">
+        <div className="form-group mb-2">
+          <label>Neues Passwort</label>
+          <input
+            type="password"
+            className="form-control"
+            onChange={(e) => setPassword(e.target.value)}
+          />
         </div>
+        <div className="form-group mb-2">
+          <label>Neues Passwort wiederholen</label>
+          <input
+            type="password"
+            className="form-control"
+            ref={pwCheckRef}
+            required={!!password}
+          />
+        </div>
+        <div className="form-group mb-4"></div>
         <div className="d-grid gap-2 d-lg-flex justify-content-lg-end">
           <button type="submit" className="btn btn-primary float-right">
-            {action.title}
+            Änderungen speichern
           </button>
         </div>
+        <input
+          type="hidden"
+          data-bs-toggle="modal"
+          data-bs-target="#userEdit"
+          ref={confirmRef}
+        />
+        <ConfirmDialog
+          id={"userEdit"}
+          accept={{ caption: "Speichern", onClick: onSubmit }}
+          title={"Daten ändern"}
+          text={"Änderungen speichern?"}
+        />
       </form>
     </div>
   );

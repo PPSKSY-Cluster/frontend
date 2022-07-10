@@ -71,7 +71,9 @@ const Navbar: FC<NavbarProps> = ({ mobileMenu }) => {
                 );
               })}
             </div>
-            <text style={{marginRight:"25px", marginTop:"20px", color:"grey"}}>Signed in as: <text style={{color:"blue"}}> {currentUser.username} </text>({currentUser.type})</text>
+            <div className="text-primary" style={{ marginRight: "25px" }}>
+              {localStorage.getItem("username")}
+            </div>
             <button
               className="btn btn-sm btn-outline-grey"
               type="button"
