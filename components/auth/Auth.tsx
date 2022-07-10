@@ -8,11 +8,6 @@ import { openCluster } from "jobs/afterSignIn";
 const Auth: FC = () => {
   const [showSignIn, setShowSignIn] = useState(true);
 
-  useEffect(() => {
-    const storedJwt = localStorage.getItem("jwt");
-    if (storedJwt != "") Router.push("/cluster");
-  }, []);
-
   const changeSignType = () => {
     setShowSignIn(!showSignIn);
   };

@@ -1,7 +1,5 @@
 import { FC, useRef, useState } from "react";
 import { ICluster } from "../../types/Cluster";
-import { useSelector } from "react-redux";
-import { RootState } from "src/store";
 import axios from "axios";
 
 interface Props {
@@ -13,8 +11,6 @@ const SingleCluster: FC<Props> = ({ cluster }) => {
   const nodes = useRef(null);
   const from = useRef(null);
   const to = useRef(null);
-
-  const jwt: string = useSelector((state: RootState) => state.jwt);
 
   const createReservation = (e) => {
     e.preventDefault();
@@ -69,7 +65,6 @@ const SingleCluster: FC<Props> = ({ cluster }) => {
           Bisherige Reservierungen anzeigen
         </button>
       </div>
-      <p>{jwt}</p>
       <h2 className="text-center">{cluster.name}</h2>
       <div>
         <form onSubmit={createReservation}>
