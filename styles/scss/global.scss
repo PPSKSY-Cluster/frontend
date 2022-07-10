@@ -29,3 +29,8 @@ $list-group-action-hover-color: white;
 .list-group-item {
   border: none;
 }
+
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
