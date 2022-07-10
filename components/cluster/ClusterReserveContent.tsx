@@ -125,8 +125,10 @@ const SingleCluster: FC<Props> = ({ cluster }) => {
       </div>
       <div>
         <h5>Reservation 1</h5>
-        <p>5 Nodes von 1.1 bis 1.8</p>
+        <p>5 Nodes, vom 1.8.2022 bis 1.9.2022</p>
         <hr />
+        <h5>Reservation 2</h5>
+        <p>3 Nodes, vom 10.7.2022 bis 1.8.2022</p>
       </div>
     </>
   );

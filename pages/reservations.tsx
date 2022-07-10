@@ -21,7 +21,7 @@ const Cluster = () => {
       <div className="d-flex flex-row">
         <div className="d-none d-md-block">
           <Sidebar
-            title="Cluster"
+            title="Reservierungen"
             elements={pages}
             onClickHandler={setSubPage}
           />

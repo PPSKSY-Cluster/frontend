@@ -10,15 +10,15 @@ const ClusterTable = () => {
     {
       _id: "1",
       cluster: "Cluster 1",
-      from: 1,
-      to: 100,
+      from: 1657443756,
+      to: 1657753756,
       nodes: 2,
     },
     {
       _id: "2",
       cluster: "Cluster 2",
-      from: 100,
-      to: 2,
+      from: 1657463756,
+      to: 1658473756,
       nodes: 3,
     },
   ];
@@ -41,7 +41,7 @@ const ClusterTable = () => {
         console.log(error);
       }
     }
-    getCluster();
+    //getCluster();
   }, []);
 
   const onDeleteClick = async () => {
@@ -78,6 +78,7 @@ const ClusterTable = () => {
           <tr>
             <th className="text-center col-md-1">Nr</th>
             <th className="text-center col-md-3">Cluster</th>
+            <th className="text-center col-md-3">Nodes</th>
             <th className="text-center col-md-3">Von</th>
             <th className="text-center col-md-3">Bis</th>
             <th className="text-center col-md-1">Bearbeiten</th>
