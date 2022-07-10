@@ -7,11 +7,10 @@ export const openCluster = () => {
     if (clusterJob) {
       const id = clusterJob[1];
       localStorage.setItem("afterSignIn", "");
-      Router.push(`cluster/${id}`);
+      return Router.push(`/cluster/${id}`);
     }
-  } else {
-    Router.push("/cluster");
   }
+  Router.push("/cluster");
 };
 
 export const openReservation = () => {};

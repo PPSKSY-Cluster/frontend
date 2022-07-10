@@ -2,8 +2,8 @@ import { FC, useState } from "react";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
 import { AxiosResponse } from "axios";
-import { setDefaultHeader } from "./API";
-import { openCluster } from "jobs/afterSignIn";
+import { setDefaultHeader } from "../../api/API";
+import { openCluster } from "../../jobs/afterSignIn";
 
 const Auth: FC = () => {
   const [showSignIn, setShowSignIn] = useState(true);
