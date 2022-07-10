@@ -1,13 +1,13 @@
 import React, { ChangeEvent, Dispatch, FC, SetStateAction } from "react";
 
 interface OsSelectProps {
-  os: number;
-  setOs: Dispatch<SetStateAction<number>>;
+  os: string;
+  setOs: Dispatch<SetStateAction<string>>;
 }
 
 const OsSelect: FC<OsSelectProps> = ({ os, setOs }) => {
   const onChangeHandler = (event: ChangeEvent<HTMLSelectElement>) => {
-    setOs(parseInt(event.target.value));
+    setOs(event.target.value);
   };
 
   return (
@@ -18,9 +18,9 @@ const OsSelect: FC<OsSelectProps> = ({ os, setOs }) => {
         onChange={onChangeHandler}
         value={os}
       >
-        <option value={1}>Linux</option>
-        <option value={2}>Windows</option>
-        <option value={3}>Mac OS</option>
+        <option value={"Linux"}>Linux</option>
+        <option value={"Windows"}>Windows</option>
+        <option value={"MacOS"}>Mac OS</option>
       </select>
     </div>
   );
