@@ -9,7 +9,7 @@ interface UserItemProps {
 
 const getUserType = (type) => {
   if(type == null){
-    return "User"
+    return "(User)"
   }else{
     return type
   }

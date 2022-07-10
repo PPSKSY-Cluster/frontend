@@ -24,15 +24,12 @@ const SignIn: FC<Props> = ({ saveJWTAndSignIn, showSignUp }) => {
       .post("http://localhost:8080/api/login", data)
       .then((res) => {
         saveJWTAndSignIn(res);
-        currentUser.token = res.data.token})
+        setWrongUser(true);
+      })
       .catch((err) => {
         console.log(err);
-        setWrongUser(true);
       });
       
-
-    currentUser.username = data.username;
-    currentUser.password = data.password;
 
     
   };

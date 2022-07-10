@@ -1,7 +1,7 @@
 import UserAPI from "api/user";
 import ConfirmDialog from "components/dialog/ConfirmDialog";
 import { useEffect, useState } from "react";
-import { currentUser, IUser } from "../../types/User";
+import { IUser } from "../../types/User";
 import UserItem from "./UserItem";
 import UserUpdate from "./UserUpdate";
 
@@ -11,6 +11,7 @@ import UserUpdate from "./UserUpdate";
     { _id: "2", username: "bar"},]);
     const [users, setUsers] = useState<IUser[]>(allUsers);
     const [inputname, setInputname] = useState("");
+    const [listPage, setListPage] = useState(1);
     
     const [currentItem, setCurrentItem] = useState<IUser>({
       username: "",
@@ -23,7 +24,7 @@ import UserUpdate from "./UserUpdate";
           const response = await UserAPI.getAll();
           if (response.data.length > 0) {
             setAllUsers(response.data);
-            setUsers(response.data)}
+            setUsersList(response.data)}
         } catch (error) {
           console.log(error);
         }
@@ -41,7 +42,7 @@ import UserUpdate from "./UserUpdate";
         console.log(error);
       }
       setAllUsers(allUsers.filter(el => el._id!= currentItem._id))
-      setUsers(allUsers);
+      setUsersList(allUsers);
     };
     const onUpdateClick = async () => {
       try {
@@ -57,9 +58,13 @@ import UserUpdate from "./UserUpdate";
           return el._id === currentItem._id ? currentItem : el;
         })
       );
-      currentUser.username = currentItem.username
-      setUsers(allUsers);
+      localStorage.setItem("username", currentItem.username);
+      setUsersList(allUsers);
     };
+
+    const setUsersList = (users) => {
+      setUsers(users.sort((a, b) => a.username.localeCompare(b.username)))
+    }
 
     const onSearchClick = (input) => {
       setUsers(
@@ -68,12 +73,6 @@ import UserUpdate from "./UserUpdate";
       )
     }
 
-    const setCurrentUser = (userItem) => {
-      if(userItem.username === currentUser.username){
-        currentUser.email = userItem.email;
-        currentUser._id = userItem._id;
-      }
-    }
 
     const handleKeyDown = (e) => {
       if (e.key === 'Enter'){
@@ -88,7 +87,7 @@ import UserUpdate from "./UserUpdate";
           <div className="input-group" pb-value="2">
             <div className="form-outline">
               <form>
-                <input placeholder="Benutzername" value={inputname} onChange={evt =>setInputname(evt.target.value)}
+                <input placeholder="Benutzername" value={inputname} onChange={evt =>{ setInputname(evt.target.value); onSearchClick(inputname)}}
                 type="search" className="form-control" autoComplete="off" onKeyDown={handleKeyDown} style={{outlineColor:"red"}}/>
               </form>
             </div>
@@ -99,31 +98,48 @@ import UserUpdate from "./UserUpdate";
               />
             </a>
           </div>
-        <table className="table table-hover m-3">
-          <thead>
-            <tr>
-              <th>Nr</th>
-              <th className="text-center">Name</th>
-              <th className="text-center">Rolle</th>
-              <th className="text-center">Reservierungen</th>
-              <th className="text-center">Bearbeiten</th>
-              <th className="text-center">Löschen</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users?.map((userItem, index) => {
-              setCurrentUser(userItem);
-              return (
-                <UserItem
-                  key={userItem._id}
-                  userItem={userItem}
-                  count={++index}
-                  setCurrentItem={setCurrentItem}
-                ></UserItem>
-              );
-            })}
-          </tbody>
-        </table>
+        <div className="col-md-12">
+          <table className="table table-hover m-3" style={{lineHeight:2}}>
+            <thead>
+              <tr>
+                <th>Nr</th>
+                <th className="text-center">Name</th>
+                <th className="text-center">Rolle</th>
+                <th className="text-center">Reservierungen</th>
+                <th className="text-center">Bearbeiten</th>
+                <th className="text-center">Löschen</th>
+              </tr>
+            </thead>
+            <tbody>
+              {users?.map((userItem, index) => {
+                if((listPage-1)*10<=index && index<(listPage)*10){
+                return (
+                  <UserItem
+                    key={userItem._id}
+                    userItem={userItem}
+                    count={++index}
+                    setCurrentItem={setCurrentItem}
+                  ></UserItem>
+                );}
+              })}
+            </tbody>
+          </table>
+        </div>
+        {listPage != 1 ?
+        <button className="btn-primary border-dark rounded" onClick={() => setListPage(listPage-1)}>
+            <i className="bi bi-arrow-left"></i>
+        </button>
+        :<button className="btn-primary border-dark rounded" style={{"backgroundColor":"grey"}}>
+          <i className="bi bi-arrow-left"></i>
+        </button>} 
+        <text style={{"marginLeft":"5px", "marginRight":"5px"}}>{listPage}</text>
+        {listPage < (users.length)/12 ?
+        <button className="btn-primary border-dark rounded" onClick={() => setListPage(listPage+1)}>
+          <i className="bi bi-arrow-right"></i>
+        </button>
+        :<button className="btn-primary border-dark rounded" style={{"backgroundColor":"grey"}}>
+          <i className="bi bi-arrow-right"></i>
+        </button>}
 
         <ConfirmDialog
           id={"userDeletion"}

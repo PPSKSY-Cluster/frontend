@@ -1,10 +1,11 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import Link from "next/link";
 import BarItem from "components/sidebar/BarItem";
 import { IMobileMenu } from "types/MobileMenu";
 import { ILinks } from "types/Links";
 import Router from "next/router";
-import { currentUser } from "types/User";
+import UserAPI from "api/user";
+import { IUser } from "types/User";
 
 const links: ILinks[] = [
   {
@@ -28,10 +29,17 @@ interface NavbarProps {
 }
 
 const Navbar: FC<NavbarProps> = ({ mobileMenu }) => {
+  const [currentUser, setCurrentUser] = useState<IUser>();
   const abmelden = () => {
     localStorage.setItem("jwt", "");
     Router.push("/");
   };
+
+  const getType = () =>{
+    if(!localStorage.getItem("type").includes(undefined)){
+      return localStorage.getItem("type");
+    }return "pseudoUser"
+  }
 
   return (
     <>
@@ -71,7 +79,7 @@ const Navbar: FC<NavbarProps> = ({ mobileMenu }) => {
                 );
               })}
             </div>
-            <text style={{marginRight:"25px", marginTop:"20px", color:"grey"}}>Signed in as: <text style={{color:"blue"}}> {currentUser.username} </text>({currentUser.type})</text>
+            <text style={{marginRight:"25px", marginTop:"20px", color:"grey"}}>Signed in as: <text style={{color:"blue"}}> {localStorage.getItem("username")} </text>({getType()})</text>
             <button
               className="btn btn-sm btn-outline-grey"
               type="button"

@@ -4,6 +4,8 @@ import SignUp from "./SignUp";
 import { AxiosResponse } from "axios";
 import Router from "next/router";
 import { setDefaultHeader } from "./API";
+import { IUser } from "types/User";
+import UserAPI from "api/user";
 
 const Auth: FC = () => {
   const [showSignIn, setShowSignIn] = useState(true);
@@ -14,10 +16,31 @@ const Auth: FC = () => {
 
   const saveJWTAndSignIn = (res: AxiosResponse<any, any>) => {
     const jwtToken = res.data.token;
+    saveUserCredentials(res.data.user);
     localStorage.setItem("jwt", jwtToken);
     setDefaultHeader("Authorization", `Bearer ${jwtToken}`);
     Router.push("/cluster");
   };
+
+  const saveUserCredentials = (user) => {
+      localStorage.setItem("username", user.username);
+      localStorage.setItem("id", user._id);
+      localStorage.setItem("email", user.email);
+      getOtherCreds();
+  }
+
+  const getOtherCreds = async () =>{
+      try {
+        const response = await UserAPI.getById(localStorage.getItem("id"));
+        response.status === 200
+          ? (localStorage.setItem("email", response.data.email),
+            localStorage.setItem("type", response.data.type),
+            console.log(response.data.type))
+          : alert("Uups! Something went wrong!");
+      } catch (error) {
+        console.log(error);
+      }
+  }
 
   return (
     <div className="min-vh-100 d-flex flex-row">

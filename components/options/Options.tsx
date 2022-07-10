@@ -46,14 +46,13 @@ import Router from "next/router"
 
     const getCurrentUser = async () => {
         try {
-            const response = await UserAPI.getAll();
-            if (response.data > 0) setUser(response.data)
+            const response = await UserAPI.getById(localStorage.getItem("id"));
+            if (response.data > 0){
+              setUser(response.data);
+              setCurrentItem(response.data)}
         } catch (error) {
             console.log(error);
         }
-        setCurrentItem(user.find((user) => {
-            user.username == currentUser.username  
-        }))
         console.log(user)
     };
 
@@ -64,43 +63,39 @@ import Router from "next/router"
 
     return (
         <>
-            <div className="d-flex flex-row">
+            <div>
                 <div>
-                    <h1></h1>
                     <p>
-                        <button className="btn btn-lg btn-primary"  type="button" data-bs-toggle="collapse" data-bs-target="#edit" aria-expanded="false" aria-controls="edit">
+                        <button className="btn btn-lg btn-primary"  type="button" data-bs-toggle="collapse" data-bs-target="#edit" aria-expanded="false" aria-controls="edit" style={{"alignContent":"center", "marginLeft":"210px", "marginTop":"25px", "marginBottom":"10px"}}>
                             Daten ändern
                         </button>
                     </p>
-                    <div className="collapse" id="edit">
-                        <div className="card card-body" margin-left="0 auto">
+                    <div className="collapse mx-auto" id="edit">
+                        <div className="card card-body border-dark primary" style={{"marginLeft":"150px", "marginBottom":"25px", "marginTop":"-10px", "borderBlockColor":"red", "backgroundColor":"lightgrey"}}>
                             <label>Name { }</label>
                             <input
                                 type="text"
                                 className="form-control"
-                                defaultValue={currentUser.username}
+                                defaultValue={localStorage.getItem("username")}
                                 ref={nameRef}>
                             </input>
                             <div>Email { }</div>
                             <input
-                                defaultValue={currentUser.email}
+                                defaultValue={currentItem.email}
                                 className="form-control"
                             ></input>
                             <div>Passwort { }</div>
                             <input
                                 type="password"
                                 className="form-control"
-                                defaultValue={currentUser.password}
                                 ref={pwRef}
                             ></input>
-                                <a className="btn btn-lg btn-success" onClick={() => setCurrentItem(currentItem)} data-bs-toggle="modal" data-bs-target="#userEdit">
+                                <a className="btn btn-lg btn-success border-dark" onClick={() => setCurrentItem(currentItem)} data-bs-toggle="modal" data-bs-target="#userEdit" style={{"marginTop":"5px"}}>
                                 Änderungen speichern</a>
                         </div>
                     </div>
-                    <p>
-                    <a className="btn btn-lg btn-primary" onClick={() => setCurrentItem(currentUser)} data-bs-toggle="modal" data-bs-target="#userDeletion">
-                                Account löschen</a>
-                    </p>
+                      <a className="btn btn-lg btn-primary" onClick={() => setCurrentItem(currentUser)} data-bs-toggle="modal" data-bs-target="#userDeletion" style={{"marginLeft":"200px"}}>
+                      Account löschen</a>
                 </div>
             </div>
             <ConfirmDialog
