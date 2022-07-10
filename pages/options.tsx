@@ -3,9 +3,11 @@ import Main from "components/main/Main";
 import Sidebar from "components/sidebar/Sidebar";
 import Options from "components/options/Options";
 import { IMobileMenu, PageType } from "types/MobileMenu";
+import OptionsForm from "components/options/OptionsForm";
 
 const pages: PageType[] = [
   { caption: "Account", action: "showTable" },
+  { caption: "Daten ändern", action: "changeCredentials" },
 ];
 
 const Option = () => {
@@ -26,6 +28,7 @@ const Option = () => {
           />
         </div>
         {subPage.action === "showTable" && <Options />}
+        {subPage.action === "changeCredentials" && <OptionsForm />}
       </div>
     </Main>
   );

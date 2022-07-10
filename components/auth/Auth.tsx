@@ -13,9 +13,12 @@ const Auth: FC = () => {
   };
 
   const saveJWTAndSignIn = (res: AxiosResponse<any, any>) => {
-    const jwtToken = res.data.token;
-    localStorage.setItem("jwt", jwtToken);
-    setDefaultHeader("Authorization", `Bearer ${jwtToken}`);
+    const {token, user} = res.data;
+    localStorage.setItem("jwt", token);
+    localStorage.setItem("username", user.username);
+    localStorage.setItem("userId", user._id);
+    localStorage.setItem("userPw", user.password);
+    setDefaultHeader("Authorization", `Bearer ${token}`);
     Router.push("/cluster");
   };
 
