@@ -1,28 +1,22 @@
-import axios from "axios";
-import { currentUser, IUser } from "types/User";
-const baseURL = "http://localhost:8080/api";
-const headers = {
-  "Content-Type": "application/json",
-  Authorization: "Bearer " + currentUser.token,
-};
+import { axios } from "../components/auth/API";
+import { IUser } from "types/User";
+import config from "config.json";
 
 const UserAPI = {
-  create: async (user: IUser) => {
-    return await axios.post(`${baseURL}/users`, user, { headers });
+  create: (user: IUser) => {
+    return axios.post(`${config.BASE_URL}/users`, user);
   },
-  getById: async (_id: number) => {
-    return await axios.get(`${baseURL}/users/${_id}`, { headers });
+  getById: (_id: number) => {
+    return axios.get(`${config.BASE_URL}/users/${_id}`);
   },
-  getAll: async () => {
-    return await axios.get(`${baseURL}/users`, { headers });
+  getAll: () => {
+    return axios.get(`${config.BASE_URL}/users`);
   },
-  delete: async (_id: string) => {
-    return await axios.delete(`${baseURL}/users/${_id}`, { headers });
+  delete: (_id: string) => {
+    return axios.delete(`${config.BASE_URL}/users/${_id}`);
   },
-  update: async (user: IUser) => {
-    return await axios.put(`${baseURL}/users/${user._id}`, user, {
-      headers,
-    });
+  update: (user: IUser) => {
+    return axios.put(`${config.BASE_URL}/users/${user._id}`, user);
   },
 };
 export default UserAPI;

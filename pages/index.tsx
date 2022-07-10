@@ -1,15 +1,15 @@
-import Head from "next/head";
-import App from "components/App";
+import Auth from "components/auth/Auth";
+import { useEffect, useState } from "react";
+import Main from "components/main/Main";
 
 export default function Home() {
-  return (
-    <>
-      <Head>
-        <title>Cluster Thruster</title>
-        <meta name="description" content="manager for cluster resources" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <App />
-    </>
-  );
+  const [authenticated, setAuthenticated] = useState(false);
+
+  useEffect(() => {
+    if (localStorage.getItem("jwt") !== "") {
+      setAuthenticated(true);
+    }
+  }, []);
+
+  return authenticated ? <Main /> : <Auth/>
 }
