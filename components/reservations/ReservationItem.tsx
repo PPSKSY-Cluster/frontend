@@ -13,14 +13,14 @@ const ClusterItem: FC<ClusterItemProps> = ({
   count,
   setCurrentItem,
 }) => {
-  const fromDate = new Date(clusterItem.from * 1000);
-  const toDate = new Date(clusterItem.to * 1000);
+  const fromDate = new Date(clusterItem.startTime * 1000);
+  const toDate = new Date(clusterItem.endTime * 1000);
 
   return (
     <>
       <tr>
         <td className="text-center">{count}</td>
-        <td className="text-center">{clusterItem.cluster}</td>
+        <td className="text-center">{clusterItem._id}</td>
         <td className="text-center">{clusterItem.nodes}</td>
         <td className="text-center">{fromDate.toLocaleDateString()}</td>
         <td className="text-center">{toDate.toLocaleDateString()}</td>

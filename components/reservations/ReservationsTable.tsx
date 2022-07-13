@@ -9,24 +9,27 @@ const ClusterTable = () => {
   const clusterB: IReservation[] = [
     {
       _id: "1",
-      cluster: "Cluster 1",
-      from: 1657443756,
-      to: 1657753756,
+      clusterId: "2",
+      userId: localStorage.getItem("userId"),
       nodes: 2,
+      startTime: 1657443756,
+      endTime: 1657753756,
     },
     {
       _id: "2",
-      cluster: "Cluster 2",
-      from: 1657463756,
-      to: 1658473756,
+      clusterId: "2",
+      userId: localStorage.getItem("userId"),
+      startTime: 1657463756,
+      endTime: 1658473756,
       nodes: 3,
     },
   ];
   const initCluster = {
-    cluster: "Cluster 1",
-    from: 1,
-    to: 100,
-    nodes: 2,
+    clusterId: "2",
+    userId: localStorage.getItem("userId"),
+    startTime: 1657463756,
+    endTime: 1658473756,
+    nodes: 3,
   };
 
   const [cluster, setCluster] = useState(clusterB);

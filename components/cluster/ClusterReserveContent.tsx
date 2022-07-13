@@ -1,6 +1,9 @@
 import { FC, useRef, useState } from "react";
 import { ICluster } from "../../types/Cluster";
-import axios from "axios";
+import { IReservation } from "../../types/Reservation";
+import { axios } from "../auth/API";
+import config from "config.json";
+import ReservationAPI from "api/reservation";
 
 interface Props {
   cluster: ICluster;
@@ -12,32 +15,52 @@ const SingleCluster: FC<Props> = ({ cluster }) => {
   const from = useRef(null);
   const to = useRef(null);
 
+  const sendReservationApiRequest = () => {};
+
+  async function getCluster() {
+    try {
+      const response = await ReservationAPI.getAll();
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function createCluster(reservation: IReservation) {
+    try {
+      const response = await ReservationAPI.create(reservation);
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
   const createReservation = (e) => {
     e.preventDefault();
 
     // TODO?- do i need to fetch the user id first?
 
-    const data = {
+    /*axios
+      .get("http://localhost:8080/api/user")
+      .then()
+      .catch((err) => console.log(err));
+  */
+
+    const newReservation: IReservation = {
       clusterId: cluster._id,
+      userId: localStorage.getItem("userId"),
       nodes: parseInt(nodes.current.value),
       startTime: Math.floor(new Date(from.current.value).getTime() / 1000),
       endTime: Math.floor(new Date(to.current.value).getTime() / 1000),
     };
 
-    console.log(data);
+    console.log(newReservation);
 
-    const token =
-      "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbiI6dHJ1ZSwiZXhwIjoxNjU3NDM4Mjg3LCJ1c2VybmFtZSI6ImZvbyJ9.QgQk8lxRRZCVQAlSnZcfjvDPrBSNIs5F4viLY6IPYiB2_6YVs4RQ4L4ibfr840RjkgIMgfwsfK5O0Rwp_mWGEcVbpOnX8OxyHYI2HYTlkoJLwWsdZk406W4dOWeW7TP_22WzEx5xEmPYGbNU7gymKsBuxQmydEc_8UQJUTbTf_PJeMawzhzrYEfIqD1Tz8CRpbWsY9judYJEVitpgNXiL5MYWgiaqSC_OFnzN-IhoBNGMlGrhoam8UKP6ePk-BKtWHHjhYhuItDGPfWSk2FMKxYT4xS_S2_k4zHlNADI2zYmOdCDEbrWXNGpIf5cKzGg1UJcg-XM1uAsIBiqFvWUMg";
-    const config = {
-      headers: {
-        "Content-type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    };
-    axios
-      .post("http://localhost:8080/api/reservations", data, config)
-      .then()
+    createCluster(newReservation);
+    /*axios
+      .post(`${config.BASE_URL}/reservations`, data)
+      .then(() => alert("success"))
       .catch((err) => console.log(err));
+*/
   };
 
   /*
