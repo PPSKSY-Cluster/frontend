@@ -120,7 +120,6 @@ const ClusterTable = () => {
       />
       <ClusterUpdate currentItem={currentItem} onSubmit={onUpdateClick} />
       <ClusterReserve
-        key={1}
         currentItem={currentItem}
         setCurrentItem={setCurrentItem}
         onSubmit={onReserveClick}

@@ -14,20 +14,20 @@ const ClusterReservation: FC<Props> = ({ cluster }) => {
   const to = useRef(null);
 
   const [ClusterReservations, setClusterReservations] = useState(null);
-  const [clusterId, setClusterId] = useState(cluster._id);
 
   useEffect(() => {
     async function getReservationsOfCluster() {
       try {
-        console.log(cluster._id);
-        const response = await ReservationAPI.getAllByClusterId(cluster._id);
-        if (response.data.length > 0) setClusterReservations(response.data);
+        if (cluster._id != undefined) {
+          const response = await ReservationAPI.getAllByClusterId(cluster._id);
+          if (response.data.length > 0) setClusterReservations(response.data);
+        }
       } catch (error) {
         console.log(error);
       }
     }
     getReservationsOfCluster();
-  }, []);
+  }, [cluster]);
 
   async function APIcreateReservation(reservation: IReservation) {
     try {

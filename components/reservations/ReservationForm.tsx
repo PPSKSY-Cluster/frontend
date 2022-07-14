@@ -35,13 +35,15 @@ const ClusterForm: FC<ClusterFormProps> = ({
   const [rFrom, setRFrom] = useState("");
   const [rTo, setRTo] = useState("");
 
+  const init = () => {
+    setRNodes(currentItem.nodes);
+    setRFrom(
+      new Date(currentItem.startTime * 1000).toISOString().split("T")[0]
+    );
+    setRTo(new Date(currentItem.endTime * 1000).toISOString().split("T")[0]);
+  };
   useEffect(() => {
-    const init = () => {
-      setRNodes(currentItem.nodes);
-      setRFrom("");
-      setRTo(new Date(currentItem.endTime).toISOString().substr(0, 10));
-    };
-    //() => init();
+    init();
   }, [currentItem]);
 
   const createReservation = (e) => {
@@ -62,7 +64,7 @@ const ClusterForm: FC<ClusterFormProps> = ({
   };
 
   const nodesOptions = [];
-  for (let i = 1; i <= currentItem.nodes; i++) {
+  for (let i = 1; i <= rNodes; i++) {
     nodesOptions.push(<option key={i.toString()}>{i}</option>);
   }
 
@@ -78,7 +80,7 @@ const ClusterForm: FC<ClusterFormProps> = ({
               className="form-control"
               id="exampleFormControlSelect1"
               ref={nodes}
-              defaultValue={currentItem.nodes}
+              defaultValue={rNodes}
             >
               {nodesOptions}
             </select>
@@ -92,6 +94,10 @@ const ClusterForm: FC<ClusterFormProps> = ({
               id="due-date"
               v-model="date"
               ref={from}
+              value={rFrom}
+              onChange={(e) => {
+                setRFrom(e.target.value);
+              }}
             ></input>
           </div>
           <div className="form-group">
@@ -103,6 +109,10 @@ const ClusterForm: FC<ClusterFormProps> = ({
               id="due-date"
               v-model="date"
               ref={to}
+              value={rTo}
+              onChange={(e) => {
+                setRTo(e.target.value);
+              }}
             ></input>
           </div>
           <div className="form-group mb-2"></div>

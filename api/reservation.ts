@@ -7,7 +7,7 @@ const ReservationAPI = {
     return axios.post(`${config.BASE_URL}/reservations`, reservation);
   },
   getAllByClusterId: (_cid: string) => {
-    return axios.get(`${config.BASE_URL}/reservations/?cid=${_cid}`);
+    return axios.get(`${config.BASE_URL}/reservations/clusters/${_cid}`);
   },
   getAll: () => {
     return axios.get(`${config.BASE_URL}/reservations`);
