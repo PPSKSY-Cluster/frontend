@@ -54,7 +54,7 @@ const ClusterReservation: FC<Props> = ({ cluster }) => {
 
   const nodesOptions = [];
   for (let i = 1; i <= cluster.nodes; i++) {
-    nodesOptions.push(<option>{i}</option>);
+    nodesOptions.push(<option key={i.toString()}>{i}</option>);
   }
 
   const createReservationForm = (

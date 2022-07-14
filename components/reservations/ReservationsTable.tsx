@@ -85,9 +85,9 @@ const ClusterTable = () => {
           <tr>
             <th className="text-center col-md-1">Nr</th>
             <th className="text-center col-md-3">Cluster</th>
-            <th className="text-center col-md-3">Nodes</th>
-            <th className="text-center col-md-3">Von</th>
-            <th className="text-center col-md-3">Bis</th>
+            <th className="text-center col-md-2">Nodes</th>
+            <th className="text-center col-md-2">Von</th>
+            <th className="text-center col-md-2">Bis</th>
             <th className="text-center col-md-1">Bearbeiten</th>
             <th className="text-center col-md-1">Löschen</th>
           </tr>

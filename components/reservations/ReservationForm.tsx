@@ -1,4 +1,11 @@
-import React, { Dispatch, FC, SetStateAction, useRef } from "react";
+import React, {
+  Dispatch,
+  FC,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { ICluster } from "types/Cluster";
 import { IReservation } from "types/Reservation";
 
@@ -22,6 +29,21 @@ const ClusterForm: FC<ClusterFormProps> = ({
   const from = useRef(null);
   const to = useRef(null);
 
+  //const [rCurrentItem, setRCurrentItem] = useState(currentItem);
+
+  const [rNodes, setRNodes] = useState(1);
+  const [rFrom, setRFrom] = useState("");
+  const [rTo, setRTo] = useState("");
+
+  useEffect(() => {
+    const init = () => {
+      setRNodes(currentItem.nodes);
+      setRFrom("");
+      setRTo(new Date(currentItem.endTime).toISOString().substr(0, 10));
+    };
+    //() => init();
+  }, [currentItem]);
+
   const createReservation = (e) => {
     e.preventDefault();
 
@@ -41,8 +63,11 @@ const ClusterForm: FC<ClusterFormProps> = ({
 
   const nodesOptions = [];
   for (let i = 1; i <= currentItem.nodes; i++) {
-    nodesOptions.push(<option>{i}</option>);
+    nodesOptions.push(<option key={i.toString()}>{i}</option>);
   }
+
+  const startTime = new Date(currentItem.startTime);
+
   return (
     <div className="container-fluid p-4">
       <form onSubmit={createReservation}>
@@ -53,6 +78,7 @@ const ClusterForm: FC<ClusterFormProps> = ({
               className="form-control"
               id="exampleFormControlSelect1"
               ref={nodes}
+              defaultValue={currentItem.nodes}
             >
               {nodesOptions}
             </select>
