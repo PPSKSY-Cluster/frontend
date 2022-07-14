@@ -1,31 +1,45 @@
-import { FC } from "react";
-import { ICluster } from "../../types/Cluster";
+import { FC, useEffect, useState } from "react";
+import ClusterAPI from "api/cluster";
 import { IReservation } from "../../types/Reservation";
 
 interface ClusterItemProps {
-  clusterItem: IReservation;
+  reservationItem: IReservation;
   count: number;
   setCurrentItem: (item: IReservation) => void;
 }
 
 const ClusterItem: FC<ClusterItemProps> = ({
-  clusterItem,
+  reservationItem,
   count,
   setCurrentItem,
 }) => {
-  const fromDate = new Date(clusterItem.startTime * 1000);
-  const toDate = new Date(clusterItem.endTime * 1000);
+  const [reservation, setReservation] = useState(reservationItem);
+  const [clusterName, setClusterName] = useState("...");
+  const fromDate = new Date(reservationItem.startTime * 1000);
+  const toDate = new Date(reservationItem.endTime * 1000);
+
+  useEffect(() => {
+    async function getReservations() {
+      try {
+        const response = await ClusterAPI.getById(reservation.clusterID);
+        setClusterName(response.data.name);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    getReservations();
+  }, []);
 
   return (
     <>
       <tr>
         <td className="text-center">{count}</td>
-        <td className="text-center">{clusterItem._id}</td>
-        <td className="text-center">{clusterItem.nodes}</td>
+        <td className="text-center">{clusterName}</td>
+        <td className="text-center">{reservationItem.nodes}</td>
         <td className="text-center">{fromDate.toLocaleDateString()}</td>
         <td className="text-center">{toDate.toLocaleDateString()}</td>
         <td className="text-center">
-          <a onClick={() => setCurrentItem(clusterItem)}>
+          <a onClick={() => setCurrentItem(reservationItem)}>
             <i
               className="bi bi-pencil-square"
               data-bs-toggle="modal"
@@ -34,7 +48,7 @@ const ClusterItem: FC<ClusterItemProps> = ({
           </a>
         </td>
         <td className="text-center">
-          <a onClick={() => setCurrentItem(clusterItem)}>
+          <a onClick={() => setCurrentItem(reservationItem)}>
             <i
               className="bi bi-trash-fill"
               data-bs-toggle="modal"

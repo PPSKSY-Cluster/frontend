@@ -1,7 +1,7 @@
 export interface IReservation {
   _id?: string;
-  clusterId: string;
-  userId: string;
+  clusterID: string;
+  userID: string;
   nodes: number;
   startTime: number;
   endTime: number;

@@ -1,23 +1,14 @@
-import axios from "axios";
-import cluster from "cluster";
-import React, {
-  Dispatch,
-  FC,
-  FormEvent,
-  SetStateAction,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { Dispatch, FC, SetStateAction, useRef } from "react";
 import { ICluster } from "types/Cluster";
+import { IReservation } from "types/Reservation";
 
 interface ClusterFormProps {
   title: string;
   action: {
     title: string;
-    onSubmit: (updatedItem: ICluster) => {};
+    onSubmit: (updatedItem: IReservation) => {};
   };
-  currentItem?: ICluster;
+  currentItem?: IReservation;
   setCurrentItem?: Dispatch<SetStateAction<ICluster>>;
 }
 
@@ -31,41 +22,29 @@ const ClusterForm: FC<ClusterFormProps> = ({
   const from = useRef(null);
   const to = useRef(null);
 
-  /* TO DO: get cluster name and node count from id */
-
-  let cluster = {
-    name: "Cluster 1",
-    nodes: 10,
-  };
-
   const createReservation = (e) => {
     e.preventDefault();
 
-    // TODO?- do i need to fetch the user id first?
-
-    const data = {
-      //clusterId: cluster._id,
-      nodes: nodes.current.value,
+    const updatedReservation: IReservation = {
+      _id: currentItem._id,
+      clusterID: currentItem.clusterID,
+      userID: currentItem.userID,
+      nodes:
+        parseInt(nodes.current.value) != NaN
+          ? parseInt(nodes.current.value)
+          : currentItem.nodes,
       startTime: Math.floor(new Date(from.current.value).getTime() / 1000),
       endTime: Math.floor(new Date(to.current.value).getTime() / 1000),
     };
-
-    console.log(data);
-
-    axios
-      .put("http://localhost:8080/api/reservations", data)
-      .then()
-      .catch((err) => console.log(err));
+    action.onSubmit(updatedReservation);
   };
 
   const nodesOptions = [];
-  for (let i = 1; i < cluster.nodes; i++) {
+  for (let i = 1; i <= currentItem.nodes; i++) {
     nodesOptions.push(<option>{i}</option>);
   }
   return (
     <div className="container-fluid p-4">
-      <h2 className="mb-3">{cluster.name}</h2>
-
       <form onSubmit={createReservation}>
         <div className="d-none d-lg-block">
           <label className="form-label">Anzahl der Nodes:</label>
@@ -102,7 +81,9 @@ const ClusterForm: FC<ClusterFormProps> = ({
           </div>
           <div className="form-group mb-2"></div>
           <div className="d-grid gap-2 d-lg-flex justify-content-lg-end">
-            <button className="btn btn-primary">Reservierung ändern</button>
+            <button className="btn btn-primary" data-bs-dismiss="modal">
+              Reservierung ändern
+            </button>
           </div>
         </div>
       </form>

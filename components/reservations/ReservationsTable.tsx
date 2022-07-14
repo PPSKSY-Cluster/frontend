@@ -1,71 +1,75 @@
-import ClusterAPI from "api/cluster";
+import ReservationsAPI from "api/reservation";
 import ConfirmDialog from "components/dialog/ConfirmDialog";
 import { useEffect, useState } from "react";
 import ReservationItem from "./ReservationItem";
-import ClusterUpdate from "./ClusterUpdate";
+import ClusterUpdate from "./ReservationUpdate";
 import { IReservation } from "../../types/Reservation";
 
 const ClusterTable = () => {
   const clusterB: IReservation[] = [
+    /*
     {
       _id: "1",
-      clusterId: "2",
-      userId: localStorage.getItem("userId"),
+      clusterID: "2",
+      userID: localStorage.getItem("userId"),
       nodes: 2,
       startTime: 1657443756,
       endTime: 1657753756,
     },
     {
       _id: "2",
-      clusterId: "2",
-      userId: localStorage.getItem("userId"),
+      clusterID: "2",
+      userID: localStorage.getItem("userId"),
       startTime: 1657463756,
       endTime: 1658473756,
       nodes: 3,
     },
+    */
   ];
   const initCluster = {
-    clusterId: "2",
-    userId: localStorage.getItem("userId"),
+    clusterID: "2",
+    userID: localStorage.getItem("userId"),
     startTime: 1657463756,
     endTime: 1658473756,
     nodes: 3,
   };
 
-  const [cluster, setCluster] = useState(clusterB);
+  const [reservations, setReservations] = useState(clusterB);
   const [currentItem, setCurrentItem] = useState<IReservation>(initCluster);
 
   useEffect(() => {
-    async function getCluster() {
+    async function getReservations() {
       try {
-        const response = await ClusterAPI.getAll();
-        if (response.data.length > 0) setCluster(response.data);
+        const response = await ReservationsAPI.getAll();
+        if (response.data.length > 0) setReservations(response.data);
       } catch (error) {
         console.log(error);
       }
     }
-    //getCluster();
+    getReservations();
   }, []);
 
   const onDeleteClick = async () => {
     try {
-      const response = await ClusterAPI.delete(currentItem._id);
+      const response = await ReservationsAPI.delete(currentItem._id);
       response.status === 204
-        ? setCluster(cluster.filter((el) => el._id != currentItem._id))
+        ? setReservations(
+            reservations.filter((el) => el._id != currentItem._id)
+          )
         : alert("Uups! Something went wrong!");
     } catch (error) {
       console.log(error);
     }
   };
 
-  const onUpdateClick = async (updatedItem: ICluster) => {
+  const onUpdateClick = async (updatedItem: IReservation) => {
     try {
-      const response = await ClusterAPI.update(updatedItem);
+      const response = await ReservationsAPI.update(updatedItem);
       if (response.status === 200) {
-        const newCluster = cluster.map((el) => {
+        const newCluster = reservations.map((el) => {
           return el._id === updatedItem._id ? updatedItem : el;
         });
-        setCluster(newCluster);
+        setReservations(newCluster);
       } else {
         alert("Uups! Something went wrong!");
       }
@@ -89,11 +93,11 @@ const ClusterTable = () => {
           </tr>
         </thead>
         <tbody>
-          {cluster?.map((clusterItem, index) => {
+          {reservations?.map((clusterItem, index) => {
             return (
               <ReservationItem
                 key={clusterItem._id}
-                clusterItem={clusterItem}
+                reservationItem={clusterItem}
                 count={++index}
                 setCurrentItem={setCurrentItem}
               ></ReservationItem>
@@ -105,7 +109,7 @@ const ClusterTable = () => {
       <ConfirmDialog
         id={"clusterDeletion"}
         accept={{ caption: "Löschen", onClick: onDeleteClick }}
-        title={"Cluster Löschen"}
+        title={"Reservierung Löschen"}
         text={`Möchten Sie die Reservierung wirklich löschen?`}
       />
       <ClusterUpdate currentItem={currentItem} onSubmit={onUpdateClick} />

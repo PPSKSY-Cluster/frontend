@@ -1,15 +1,20 @@
 import Popup from "components/popup/Popup";
 import React, { Dispatch, FC, SetStateAction } from "react";
 import { ICluster } from "types/Cluster";
-import ClusterForm from "./ClusterForm";
+import { IReservation } from "types/Reservation";
+import ClusterForm from "./ReservationForm";
 
 interface ClusterUpdateProps {
-  currentItem: ICluster;
-  onSubmit: (updatedItem: ICluster) => {};
+  currentItem: IReservation;
+  onSubmit: (updatedItem: IReservation) => {};
 }
 const ClusterUpdate: FC<ClusterUpdateProps> = ({ currentItem, onSubmit }) => {
   return (
-    <Popup id={"clusterUpdate"} title={"Cluster verändern"} size="modal-xl">
+    <Popup
+      id={"clusterUpdate"}
+      title={"Reservierung verändern"}
+      size="modal-xl"
+    >
       <ClusterForm
         title={""}
         currentItem={currentItem}

@@ -1,80 +1,59 @@
-import { FC, useRef, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import { ICluster } from "../../types/Cluster";
 import { IReservation } from "../../types/Reservation";
-import { axios } from "../auth/API";
-import config from "config.json";
 import ReservationAPI from "api/reservation";
 
 interface Props {
   cluster: ICluster;
 }
 
-const SingleCluster: FC<Props> = ({ cluster }) => {
+const ClusterReservation: FC<Props> = ({ cluster }) => {
   const [showAllReservations, setShowAllReservations] = useState(false);
   const nodes = useRef(null);
   const from = useRef(null);
   const to = useRef(null);
 
-  const sendReservationApiRequest = () => {};
+  const [ClusterReservations, setClusterReservations] = useState(null);
+  const [clusterId, setClusterId] = useState(cluster._id);
 
-  async function getCluster() {
-    try {
-      const response = await ReservationAPI.getAll();
-      console.log(response.data);
-    } catch (error) {
-      console.log(error);
+  useEffect(() => {
+    async function getReservationsOfCluster() {
+      try {
+        console.log(cluster._id);
+        const response = await ReservationAPI.getAllByClusterId(cluster._id);
+        if (response.data.length > 0) setClusterReservations(response.data);
+      } catch (error) {
+        console.log(error);
+      }
     }
-  }
+    getReservationsOfCluster();
+  }, []);
 
-  async function createCluster(reservation: IReservation) {
+  async function APIcreateReservation(reservation: IReservation) {
     try {
       const response = await ReservationAPI.create(reservation);
-      console.log(response.data);
+      alert("Erfolgreich reserviert");
     } catch (error) {
       console.log(error);
     }
   }
+
   const createReservation = (e) => {
     e.preventDefault();
 
-    // TODO?- do i need to fetch the user id first?
-
-    /*axios
-      .get("http://localhost:8080/api/user")
-      .then()
-      .catch((err) => console.log(err));
-  */
-
     const newReservation: IReservation = {
-      clusterId: cluster._id,
-      userId: localStorage.getItem("userId"),
+      clusterID: cluster._id,
+      userID: localStorage.getItem("userId"),
       nodes: parseInt(nodes.current.value),
       startTime: Math.floor(new Date(from.current.value).getTime() / 1000),
       endTime: Math.floor(new Date(to.current.value).getTime() / 1000),
     };
 
-    console.log(newReservation);
-
-    createCluster(newReservation);
-    /*axios
-      .post(`${config.BASE_URL}/reservations`, data)
-      .then(() => alert("success"))
-      .catch((err) => console.log(err));
-*/
+    APIcreateReservation(newReservation);
   };
 
-  /*
-    "_id": "62c0496dd81c6ccc8531d1f1",
-    "clusterID": "000000000000000000000000",
-    "userID": "000000000000000000000000",
-    "nodes": 0,
-    "startTime": 0,
-    "endTime": 0,
-    "isExpired": false
-
-*/
   const nodesOptions = [];
-  for (let i = 1; i < cluster.nodes; i++) {
+  for (let i = 1; i <= cluster.nodes; i++) {
     nodesOptions.push(<option>{i}</option>);
   }
 
@@ -92,10 +71,6 @@ const SingleCluster: FC<Props> = ({ cluster }) => {
       <div>
         <form onSubmit={createReservation}>
           <label className="form-label">Anzahl der Nodes:</label>
-          {/*
-        TODO only show the maximum availbe number
-        onyl
-        */}
           <div className="form-group mb-2">
             <select
               className="form-control"
@@ -129,7 +104,9 @@ const SingleCluster: FC<Props> = ({ cluster }) => {
           </div>
           <div className="form-group mb-2"></div>
           <div className="d-grid gap-2 d-lg-flex justify-content-lg-end">
-            <button className="btn btn-primary">Reservieren</button>
+            <button className="btn btn-primary" data-bs-dismiss="modal">
+              Reservieren
+            </button>
           </div>
         </form>
       </div>
@@ -147,11 +124,21 @@ const SingleCluster: FC<Props> = ({ cluster }) => {
         </button>
       </div>
       <div>
-        <h5>Reservation 1</h5>
-        <p>5 Nodes, vom 1.8.2022 bis 1.9.2022</p>
-        <hr />
-        <h5>Reservation 2</h5>
-        <p>3 Nodes, vom 10.7.2022 bis 1.8.2022</p>
+        {ClusterReservations?.map((reservationItem: IReservation, index) => {
+          const fromDate = new Date(reservationItem.startTime * 1000);
+          const toDate = new Date(reservationItem.endTime * 1000);
+          return (
+            <div key={index.toString()}>
+              <p>
+                {" "}
+                {reservationItem.nodes} Nodes, vom{" "}
+                {fromDate.toLocaleDateString()} bis{" "}
+                {toDate.toLocaleDateString()}
+              </p>
+              <hr />
+            </div>
+          );
+        })}
       </div>
     </>
   );
@@ -159,4 +146,4 @@ const SingleCluster: FC<Props> = ({ cluster }) => {
   return showAllReservations ? allReservations : createReservationForm;
 };
 
-export default SingleCluster;
+export default ClusterReservation;
