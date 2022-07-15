@@ -32,7 +32,7 @@ const ClusterTable = () => {
     operatingSystem: "",
     type: 0,
   };
-  
+
   const [cluster, setCluster] = useState(clusterB);
   const [currentItem, setCurrentItem] = useState<ICluster>(initCluster);
 
@@ -118,10 +118,7 @@ const ClusterTable = () => {
         title={"Cluster Löschen"}
         text={`Möchten Sie ${currentItem?.name} wirklich löschen?`}
       />
-      <ClusterUpdate
-        currentItem={currentItem}
-        onSubmit={onUpdateClick}
-      />
+      <ClusterUpdate currentItem={currentItem} onSubmit={onUpdateClick} />
       <ClusterReserve
         currentItem={currentItem}
         setCurrentItem={setCurrentItem}
