@@ -1,5 +1,4 @@
 import { FC, useRef, useState } from "react";
-import { currentUser } from "../../types/User"
 import axios, { AxiosResponse } from "axios";
 
 interface Props {
@@ -24,10 +23,10 @@ const SignIn: FC<Props> = ({ saveJWTAndSignIn, showSignUp }) => {
       .post("http://localhost:8080/api/login", data)
       .then((res) => {
         saveJWTAndSignIn(res);
-        setWrongUser(true);
       })
       .catch((err) => {
         console.log(err);
+        setWrongUser(true)
       });
       
 

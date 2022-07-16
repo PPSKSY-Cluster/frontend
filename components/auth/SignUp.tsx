@@ -1,6 +1,6 @@
 import { FC, useRef } from "react";
-import { currentUser } from "../../types/User"
 import axios, { AxiosResponse } from "axios";
+import { userInfo } from "os";
 
 interface Props {
   saveJWTAndSignIn: (res: AxiosResponse<any, any>) => void;
@@ -36,6 +36,7 @@ const SignUp: FC<Props> = ({ saveJWTAndSignIn, showSignIn }) => {
       username: nameEl.current.value,
       password: passwordEl.current.value,
       email: mailEl.current.value,
+      type: "0"
     };
 
     axios

@@ -15,26 +15,24 @@ const Auth: FC = () => {
   };
 
   const saveJWTAndSignIn = (res: AxiosResponse<any, any>) => {
-    const jwtToken = res.data.token;
-    saveUserCredentials(res.data.user);
-    localStorage.setItem("jwt", jwtToken);
-    setDefaultHeader("Authorization", `Bearer ${jwtToken}`);
+    const {token, user} = res.data;
+    localStorage.setItem("jwt", token);
+    localStorage.setItem("username", user.username);
+    localStorage.setItem("userId", user._id);
+    setDefaultHeader("Authorization", `Bearer ${token}`);
     Router.push("/cluster");
+    //getOtherCreds();
+    if(user.username == "superadmin"){
+      localStorage.setItem("userType", "2")
+    }
   };
-
-  const saveUserCredentials = (user) => {
-      localStorage.setItem("username", user.username);
-      localStorage.setItem("id", user._id);
-      localStorage.setItem("email", user.email);
-      getOtherCreds();
-  }
 
   const getOtherCreds = async () =>{
       try {
-        const response = await UserAPI.getById(localStorage.getItem("id"));
+        const response = await UserAPI.getById(localStorage.getItem("userId"));
         response.status === 200
-          ? (localStorage.setItem("email", response.data.email),
-            localStorage.setItem("type", response.data.type),
+          ? (localStorage.setItem("userEmail", response.data.email),
+            localStorage.setItem("userType", response.data.type),
             console.log(response.data.type))
           : alert("Uups! Something went wrong!");
       } catch (error) {

@@ -31,7 +31,7 @@ interface NavbarProps {
 const Navbar: FC<NavbarProps> = ({ mobileMenu }) => {
   const [currentUser, setCurrentUser] = useState<IUser>();
   const abmelden = () => {
-    localStorage.setItem("jwt", "");
+    localStorage.clear();
     Router.push("/");
   };
 
@@ -79,7 +79,9 @@ const Navbar: FC<NavbarProps> = ({ mobileMenu }) => {
                 );
               })}
             </div>
-            <text style={{marginRight:"25px", marginTop:"20px", color:"grey"}}>Signed in as: <text style={{color:"blue"}}> {localStorage.getItem("username")} </text>({getType()})</text>
+            <div className="text-primary" style={{ marginRight: "25px" }}>
+              {localStorage.getItem("username")}
+            </div>
             <button
               className="btn btn-sm btn-outline-grey"
               type="button"

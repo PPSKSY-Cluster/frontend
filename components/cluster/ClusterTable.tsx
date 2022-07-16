@@ -13,7 +13,7 @@ const ClusterTable = () => {
       name: "Cluster 1",
       description: "RAM",
       nodes: 2,
-      operatingSystem: 1,
+      operatingSystem: "",
       type: 2,
     },
     {
@@ -21,7 +21,7 @@ const ClusterTable = () => {
       name: "Cluster 2",
       description: "CPU",
       nodes: 3,
-      operatingSystem: 2,
+      operatingSystem: "",
       type: 1,
     },
   ];
@@ -29,7 +29,7 @@ const ClusterTable = () => {
     name: "",
     description: "",
     nodes: 1,
-    operatingSystem: 0,
+    operatingSystem: "",
     type: 0,
   };
   
@@ -85,17 +85,62 @@ const ClusterTable = () => {
       console.log(error);
     }
   };
-  return (
-    <>
+  
+  if(localStorage.getItem("userType") == "2" || localStorage.getItem("userType") == "1"){//Admin
+    return (
+      <>
+        <table className="table table-hover m-3">
+          <thead>
+            <tr>
+              <th className="text-center col-md-1">Nr</th>
+              <th className="text-center col-md-2">Name</th>
+              <th className="text-center col-md-6">Beschreibung</th>
+              <th className="text-center col-md-1">Reservieren</th>
+              <th className="text-center col-md-1">Bearbeiten</th>
+              <th className="text-center col-md-1">Löschen</th>
+            </tr>
+          </thead>
+          <tbody>
+            {cluster?.map((clusterItem, index) => {
+              return (
+                <ClusterItem
+                  key={clusterItem._id}
+                  clusterItem={clusterItem}
+                  count={++index}
+                  setCurrentItem={setCurrentItem}
+                ></ClusterItem>
+              );
+            })}
+          </tbody>
+        </table>
+
+        <ConfirmDialog
+          id={"clusterDeletion"}
+          accept={{ caption: "Löschen", onClick: onDeleteClick }}
+          title={"Cluster Löschen"}
+          text={`Möchten Sie ${currentItem?.name} wirklich löschen?`}
+        />
+        <ClusterUpdate
+          currentItem={currentItem}
+          onSubmit={onUpdateClick}
+        />
+        <ClusterReserve
+          currentItem={currentItem}
+          setCurrentItem={setCurrentItem}
+          onSubmit={onReserveClick}
+        />
+      </>
+    );
+  }else{//User
+    return(
+      <>
       <table className="table table-hover m-3">
         <thead>
           <tr>
             <th className="text-center col-md-1">Nr</th>
-            <th className="text-center col-md-2">Name</th>
+            <th className="text-center col-md-3">Name</th>
             <th className="text-center col-md-6">Beschreibung</th>
-            <th className="text-center col-md-1">Reservieren</th>
-            <th className="text-center col-md-1">Bearbeiten</th>
-            <th className="text-center col-md-1">Löschen</th>
+            <th className="text-center col-md-2">Reservieren</th>
           </tr>
         </thead>
         <tbody>
@@ -111,23 +156,13 @@ const ClusterTable = () => {
           })}
         </tbody>
       </table>
-
-      <ConfirmDialog
-        id={"clusterDeletion"}
-        accept={{ caption: "Löschen", onClick: onDeleteClick }}
-        title={"Cluster Löschen"}
-        text={`Möchten Sie ${currentItem?.name} wirklich löschen?`}
-      />
-      <ClusterUpdate
-        currentItem={currentItem}
-        onSubmit={onUpdateClick}
-      />
       <ClusterReserve
-        currentItem={currentItem}
-        setCurrentItem={setCurrentItem}
-        onSubmit={onReserveClick}
-      />
+          currentItem={currentItem}
+          setCurrentItem={setCurrentItem}
+          onSubmit={onReserveClick}
+        />
     </>
-  );
-};
+    );
+  };
+}
 export default ClusterTable;

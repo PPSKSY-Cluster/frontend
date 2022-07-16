@@ -35,19 +35,20 @@ import UserUpdate from "./UserUpdate";
     const onDeleteClick = async () => {
       try {
         const response = await UserAPI.delete(currentItem._id);
-        response.status === 200
+        /*response.status !== 200
           ? alert("User successfully deleted!")
-          : alert("Uups! Something went wrong!");
+          : alert("Uups! Something went wrong!");*/
       } catch (error) {
         console.log(error);
       }
-      setAllUsers(allUsers.filter(el => el._id!= currentItem._id))
+      setAllUsers(allUsers.filter(el => el._id != currentItem._id))
       setUsersList(allUsers);
+      setUsers(users)
     };
     const onUpdateClick = async () => {
       try {
         const response = await UserAPI.update(currentItem);
-        response.status === 200
+        response.status !== 200
           ? alert("User successfully updated!")
           : alert("Uups! Something went wrong!");
       } catch (error) {
@@ -80,9 +81,65 @@ import UserUpdate from "./UserUpdate";
         onSearchClick(inputname);
       }
     }
+    
+    const renderTable = () => {
+      if(localStorage.getItem("userType") == "2"){
+        return(
+          <table className="table table-hover m-3" style={{lineHeight:2}}>
+          <thead>
+            <tr>
+              <th className="text-center col-md-1">Nr</th>
+              <th className="text-center col-md-4">Name</th>
+              <th className="text-center col-md-4">Rolle</th>
+              <th className="text-center col-md-1">Reservierungen</th>
+              <th className="text-center col-md-1">Bearbeiten</th>
+              <th className="text-center col-md-1">Löschen</th>
+            </tr>
+          </thead>
+          <tbody>
+            {users?.map((userItem, index) => {
+              if((listPage-1)*10<=index && index<(listPage)*10){
+              return (
+                <UserItem
+                  key={userItem._id}
+                  userItem={userItem}
+                  count={++index}
+                  setCurrentItem={setCurrentItem}
+                ></UserItem>
+              );}
+            })}
+          </tbody>
+        </table>)
+      }else{
+        return(
+          <table className="table table-hover m-3" style={{lineHeight:2}}>
+          <thead>
+            <tr>
+              <th className="text-center col-md-1">Nr</th>
+              <th className="text-center col-md-6">Name</th>
+              <th className="text-center col-md-5">Rolle</th>
+            </tr>
+          </thead>
+          <tbody>
+            {users?.map((userItem, index) => {
+              if((listPage-1)*10<=index && index<(listPage)*10){
+              return (
+                <UserItem
+                  key={userItem._id}
+                  userItem={userItem}
+                  count={++index}
+                  setCurrentItem={setCurrentItem}
+                ></UserItem>
+              );}
+            })}
+          </tbody>
+        </table>
+        )
+      }
+    }
 
     return (
-      <> 
+      <>
         <div className="form-control" style={{border: "none"}}>
           <div className="input-group" pb-value="2">
             <div className="form-outline">
@@ -91,40 +148,14 @@ import UserUpdate from "./UserUpdate";
                 type="search" className="form-control" autoComplete="off" onKeyDown={handleKeyDown} style={{outlineColor:"red"}}/>
               </form>
             </div>
-            <a type="button" className="btn btn-primary " onClick={() => onSearchClick(inputname)}>
-              <i
-                className="bi bi-search"
-                vertical-align="middle"
-              />
-            </a>
-          </div>
-        <div className="col-md-12">
-          <table className="table table-hover m-3" style={{lineHeight:2}}>
-            <thead>
-              <tr>
-                <th>Nr</th>
-                <th className="text-center">Name</th>
-                <th className="text-center">Rolle</th>
-                <th className="text-center">Reservierungen</th>
-                <th className="text-center">Bearbeiten</th>
-                <th className="text-center">Löschen</th>
-              </tr>
-            </thead>
-            <tbody>
-              {users?.map((userItem, index) => {
-                if((listPage-1)*10<=index && index<(listPage)*10){
-                return (
-                  <UserItem
-                    key={userItem._id}
-                    userItem={userItem}
-                    count={++index}
-                    setCurrentItem={setCurrentItem}
-                  ></UserItem>
-                );}
-              })}
-            </tbody>
-          </table>
+              <a type="button" className="btn btn-primary " onClick={() => onSearchClick(inputname)}>
+                <i
+                  className="bi bi-search"
+                  vertical-align="middle"
+                />
+              </a>
         </div>
+        {renderTable()}
         {listPage != 1 ?
         <button className="btn-primary border-dark rounded" onClick={() => setListPage(listPage-1)}>
             <i className="bi bi-arrow-left"></i>
@@ -133,7 +164,7 @@ import UserUpdate from "./UserUpdate";
           <i className="bi bi-arrow-left"></i>
         </button>} 
         <text style={{"marginLeft":"5px", "marginRight":"5px"}}>{listPage}</text>
-        {listPage < (users.length)/12 ?
+        {listPage < (users.length)/10 ?
         <button className="btn-primary border-dark rounded" onClick={() => setListPage(listPage+1)}>
           <i className="bi bi-arrow-right"></i>
         </button>
@@ -145,7 +176,7 @@ import UserUpdate from "./UserUpdate";
           id={"userDeletion"}
           accept={{ caption: "Löschen", onClick: onDeleteClick }}
           title={"User Löschen"}
-          text={`Möchten Sie ${currentItem?.username} wirklich löschen?`}
+          text={`Möchten Sie ${localStorage.getItem("username")} wirklich löschen?`}
         />
         <UserUpdate
           currentItem={currentItem}
