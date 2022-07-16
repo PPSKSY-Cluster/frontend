@@ -14,7 +14,10 @@ const Auth: FC = () => {
 
   const saveJWTAndSignIn = (res: AxiosResponse<any, any>) => {
     const jwtToken = res.data.token;
+    const userId = res.data.user._id;
+
     localStorage.setItem("jwt", jwtToken);
+    localStorage.setItem("userId", userId);
     setDefaultHeader("Authorization", `Bearer ${jwtToken}`);
     openCluster();
   };

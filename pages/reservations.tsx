@@ -1,11 +1,13 @@
 import { useState } from "react";
 import Main from "components/main/Main";
 import Sidebar from "components/sidebar/Sidebar";
-import ReservationTable from "components/reservations/ReservationsTable";
+import ReservationOwnTable from "components/reservations/ReservationsOwnTable";
+import ReservationAllTable from "components/reservations/ReservationsAllTable";
 import { IMobileMenu, PageType } from "types/MobileMenu";
 
 const pages: PageType[] = [
-  { caption: "Reservierungen", action: "showTable" },
+  { caption: "Eigene Reservierungen", action: "showOwnTable" },
+  { caption: "Alle Reservierungen", action: "showAllTable" },
   // { caption: "Neues Cluster erstellen", action: "showCreation" },
 ];
 
@@ -26,7 +28,8 @@ const Cluster = () => {
             onClickHandler={setSubPage}
           />
         </div>
-        {subPage.action === "showTable" && <ReservationTable />}
+        {subPage.action === "showOwnTable" && <ReservationOwnTable />}
+        {subPage.action === "showAllTable" && <ReservationAllTable />}
       </div>
     </Main>
   );

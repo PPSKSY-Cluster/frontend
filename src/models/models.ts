@@ -1,9 +1,9 @@
 import { Models } from "@rematch/core";
-import { jwt } from "./jwt";
+import { notifications } from "./notifications";
 export interface RootModel extends Models<RootModel> {
-  jwt: typeof jwt;
+  notifications: typeof notifications;
 }
 
 export const models: RootModel = {
-  jwt,
+  notifications,
 };
