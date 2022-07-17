@@ -64,11 +64,9 @@ const ClusterTable = () => {
         ? setReservations(
             reservations.filter((el) => el._id != currentItem._id)
           )
-        : alert("Uups! Something went wrong!");
-    } catch (error) {
-      console.log(error);
-      dispatch.notifications.setError("");
-    }
+        : dispatch.notifications.error("");
+      response.status === 204 ? dispatch.notifications.success("") : null;
+    } catch (error) {}
   };
 
   const onUpdateClick = async (updatedItem: IReservation) => {
@@ -81,7 +79,7 @@ const ClusterTable = () => {
         setReservations(newCluster);
         dispatch.notifications.success("");
       } else {
-        dispatch.notifications.setError("");
+        dispatch.notifications.error("");
       }
     } catch (error) {}
   };

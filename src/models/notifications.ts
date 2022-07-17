@@ -13,5 +13,9 @@ export const notifications = createModel<RootModel>()({
       dispatch.notifications.setSuccess(payload);
       setTimeout(() => dispatch.notifications.setReset(), 2000);
     },
+    error: (payload: string, rootState) => {
+      dispatch.notifications.setError(payload);
+      setTimeout(() => dispatch.notifications.setReset(), 2000);
+    },
   }),
 });

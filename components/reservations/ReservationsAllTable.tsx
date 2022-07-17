@@ -5,6 +5,9 @@ import ReservationItem from "./ReservationItem";
 import ClusterUpdate from "./ReservationUpdate";
 import { IReservation } from "../../types/Reservation";
 
+import { useDispatch } from "react-redux";
+import { Dispatch } from "src/store";
+
 const ClusterTable = () => {
   const clusterB: IReservation[] = [
     /*
@@ -34,6 +37,8 @@ const ClusterTable = () => {
     nodes: 3,
   };
 
+  const dispatch = useDispatch<Dispatch>();
+
   const [reservations, setReservations] = useState(clusterB);
   const [currentItem, setCurrentItem] = useState<IReservation>(initCluster);
 
@@ -57,8 +62,9 @@ const ClusterTable = () => {
             reservations.filter((el) => el._id != currentItem._id)
           )
         : alert("Uups! Something went wrong!");
+      response.status === 204 ? dispatch.notifications.success("") : null;
     } catch (error) {
-      console.log(error);
+      dispatch.notifications.error("");
     }
   };
 
@@ -70,12 +76,11 @@ const ClusterTable = () => {
           return el._id === updatedItem._id ? updatedItem : el;
         });
         setReservations(newCluster);
+        dispatch.notifications.success("");
       } else {
-        alert("Uups! Something went wrong!");
+        dispatch.notifications.error("");
       }
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   return (

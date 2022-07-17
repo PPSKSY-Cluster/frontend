@@ -1,6 +1,9 @@
 import { FC, useRef } from "react";
 import axios, { AxiosResponse } from "axios";
 
+import { useDispatch } from "react-redux";
+import { Dispatch } from "src/store";
+
 interface Props {
   saveJWTAndSignIn: (res: AxiosResponse<any, any>) => void;
   showSignIn: () => void;
@@ -12,18 +15,21 @@ interface User {
 }
 
 const SignUp: FC<Props> = ({ saveJWTAndSignIn, showSignIn }) => {
+  const dispatch = useDispatch<Dispatch>();
+
   const mailEl = useRef(null);
   const nameEl = useRef(null);
   const passwordEl = useRef(null);
 
   const followUpSignIn = () => {
+    dispatch.notifications.success("");
     axios
       .post("http://localhost:8080/api/login", {
         username: nameEl.current.value,
         password: passwordEl.current.value,
       })
       .then((res) => saveJWTAndSignIn(res))
-      .catch((err) => console.log(err));
+      .catch((err) => dispatch.notifications.error(""));
   };
 
   const signUp = (e) => {
@@ -38,7 +44,7 @@ const SignUp: FC<Props> = ({ saveJWTAndSignIn, showSignIn }) => {
     axios
       .post("http://localhost:8080/api/users", newUserData)
       .then((res) => followUpSignIn())
-      .catch((err) => console.log(err));
+      .catch((err) => dispatch.notifications.error(""));
   };
 
   return (

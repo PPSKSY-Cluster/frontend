@@ -5,8 +5,13 @@ import { AxiosResponse } from "axios";
 import { setDefaultHeader } from "./API";
 import { openCluster } from "jobs/afterSignIn";
 
+import { useDispatch } from "react-redux";
+import { Dispatch } from "src/store";
+
 const Auth: FC = () => {
   const [showSignIn, setShowSignIn] = useState(true);
+
+  const dispatch = useDispatch<Dispatch>();
 
   const changeSignType = () => {
     setShowSignIn(!showSignIn);
@@ -18,6 +23,7 @@ const Auth: FC = () => {
 
     localStorage.setItem("jwt", jwtToken);
     localStorage.setItem("userId", userId);
+    dispatch.notifications.success("");
     setDefaultHeader("Authorization", `Bearer ${jwtToken}`);
     openCluster();
   };
