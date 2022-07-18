@@ -1,12 +1,17 @@
 import { FC, useRef, useState } from "react";
 import axios, { AxiosResponse } from "axios";
 
+import { useDispatch } from "react-redux";
+import { Dispatch } from "src/store";
+
 interface Props {
   saveJWTAndSignIn: (res: AxiosResponse<any, any>) => void;
   showSignUp: () => void;
 }
 
 const SignIn: FC<Props> = ({ saveJWTAndSignIn, showSignUp }) => {
+  const dispatch = useDispatch<Dispatch>();
+
   const nameEl = useRef(null);
   const passwordEl = useRef(null);
 
@@ -21,7 +26,7 @@ const SignIn: FC<Props> = ({ saveJWTAndSignIn, showSignUp }) => {
     axios
       .post("http://localhost:8080/api/login", data)
       .then((res) => saveJWTAndSignIn(res))
-      .catch((err) => console.log(err));
+      .catch((err) => dispatch.notifications.error(""));
   };
 
   return (
