@@ -1,20 +1,15 @@
-import { FC, useState, useEffect } from "react";
+import { FC, useState } from "react";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
 import { AxiosResponse } from "axios";
 
-
 import { setDefaultHeader } from "../../api/API";
 import { openCluster } from "../../jobs/afterSignIn";
 
-import { useDispatch } from "react-redux";
-import { Dispatch } from "src/store";
 import UserAPI from "api/user";
 
 const Auth: FC = () => {
   const [showSignIn, setShowSignIn] = useState(true);
-
-  const dispatch = useDispatch<Dispatch>();
 
   const changeSignType = () => {
     setShowSignIn(!showSignIn);
@@ -31,7 +26,6 @@ const Auth: FC = () => {
       localStorage.setItem("userType", "2")
     }
     openCluster();
-
   }
   const getOtherCreds = async () =>{
       try {
