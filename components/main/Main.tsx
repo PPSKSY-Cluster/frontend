@@ -1,4 +1,4 @@
-import { setDefaultHeader } from "components/auth/API";
+import { checkToken, setDefaultHeader } from "api/API";
 import Head from "next/head";
 import Router from "next/router";
 import React, { FC, useEffect, useState } from "react";
@@ -16,7 +16,8 @@ const Main: FC<MainProps> = ({ children, mobileMenu }) => {
 
   useEffect(() => {
     const jwtToken = localStorage.getItem("jwt");
-    if (jwtToken === "") {
+    if (!jwtToken || jwtToken === "" || !checkToken(jwtToken)) {
+      localStorage.setItem("jwt", "");
       Router.push("/");
     } else {
       setAuthenticated(true);
