@@ -6,13 +6,8 @@ import { IMobileMenu, PageType } from "types/MobileMenu";
 import OptionsForm from "components/options/OptionsForm";
 
 const pages: PageType[] = [
-<<<<<<< HEAD
   { caption: "Daten ändern", action: "changeCredentials" },
   { caption: "Account löschen", action: "showTable" },
-=======
-  { caption: "Account", action: "showTable" },
-  { caption: "Daten ändern", action: "changeCredentials" },
->>>>>>> 5267101552e887da215e230a86ffcb8992e0a3a6
 ];
 
 const Option = () => {
