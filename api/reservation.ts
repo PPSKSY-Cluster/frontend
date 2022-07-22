@@ -1,4 +1,4 @@
-import { axios } from "../components/auth/API";
+import { axios } from "./API";
 import { IReservation } from "types/Reservation";
 import config from "config.json";
 
