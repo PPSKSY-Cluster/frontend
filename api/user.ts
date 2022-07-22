@@ -6,7 +6,7 @@ const UserAPI = {
   create: (user: IUser) => {
     return axios.post(`${config.BASE_URL}/users`, user);
   },
-  getById: (_id: number) => {
+  getById: (_id: string) => {
     return axios.get(`${config.BASE_URL}/users/${_id}`);
   },
   getAll: () => {

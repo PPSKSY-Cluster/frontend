@@ -17,6 +17,7 @@ const BarItem: FC<BarItemProps> = ({
         onClickHandler(element);
       }}
       {...otherProps}
+      style={{cursor:"pointer"}}
     >
       {element.caption}
     </li>

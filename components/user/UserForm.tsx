@@ -1,3 +1,4 @@
+import { resolvePtr } from "dns/promises";
 import React, { Dispatch, FC, FormEvent, SetStateAction, useRef } from "react";
 import { IUser } from "types/User";
 interface UserFormProps {
@@ -19,6 +20,18 @@ const UserForm: FC<UserFormProps> = ({
     e.preventDefault();
     action.onSubmit();
   };
+
+  const handleTypeChange = (event) => {
+    let role = 0;
+    if(event.target.value == "1"){
+      role = 1;
+    }
+    setCurrentItem({
+      ...currentItem,
+      type: role,
+    })
+  }
+
   return (
     <div className="container-fluid p-4">
       <h2 className="mb-3">{title}</h2>
@@ -38,6 +51,13 @@ const UserForm: FC<UserFormProps> = ({
             autoFocus
             required
           />
+        </div>
+        <div className="form-group mb-2">
+          <label htmlFor="exampleInputEmail1">Rolle</label>
+          <select className="form-select" aria-label="Default select example" onChange={handleTypeChange}>
+            <option value="0">User</option>
+            <option value="1">Admin</option>
+          </select>
         </div>
         <div className="d-grid gap-2 d-lg-flex justify-content-lg-end">
           <button type="submit" className="btn btn-primary float-right">

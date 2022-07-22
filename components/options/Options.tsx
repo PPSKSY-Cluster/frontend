@@ -1,99 +1,43 @@
-import { FC, useState, useRef} from "react";
+import { FC } from "react";
 import React from "react";
-import { IUser } from "../../types/User";
 import ConfirmDialog from "components/dialog/ConfirmDialog";
 import UserAPI from "api/user";
+import Router from "next/router";
 
-  interface Props {}
-
-  const Options: FC<Props> = ({}) => {
-    const nameRef = useRef<HTMLInputElement>();
-    const pwRef = useRef<HTMLInputElement>();
-    const email = "foo@mail.de"
-    const [users, setUsers] = useState({username:"foo", password:"12345"});
-    const [currentItem, setCurrentItem] = useState<IUser>({
-        username: "foo",
-        _id:'0',
-      });
-
-    const onDeleteClick = async () => {
-        try {
-          const response = await UserAPI.delete(currentItem._id);
-          response.status === 204
-            ? alert("User successfully deleted!")
-            : alert("Uups! Something went wrong!");
-        } catch (error) {
-          console.log(error);
-        }
-      };
-  
-    return (
-        <>
-            <div className="d-flex flex-row">
-                <div>
-                    <h1></h1>
-                    <p>
-                        <button className="btn btn-lg btn-primary"  type="button" data-bs-toggle="collapse" data-bs-target="#edit" aria-expanded="false" aria-controls="edit">
-                            Daten ändern
-                        </button>
-                    </p>
-                    <div className="collapse" id="edit">
-                        <div className="card card-body" margin-left="0 auto">
-                            <label>Name { }</label>
-                            <input
-                                type="text"
-                                className="form-control"
-                                defaultValue={users.username}
-                                ref={nameRef}>
-                            </input>
-                            <div>Email { }</div>
-                            <input
-                                defaultValue={email}
-                            ></input>
-                            <div>Passwort { }</div>
-                            <input
-                                type="password"
-                                className="form-control"
-                                placeholder={"*".repeat(users.password.length)}
-                                ref={pwRef}
-                            ></input>
-                            <div>Rolle { }</div>
-                            <select defaultValue={"User"}>
-                                <option>Admin</option>
-                                <option>User</option>
-                            </select>
-                            <div className="btn-group">
-                                <button className="btn btn-lg btn-success" type="submit">Änderungen speichern</button>
-                            </div>
-                        </div>
-                    </div>
-                    <p>
-                        <button className="btn btn-lg btn-primary"  type="button" data-bs-toggle="collapse" data-bs-target="#delete" aria-expanded="false" aria-controls="delete">
-                            Account löschen
-                        </button>
-                    </p>
-                    <div className="collapse" id="delete">
-                        <div className="card card-body" margin-left="0 auto">
-                            <div>Passwort: { }
-                            </div>
-                            <input
-                                placeholder="Bitte Passwort eingeben"
-                            ></input>
-                            <div className="btn-group">
-                                <p className="btn btn-lg btn-success" onClick={() => setCurrentItem(currentItem)}>
-                                Account löschen</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <ConfirmDialog
-                id={"userDeletion"}
-                accept={{ caption: "Löschen", onClick: onDeleteClick }}
-                title={"User Löschen"}
-                text={`Möchten Sie diesen Account wirklich löschen?`}
-            />
-        </>
-    );
+const Options: FC = () => {
+  const onDeleteClick = async () => {
+    try {
+      const response = await UserAPI.delete(localStorage.getItem("userId"));
+      response.status !== 200
+        ? alert("User successfully deleted!")
+        : alert("Uups! Something went wrong!");
+    } catch (error) {
+      console.log(error);
+    }
+    //logout
+    localStorage.clear();
+    Router.push("/");
   };
+
+  return (
+    <>
+      <div className="container-fluid p-4">
+        <h2 className="mb-3"> {localStorage.getItem("username")}</h2>
+        <a
+          className="btn btn-primary mt-3"
+          data-bs-toggle="modal"
+          data-bs-target="#userDeletion"
+        >
+          Account löschen
+        </a>
+      </div>
+      <ConfirmDialog
+        id={"userDeletion"}
+        accept={{ caption: "Löschen", onClick: onDeleteClick }}
+        title={"User Löschen"}
+        text={"Möchten Sie diesen Account wirklich löschen?"}
+      />
+    </>
+  );
+};
 export default Options;
