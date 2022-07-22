@@ -20,6 +20,10 @@ const Auth: FC = () => {
     localStorage.setItem("jwt", token);
     localStorage.setItem("username", user.username);
     localStorage.setItem("userId", user._id);
+<<<<<<< HEAD
+=======
+    localStorage.setItem("userPw", user.password);
+>>>>>>> 5267101552e887da215e230a86ffcb8992e0a3a6
     setDefaultHeader("Authorization", `Bearer ${token}`);
     //getOtherCreds();
     if(user.username == "superadmin"){
