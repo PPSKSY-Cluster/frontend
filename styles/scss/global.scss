@@ -1,23 +1,21 @@
 $theme-colors: (
-  'primary': #c50e1f,
-  'secondary': #833bec,
-  'success': #1ce1ac,
-  'info': #ff7d50,
-  'warning': #ffbe0b,
-  'danger': #ff007f,
-  'light': #c0ccda,
-  'dark': #001738,
-  'grey':#333333,
-  'white': white
+  "primary": #c50e1f,
+  "secondary": #833bec,
+  "success": #1ce1ac,
+  "info": #ff7d50,
+  "warning": #ffbe0b,
+  "danger": #ff007f,
+  "light": #c0ccda,
+  "dark": #001738,
+  "grey": #333333,
+  "white": white,
 );
 $list-group-color: #c50e1f;
 $list-group-hover-bg: #c50e1f;
 $list-group-action-hover-color: white;
 
-
-@import '/node_modules/bootstrap/scss/bootstrap.scss';
+@import "/node_modules/bootstrap/scss/bootstrap.scss";
 @import "/node_modules/bootstrap-icons/font/bootstrap-icons.scss";
-
 
 .navbar-toggler:focus,
 .navbar-toggler:active,
@@ -28,4 +26,9 @@ $list-group-action-hover-color: white;
 
 .list-group-item {
   border: none;
+}
+
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
 }
