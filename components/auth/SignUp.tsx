@@ -1,48 +1,38 @@
 import { FC, FormEvent, useRef } from "react";
-import axios, { AxiosResponse } from "axios";
-import config from "config.json";
+import { signIn, signUp } from "api/API";
 
 interface Props {
-  saveJWTAndSignIn: (res: AxiosResponse<any, any>) => void;
+  handleUserAndRefreshToken: (user: Record<string, any>, token: string) => void;
   showSignIn: () => void;
 }
 
-const SignUp: FC<Props> = ({ saveJWTAndSignIn, showSignIn }) => {
+const SignUp: FC<Props> = ({ handleUserAndRefreshToken, showSignIn }) => {
   const mailEl = useRef(null);
   const nameEl = useRef(null);
   const passwordEl = useRef(null);
 
-  const followUpSignIn = () => {
-    axios
-      .post(`${config.BASE_URL}/login`, {
-        username: nameEl.current.value,
-        password: passwordEl.current.value,
-      })
-      .then((res) => {
-        saveJWTAndSignIn(res);
-      })
-      .catch((err) => console.log(err));
-  };
-
-  const signUp = (e: FormEvent<HTMLFormElement>) => {
+  const handleSignUp = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const newUserData = {
-      username: nameEl.current.value,
-      password: passwordEl.current.value,
-      email: mailEl.current.value,
-      type: "0",
-    };
+    const username = nameEl.current.value;
+    const password = passwordEl.current.value;
+    const email = mailEl.current.value;
 
-    axios
-      .post(`${config.BASE_URL}/users`, newUserData)
-      .then(() => followUpSignIn());
+    signUp(email, username, password)
+      .then(async () => {
+        const signInResponse = await signIn(username, password);
+        if (signInResponse.status === 200) {
+          const { user, token } = signInResponse.data;
+          handleUserAndRefreshToken(user, token);
+        }
+      })
+      .catch((error) => alert(error));
   };
 
   return (
     <>
       <h2 className="mb-3">Registrieren bei Cluster Thruster</h2>
-      <form onSubmit={signUp}>
+      <form onSubmit={handleSignUp}>
         <div className="form-outline mb-4">
           <input type="email" className="form-control" ref={mailEl} required />
           <label className="form-label mt-1">Email Addresse</label>
