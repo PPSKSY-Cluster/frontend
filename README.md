@@ -24,3 +24,12 @@ Run the built app in production mode
 ```
 npm start
 ```
+
+## License
+
+[MIT](https://github.com/duxianwei520/react/blob/master/LICENSE)
+
+
+
+
+
