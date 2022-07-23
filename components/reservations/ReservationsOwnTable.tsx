@@ -1,7 +1,7 @@
 import ReservationsAPI from "api/reservation";
 import ConfirmDialog from "components/dialog/ConfirmDialog";
 import { useEffect, useState } from "react";
-import ReservationItem from "./ReservationItem";
+import ReservationItem from "./ReservationAdminItem";
 import ClusterUpdate from "./ReservationUpdate";
 import { IReservation } from "../../types/Reservation";
 

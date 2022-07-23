@@ -188,7 +188,9 @@ const UserTable = () => {
           <i className="bi bi-arrow-left"></i>
         </button>
       )}
+
       <span style={{ marginLeft: "5px", marginRight: "5px" }}>{listPage}</span>
+
       {listPage < users.length / 10 ? (
         <button
           className="btn-primary border-dark rounded"
