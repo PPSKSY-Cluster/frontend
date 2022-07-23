@@ -1,11 +1,9 @@
-import { FC, useState } from "react";
+import { FC } from "react";
 import Link from "next/link";
 import BarItem from "components/sidebar/BarItem";
 import { IMobileMenu } from "types/MobileMenu";
 import { ILinks } from "types/Links";
 import Router from "next/router";
-import UserAPI from "api/user";
-import { IUser } from "types/User";
 
 const links: ILinks[] = [
   {
@@ -28,23 +26,22 @@ const links: ILinks[] = [
     caption: "Options",
     href: "/options",
   },
+  {
+    id: "impressum",
+    caption: "Impressum",
+    href: "/impressum",
+  },
 ];
 interface NavbarProps {
   mobileMenu?: IMobileMenu;
 }
 
 const Navbar: FC<NavbarProps> = ({ mobileMenu }) => {
-  const [currentUser, setCurrentUser] = useState<IUser>();
   const abmelden = () => {
     localStorage.clear();
     Router.push("/");
   };
 
-  const getType = () =>{
-    if(!localStorage.getItem("type").includes(undefined)){
-      return localStorage.getItem("type");
-    }return "pseudoUser"
-  }
 
   return (
     <>

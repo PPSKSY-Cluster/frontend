@@ -156,8 +156,6 @@ const ClusterTable = () => {
           })}
         </tbody>
       </table>
-<<<<<<< HEAD
-=======
 
       <ConfirmDialog
         id={"clusterDeletion"}
@@ -166,7 +164,6 @@ const ClusterTable = () => {
         text={`Möchten Sie ${currentItem?.name} wirklich löschen?`}
       />
       <ClusterUpdate currentItem={currentItem} onSubmit={onUpdateClick} />
->>>>>>> main
       <ClusterReserve
           currentItem={currentItem}
           setCurrentItem={setCurrentItem}

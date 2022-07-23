@@ -3,12 +3,10 @@ import SignIn from "./SignIn";
 import SignUp from "./SignUp";
 import { AxiosResponse } from "axios";
 import { setDefaultHeader } from "./API";
-<<<<<<< HEAD
 import { IUser } from "types/User";
 import UserAPI from "api/user";
-=======
 import { openCluster } from "jobs/afterSignIn";
->>>>>>> main
+import Router from "next/router";
 
 const Auth: FC = () => {
   const [showSignIn, setShowSignIn] = useState(true);
@@ -18,27 +16,17 @@ const Auth: FC = () => {
   };
 
   const saveJWTAndSignIn = (res: AxiosResponse<any, any>) => {
-<<<<<<< HEAD
     const {token, user} = res.data;
     localStorage.setItem("jwt", token);
     localStorage.setItem("username", user.username);
     localStorage.setItem("userId", user._id);
-<<<<<<< HEAD
-=======
-    localStorage.setItem("userPw", user.password);
->>>>>>> 5267101552e887da215e230a86ffcb8992e0a3a6
     setDefaultHeader("Authorization", `Bearer ${token}`);
     Router.push("/cluster");
-    //getOtherCreds();
+    getOtherCreds();
     if(user.username == "superadmin"){
       localStorage.setItem("userType", "2")
     }
-=======
-    const jwtToken = res.data.token;
-    localStorage.setItem("jwt", jwtToken);
-    setDefaultHeader("Authorization", `Bearer ${jwtToken}`);
     openCluster();
->>>>>>> main
   };
 
   const getOtherCreds = async () =>{

@@ -59,7 +59,6 @@ import UserUpdate from "./UserUpdate";
           return el._id === currentItem._id ? currentItem : el;
         })
       );
-      localStorage.setItem("username", currentItem.username);
       setUsersList(allUsers);
     };
 
