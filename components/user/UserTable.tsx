@@ -117,12 +117,12 @@ const UserTable = () => {
       );
     } else {
       return (
-        <table className="table table-hover m-3" style={{ lineHeight: 2 }}>
+        <table className="table table-hover" style={{ lineHeight: 2 }}>
           <thead>
             <tr>
-              <th className="text-center col-md-1">Nr</th>
-              <th className="text-center col-md-6">Name</th>
-              <th className="text-center col-md-5">Rolle</th>
+              <th className="text-center col-md-3">Nr</th>
+              <th className="text-center col-md-5">Name</th>
+              <th className="text-center col-md-4">Rolle</th>
             </tr>
           </thead>
           <tbody>
@@ -188,7 +188,9 @@ const UserTable = () => {
           <i className="bi bi-arrow-left"></i>
         </button>
       )}
-      <text style={{ marginLeft: "5px", marginRight: "5px" }}>{listPage}</text>
+
+      <span style={{ marginLeft: "5px", marginRight: "5px" }}>{listPage}</span>
+
       {listPage < users.length / 10 ? (
         <button
           className="btn-primary border-dark rounded"

@@ -9,6 +9,7 @@ import { Dispatch } from "src/store";
 
 const Options: FC = () => {
   const dispatch = useDispatch<Dispatch>();
+
   const onDeleteClick = async () => {
     try {
       const response = await UserAPI.delete(localStorage.getItem("userId"));
