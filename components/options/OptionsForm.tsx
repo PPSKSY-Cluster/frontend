@@ -4,7 +4,12 @@ import Router from "next/router";
 import React, { FC, FormEvent, useEffect, useRef, useState } from "react";
 import { IUser } from "types/User";
 
+import { useDispatch } from "react-redux";
+import { Dispatch } from "src/store";
+
 const OptionsForm: FC = () => {
+  const dispatch = useDispatch<Dispatch>();
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState<string>(null);
   const pwCheckRef = useRef(null);
@@ -34,13 +39,14 @@ const OptionsForm: FC = () => {
     try {
       const response = await UserAPI.update(updatedUser);
       if (response.status !== 200) {
-        return alert(response.statusText);
+        return dispatch.notifications.success("");
       }
       localStorage.setItem("username", response.data.username);
       localStorage.setItem("userPw", response.data.password);
-      Router.push('/options')
+      Router.push("/options");
     } catch (error) {
       console.log(error);
+      dispatch.notifications.error("");
     }
   };
   return (
