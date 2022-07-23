@@ -1,16 +1,12 @@
 import { FC, FormEvent, useRef, useState } from "react";
 import { signIn } from "api/API";
 
-import { useDispatch } from "react-redux";
-import { Dispatch } from "src/store";
-
 interface Props {
   handleUserAndRefreshToken: (user: Record<string, any>, token: string) => void;
   showSignUp: () => void;
 }
 
 const SignIn: FC<Props> = ({ handleUserAndRefreshToken, showSignUp }) => {
-  const dispatch = useDispatch<Dispatch>();
   const nameEl = useRef(null);
   const passwordEl = useRef(null);
   const [wrongUser, setWrongUser] = useState(false);

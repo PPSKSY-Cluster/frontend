@@ -1,16 +1,11 @@
 import { FC, FormEvent, useRef } from "react";
 import { signIn, signUp } from "api/API";
-
-import { useDispatch } from "react-redux";
-import { Dispatch } from "src/store";
-
 interface Props {
   handleUserAndRefreshToken: (user: Record<string, any>, token: string) => void;
   showSignIn: () => void;
 }
 
 const SignUp: FC<Props> = ({ handleUserAndRefreshToken, showSignIn }) => {
-  const dispatch = useDispatch<Dispatch>();
   const mailEl = useRef(null);
   const nameEl = useRef(null);
   const passwordEl = useRef(null);
@@ -30,7 +25,7 @@ const SignUp: FC<Props> = ({ handleUserAndRefreshToken, showSignIn }) => {
           handleUserAndRefreshToken(user, token);
         }
       })
-      .catch((error) => dispatch.notifications.error(""));
+      .catch((error) => alert(error));
   };
 
   return (
