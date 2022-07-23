@@ -14,7 +14,7 @@ export const validateAccessToken = async () => {
   if (accessToken && accessToken !== "" && (await checkToken(accessToken))) {
     return accessToken;
   }
-  const newAccessToken = validateRefreshToken();
+  const newAccessToken = await validateRefreshToken();
   if (newAccessToken) {
     return newAccessToken;
   }
@@ -23,23 +23,23 @@ export const validateAccessToken = async () => {
 };
 
 export const saveAccessTokenAndSignIn = async (refreshToken: string) => {
-  const response = await axios.post(
-    `${config.BASE_URL}/refresh`,
-    {},
-    {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${refreshToken}`,
-      },
-    }
-  );
-  if (response.status === 200) {
+  try {
+    const response = await axios.post(
+      `${config.BASE_URL}/refresh`,
+      {},
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${refreshToken}`,
+        },
+      }
+    );
     const accessToken = response.data.token;
     localStorage.setItem("accessToken", accessToken);
     setDefaultHeader("Authorization", `Bearer ${accessToken}`);
     openCluster();
-  } else {
-    alert(response.statusText);
+  } catch (error) {
+    alert(error);
   }
 };
 
@@ -50,31 +50,31 @@ export const signIn = (username: string, password: string) => {
   });
 };
 
-export const signUp = (
-  email: string,
-  username: string,
-  password: string
-) => {
+export const signUp = (email: string, username: string, password: string) => {
   return axios.post(`${config.BASE_URL}/users`, {
     username,
     password,
     email,
     type: "0",
   });
-}; 
+};
 
 async function checkToken(token: string) {
-  const response = await axios.post(
-    config.BASE_URL+'/token-check',
-    {},
-    {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
-  return response.status === 200;
+  try {
+    await axios.post(
+      config.BASE_URL + "/token-check",
+      {},
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return true;
+  } catch (error) {
+    return false;
+  }
 }
 
 const validateRefreshToken = async () => {
@@ -82,21 +82,20 @@ const validateRefreshToken = async () => {
   if (!refreshToken || refreshToken === "") {
     return false;
   }
-  const response = await axios.post(
-    `${config.BASE_URL}/refresh`,
-    {},
-    {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${refreshToken}`,
-      },
-    }
-  );
-  if (response.status == 200) {
+  try {
+    const response = await axios.post(
+      `${config.BASE_URL}/refresh`,
+      {},
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${refreshToken}`,
+        },
+      }
+    );
     return response.data.token;
+  } catch (error) {
+    localStorage.setItem("refreshToken", "");
+    return false;
   }
-  localStorage.setItem("refreshToken", "");
-  return false;
 };
-
-
