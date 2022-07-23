@@ -2,6 +2,7 @@ import ReservationsAPI from "api/reservation";
 import ConfirmDialog from "components/dialog/ConfirmDialog";
 import { useEffect, useState } from "react";
 import ReservationItem from "./ReservationItem";
+import ReservationAdminItem from "./ReservationAdminItem";
 import ClusterUpdate from "./ReservationUpdate";
 import { IReservation } from "../../types/Reservation";
 
@@ -85,31 +86,58 @@ const ClusterTable = () => {
 
   return (
     <>
-      <table className="table table-hover m-3">
-        <thead>
-          <tr>
-            <th className="text-center col-md-1">Nr</th>
-            <th className="text-center col-md-3">Cluster</th>
-            <th className="text-center col-md-2">Nodes</th>
-            <th className="text-center col-md-2">Von</th>
-            <th className="text-center col-md-2">Bis</th>
-            <th className="text-center col-md-1">Bearbeiten</th>
-            <th className="text-center col-md-1">Löschen</th>
-          </tr>
-        </thead>
-        <tbody>
-          {reservations?.map((clusterItem, index) => {
-            return (
-              <ReservationItem
-                key={clusterItem._id}
-                reservationItem={clusterItem}
-                count={++index}
-                setCurrentItem={setCurrentItem}
-              ></ReservationItem>
-            );
-          })}
-        </tbody>
-      </table>
+      {localStorage.getItem("userType") == "2" ||
+      localStorage.getItem("userType") == "1" ? ( //Admin
+        <table className="table table-hover m-3">
+          <thead>
+            <tr>
+              <th className="text-center col-md-1">Nr</th>
+              <th className="text-center col-md-3">Cluster</th>
+              <th className="text-center col-md-2">Nodes</th>
+              <th className="text-center col-md-2">Von</th>
+              <th className="text-center col-md-2">Bis</th>
+              <th className="text-center col-md-1">Bearbeiten</th>
+              <th className="text-center col-md-1">Löschen</th>
+            </tr>
+          </thead>
+          <tbody>
+            {reservations?.map((clusterItem, index) => {
+              return (
+                <ReservationAdminItem
+                  key={clusterItem._id}
+                  reservationItem={clusterItem}
+                  count={++index}
+                  setCurrentItem={setCurrentItem}
+                ></ReservationAdminItem>
+              );
+            })}
+          </tbody>
+        </table>
+      ) : (
+        <table className="table table-hover m-3">
+          <thead>
+            <tr>
+              <th className="text-center col-md-1">Nr</th>
+              <th className="text-center col-md-3">Cluster</th>
+              <th className="text-center col-md-2">Nodes</th>
+              <th className="text-center col-md-2">Von</th>
+              <th className="text-center col-md-2">Bis</th>
+            </tr>
+          </thead>
+          <tbody>
+            {reservations?.map((clusterItem, index) => {
+              return (
+                <ReservationItem
+                  key={clusterItem._id}
+                  reservationItem={clusterItem}
+                  count={++index}
+                  setCurrentItem={setCurrentItem}
+                ></ReservationItem>
+              );
+            })}
+          </tbody>
+        </table>
+      )}
 
       <ConfirmDialog
         id={"clusterDeletion"}

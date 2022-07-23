@@ -4,13 +4,17 @@ import ConfirmDialog from "components/dialog/ConfirmDialog";
 import UserAPI from "api/user";
 import Router from "next/router";
 
+import { useDispatch } from "react-redux";
+import { Dispatch } from "src/store";
+
 const Options: FC = () => {
+  const dispatch = useDispatch<Dispatch>();
   const onDeleteClick = async () => {
     try {
       const response = await UserAPI.delete(localStorage.getItem("userId"));
       response.status !== 200
-        ? alert("User successfully deleted!")
-        : alert("Uups! Something went wrong!");
+        ? dispatch.notifications.success("")
+        : dispatch.notifications.error("");
     } catch (error) {
       console.log(error);
     }

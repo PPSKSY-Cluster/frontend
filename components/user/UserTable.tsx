@@ -5,7 +5,12 @@ import { IUser } from "../../types/User";
 import UserItem from "./UserItem";
 import UserUpdate from "./UserUpdate";
 
+import { useDispatch } from "react-redux";
+import { Dispatch } from "src/store";
+
 const UserTable = () => {
+  const dispatch = useDispatch<Dispatch>();
+
   const [allUsers, setAllUsers] = useState<IUser[]>([
     { _id: "1", username: "foo" },
     { _id: "2", username: "bar" },
@@ -37,9 +42,9 @@ const UserTable = () => {
   const onDeleteClick = async () => {
     try {
       const response = await UserAPI.delete(currentItem._id);
-      /*response.status !== 200
-          ? alert("User successfully deleted!")
-          : alert("Uups! Something went wrong!");*/
+      response.status !== 200
+        ? dispatch.notifications.success("")
+        : dispatch.notifications.error("");
     } catch (error) {
       console.log(error);
     }
@@ -51,8 +56,8 @@ const UserTable = () => {
     try {
       const response = await UserAPI.update(currentItem);
       response.status !== 200
-        ? alert("User successfully updated!")
-        : alert("Uups! Something went wrong!");
+        ? dispatch.notifications.success("")
+        : dispatch.notifications.error("");
     } catch (error) {
       console.log(error);
     }
@@ -140,82 +145,80 @@ const UserTable = () => {
   };
 
   return (
-      <div className="form-control mt-3" style={{ border: "none" }}>
-        <div className="input-group" pb-value="2">
-          <div className="form-outline">
-            <form>
-              <input
-                placeholder="Benutzername"
-                value={inputname}
-                onChange={(evt) => {
-                  setInputname(evt.target.value);
-                  onSearchClick(inputname);
-                }}
-                type="search"
-                className="form-control"
-                autoComplete="off"
-                onKeyDown={handleKeyDown}
-                style={{ outlineColor: "red" }}
-              />
-            </form>
-          </div>
-          <a
-            type="button"
-            className="btn btn-primary "
-            onClick={() => onSearchClick(inputname)}
-          >
-            <i className="bi bi-search" vertical-align="middle" />
-          </a>
+    <div className="form-control mt-3" style={{ border: "none" }}>
+      <div className="input-group" pb-value="2">
+        <div className="form-outline">
+          <form>
+            <input
+              placeholder="Benutzername"
+              value={inputname}
+              onChange={(evt) => {
+                setInputname(evt.target.value);
+                onSearchClick(inputname);
+              }}
+              type="search"
+              className="form-control"
+              autoComplete="off"
+              onKeyDown={handleKeyDown}
+              style={{ outlineColor: "red" }}
+            />
+          </form>
         </div>
-        {renderTable()}
-        {listPage != 1 ? (
-          <button
-            className="btn-primary border-dark rounded"
-            onClick={() => setListPage(listPage - 1)}
-          >
-            <i className="bi bi-arrow-left"></i>
-          </button>
-        ) : (
-          <button
-            className="btn-primary border-dark rounded"
-            style={{ backgroundColor: "grey" }}
-          >
-            <i className="bi bi-arrow-left"></i>
-          </button>
-        )}
-        <text style={{ marginLeft: "5px", marginRight: "5px" }}>
-          {listPage}
-        </text>
-        {listPage < users.length / 10 ? (
-          <button
-            className="btn-primary border-dark rounded"
-            onClick={() => setListPage(listPage + 1)}
-          >
-            <i className="bi bi-arrow-right"></i>
-          </button>
-        ) : (
-          <button
-            className="btn-primary border-dark rounded"
-            style={{ backgroundColor: "grey" }}
-          >
-            <i className="bi bi-arrow-right"></i>
-          </button>
-        )}
-
-        <ConfirmDialog
-          id={"userDeletion"}
-          accept={{ caption: "Löschen", onClick: onDeleteClick }}
-          title={"User Löschen"}
-          text={`Möchten Sie ${localStorage.getItem(
-            "username"
-          )} wirklich löschen?`}
-        />
-        <UserUpdate
-          currentItem={currentItem}
-          setCurrentItem={setCurrentItem}
-          onSubmit={onUpdateClick}
-        />
+        <a
+          type="button"
+          className="btn btn-primary "
+          onClick={() => onSearchClick(inputname)}
+        >
+          <i className="bi bi-search" vertical-align="middle" />
+        </a>
       </div>
+      {renderTable()}
+      {listPage != 1 ? (
+        <button
+          className="btn-primary border-dark rounded"
+          onClick={() => setListPage(listPage - 1)}
+        >
+          <i className="bi bi-arrow-left"></i>
+        </button>
+      ) : (
+        <button
+          className="btn-primary border-dark rounded"
+          style={{ backgroundColor: "grey" }}
+        >
+          <i className="bi bi-arrow-left"></i>
+        </button>
+      )}
+      <text style={{ marginLeft: "5px", marginRight: "5px" }}>{listPage}</text>
+      {listPage < users.length / 10 ? (
+        <button
+          className="btn-primary border-dark rounded"
+          onClick={() => setListPage(listPage + 1)}
+        >
+          <i className="bi bi-arrow-right"></i>
+        </button>
+      ) : (
+        <button
+          className="btn-primary border-dark rounded"
+          style={{ backgroundColor: "grey" }}
+        >
+          <i className="bi bi-arrow-right"></i>
+        </button>
+      )}
+
+      <ConfirmDialog
+        id={"userDeletion"}
+        accept={{ caption: "Löschen", onClick: onDeleteClick }}
+        title={"User Löschen"}
+        text={`Möchten Sie ${localStorage.getItem(
+          "username"
+        )} wirklich löschen?`}
+      />
+      <UserUpdate
+        currentItem={currentItem}
+        setCurrentItem={setCurrentItem}
+        onSubmit={onUpdateClick}
+      />
+    </div>
   );
 };
 
