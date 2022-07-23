@@ -4,6 +4,7 @@ import Sidebar from "components/sidebar/Sidebar";
 import ReservationOwnTable from "components/reservations/ReservationsOwnTable";
 import ReservationAllTable from "components/reservations/ReservationsAllTable";
 import { IMobileMenu, PageType } from "types/MobileMenu";
+import Router from "next/router";
 
 const pages: PageType[] = [
   { caption: "Eigene Reservierungen", action: "showOwnTable" },
@@ -31,6 +32,9 @@ const Cluster = () => {
         {subPage.action === "showOwnTable" && <ReservationOwnTable />}
         {subPage.action === "showAllTable" && <ReservationAllTable />}
       </div>
+        <button className="btn btn-primary m-3" style={{float:'right'}} onClick={()=>Router.push('/reservations/calendar')}>
+        + Neue Reservierung
+      </button>
     </Main>
   );
 };

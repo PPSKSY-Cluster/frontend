@@ -16,6 +16,7 @@ export const validateAccessToken = async () => {
   }
   const newAccessToken = await validateRefreshToken();
   if (newAccessToken) {
+    localStorage.setItem('accessToken', newAccessToken)
     return newAccessToken;
   }
   localStorage.setItem("accessToken", "");
