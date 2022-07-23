@@ -1,4 +1,4 @@
-import { axios } from "../components/auth/API";
+import { axios } from "./API";
 import { ICluster } from "types/Cluster";
 import config from "config.json";
 

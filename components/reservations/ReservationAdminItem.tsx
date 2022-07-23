@@ -38,6 +38,24 @@ const ClusterItem: FC<ClusterItemProps> = ({
         <td className="text-center">{reservationItem.nodes}</td>
         <td className="text-center">{fromDate.toLocaleDateString()}</td>
         <td className="text-center">{toDate.toLocaleDateString()}</td>
+        <td className="text-center">
+          <a onClick={() => setCurrentItem(reservationItem)}>
+            <i
+              className="bi bi-pencil-square"
+              data-bs-toggle="modal"
+              data-bs-target="#clusterUpdate"
+            />
+          </a>
+        </td>
+        <td className="text-center">
+          <a onClick={() => setCurrentItem(reservationItem)}>
+            <i
+              className="bi bi-trash-fill"
+              data-bs-toggle="modal"
+              data-bs-target="#clusterDeletion"
+            />
+          </a>
+        </td>
       </tr>
     </>
   );

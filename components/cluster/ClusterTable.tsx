@@ -6,6 +6,9 @@ import ClusterItem from "./ClusterItem";
 import ClusterUpdate from "./ClusterUpdate";
 import ClusterReserve from "./ClusterReserve";
 
+import { useDispatch } from "react-redux";
+import { Dispatch } from "src/store";
+
 const ClusterTable = () => {
   const clusterB: ICluster[] = [
     {
@@ -33,6 +36,8 @@ const ClusterTable = () => {
     type: 0,
   };
 
+  const dispatch = useDispatch<Dispatch>();
+
   const [cluster, setCluster] = useState(clusterB);
   const [currentItem, setCurrentItem] = useState<ICluster>(initCluster);
 
@@ -53,10 +58,9 @@ const ClusterTable = () => {
       const response = await ClusterAPI.delete(currentItem._id);
       response.status === 204
         ? setCluster(cluster.filter((el) => el._id != currentItem._id))
-        : alert("Uups! Something went wrong!");
-    } catch (error) {
-      console.log(error);
-    }
+        : dispatch.notifications.error("");
+      response.status === 204 ? dispatch.notifications.success("") : null;
+    } catch (error) {}
   };
 
   const onUpdateClick = async (updatedItem: ICluster) => {
@@ -67,23 +71,20 @@ const ClusterTable = () => {
           return el._id === updatedItem._id ? updatedItem : el;
         });
         setCluster(newCluster);
+        dispatch.notifications.success("");
       } else {
-        alert("Uups! Something went wrong!");
+        dispatch.notifications.error("");
       }
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   const onReserveClick = async () => {
     try {
       const response = await ClusterAPI.update(currentItem);
       response.status === 202
-        ? alert("Cluster successfully updated!")
-        : alert("Uups! Something went wrong!");
-    } catch (error) {
-      console.log(error);
-    }
+        ? dispatch.notifications.success("")
+        : dispatch.notifications.error("");
+    } catch (error) {}
   };
   
   if(localStorage.getItem("userType") == "2" || localStorage.getItem("userType") == "1"){//Admin
@@ -156,7 +157,6 @@ const ClusterTable = () => {
           })}
         </tbody>
       </table>
-
       <ConfirmDialog
         id={"clusterDeletion"}
         accept={{ caption: "Löschen", onClick: onDeleteClick }}

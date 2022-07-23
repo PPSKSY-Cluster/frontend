@@ -1,9 +1,12 @@
 import ReservationsAPI from "api/reservation";
 import ConfirmDialog from "components/dialog/ConfirmDialog";
 import { useEffect, useState } from "react";
-import ReservationItem from "./ReservationItem";
+import ReservationItem from "./ReservationAdminItem";
 import ClusterUpdate from "./ReservationUpdate";
 import { IReservation } from "../../types/Reservation";
+
+import { useDispatch } from "react-redux";
+import { Dispatch } from "src/store";
 
 const ClusterTable = () => {
   const clusterB: IReservation[] = [
@@ -34,13 +37,18 @@ const ClusterTable = () => {
     nodes: 3,
   };
 
+  const dispatch = useDispatch<Dispatch>();
+
   const [reservations, setReservations] = useState(clusterB);
   const [currentItem, setCurrentItem] = useState<IReservation>(initCluster);
+  const [userId, setUserId] = useState(undefined);
 
   useEffect(() => {
     async function getReservations() {
       try {
-        const response = await ReservationsAPI.getAll();
+        const response = await ReservationsAPI.getOwn(
+          localStorage.getItem("userId")
+        );
         if (response.data.length > 0) setReservations(response.data);
       } catch (error) {
         console.log(error);
@@ -56,10 +64,9 @@ const ClusterTable = () => {
         ? setReservations(
             reservations.filter((el) => el._id != currentItem._id)
           )
-        : alert("Uups! Something went wrong!");
-    } catch (error) {
-      console.log(error);
-    }
+        : dispatch.notifications.error("");
+      response.status === 204 ? dispatch.notifications.success("") : null;
+    } catch (error) {}
   };
 
   const onUpdateClick = async (updatedItem: IReservation) => {
@@ -70,12 +77,11 @@ const ClusterTable = () => {
           return el._id === updatedItem._id ? updatedItem : el;
         });
         setReservations(newCluster);
+        dispatch.notifications.success("");
       } else {
-        alert("Uups! Something went wrong!");
+        dispatch.notifications.error("");
       }
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   return (

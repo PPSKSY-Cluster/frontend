@@ -1,4 +1,4 @@
-import { axios } from "../components/auth/API";
+import { axios } from "./API";
 import { IReservation } from "types/Reservation";
 import config from "config.json";
 
@@ -11,6 +11,10 @@ const ReservationAPI = {
   },
   getAll: () => {
     return axios.get(`${config.BASE_URL}/reservations`);
+  },
+  getOwn: (userID) => {
+    //const userID = localStorage.getItem("userId");
+    return axios.get(`${config.BASE_URL}/reservations/users/${userID}`);
   },
   delete: (_id: string) => {
     return axios.delete(`${config.BASE_URL}/reservations/${_id}`);

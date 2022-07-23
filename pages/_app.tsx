@@ -1,6 +1,11 @@
 import { useEffect } from "react";
 import "styles/scss/global.scss";
 
+import { Provider } from "react-redux";
+import store from "src/store";
+
+import Notifications from "components/notifications/Notifications";
+
 function MyApp({ Component, pageProps }) {
   useEffect(() => {
     typeof document !== undefined
@@ -8,7 +13,12 @@ function MyApp({ Component, pageProps }) {
       : null;
   }, []);
 
-  return <Component {...pageProps} />;
+  return (
+    <Provider store={store}>
+      <Component {...pageProps} />
+      <Notifications />
+    </Provider>
+  );
 }
 
 export default MyApp;

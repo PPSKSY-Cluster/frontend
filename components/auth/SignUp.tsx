@@ -1,57 +1,45 @@
-import { FC, useRef } from "react";
-import axios, { AxiosResponse } from "axios";
-import { userInfo } from "os";
+import { FC, FormEvent, useRef } from "react";
+import { signIn, signUp } from "api/API";
+
+import { useDispatch } from "react-redux";
+import { Dispatch } from "src/store";
 
 interface Props {
-  saveJWTAndSignIn: (res: AxiosResponse<any, any>) => void;
+  handleUserAndRefreshToken: (user: Record<string, any>, token: string) => void;
   showSignIn: () => void;
 }
 
-interface User {
-  email: string;
-  password: string;
-}
-
-const SignUp: FC<Props> = ({ saveJWTAndSignIn, showSignIn }) => {
+const SignUp: FC<Props> = ({ handleUserAndRefreshToken, showSignIn }) => {
+  const dispatch = useDispatch<Dispatch>();
   const mailEl = useRef(null);
   const nameEl = useRef(null);
   const passwordEl = useRef(null);
 
-  const followUpSignIn = () => {
-    axios
-      .post("http://localhost:8080/api/login", {
-        username: nameEl.current.value,
-        password: passwordEl.current.value,
-      })
-      .then((res) => {
-        saveJWTAndSignIn(res)})
-      .catch((err) => console.log(err));
-
-  };
-
-  const signUp = (e) => {
+  const handleSignUp = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const newUserData = {
-      username: nameEl.current.value,
-      password: passwordEl.current.value,
-      email: mailEl.current.value,
-      type: "0"
-    };
+    const username = nameEl.current.value;
+    const password = passwordEl.current.value;
+    const email = mailEl.current.value;
 
-    axios
-      .post("http://localhost:8080/api/users", newUserData)
-      .then((res) => followUpSignIn())
-      .catch((err) => console.log(err));
+    signUp(email, username, password)
+      .then(async () => {
+        const signInResponse = await signIn(username, password);
+        if (signInResponse.status === 200) {
+          const { user, token } = signInResponse.data;
+          handleUserAndRefreshToken(user, token);
+        }
+      })
+      .catch((error) => dispatch.notifications.error(""));
   };
 
   return (
     <>
       <h2 className="mb-3">Registrieren bei Cluster Thruster</h2>
-      <form onSubmit={signUp}>
+      <form onSubmit={handleSignUp}>
         <div className="form-outline mb-4">
           <input type="email" className="form-control" ref={mailEl} required />
-          <label className="form-label">Email Addresse</label>
+          <label className="form-label mt-1">Email Addresse</label>
         </div>
         <div className="form-outline mb-4">
           <input
@@ -60,12 +48,12 @@ const SignUp: FC<Props> = ({ saveJWTAndSignIn, showSignIn }) => {
             ref={nameEl}
             required
           />
-          <label className="form-label">Username</label>
+          <label className="form-label mt-1">Username</label>
         </div>
 
         <div className="form-outline mb-4">
           <input type="password" className="form-control" ref={passwordEl} />
-          <label className="form-label">Passwort</label>
+          <label className="form-label mt-1">Passwort</label>
         </div>
 
         <input
@@ -74,11 +62,9 @@ const SignUp: FC<Props> = ({ saveJWTAndSignIn, showSignIn }) => {
           className="btn btn-primary btn-block mb-4"
         />
       </form>
-      <hr></hr>
+      <hr />
       <div className="text-center">
-        <p>
-          Bereits ein Mitglied? <a onClick={showSignIn}>Einloggen</a>
-        </p>
+        Bereits ein Mitglied? <a onClick={showSignIn}>Einloggen</a>
       </div>
     </>
   );

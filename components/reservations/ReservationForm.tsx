@@ -73,7 +73,7 @@ const ClusterForm: FC<ClusterFormProps> = ({
   return (
     <div className="container-fluid p-4">
       <form onSubmit={createReservation}>
-        <div className="d-none d-lg-block">
+        <div className=" d-lg-block">
           <label className="form-label">Anzahl der Nodes:</label>
           <div className="form-group mb-2">
             <select

@@ -1,4 +1,4 @@
-import { axios } from "../components/auth/API";
+import { axios } from "./API";
 import { IUser } from "types/User";
 import config from "config.json";
 

@@ -1,46 +1,51 @@
-import { FC, useState, useEffect } from "react";
+import { FC, useState } from "react";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
 import { AxiosResponse } from "axios";
-import { setDefaultHeader } from "./API";
 import { IUser } from "types/User";
-import UserAPI from "api/user";
 import { openCluster } from "jobs/afterSignIn";
 import Router from "next/router";
+import { saveAccessTokenAndSignIn } from "../../api/API";
+import UserAPI from "api/user";
+
+import { useDispatch } from "react-redux";
+import { Dispatch } from "src/store";
 
 const Auth: FC = () => {
+  const dispatch = useDispatch<Dispatch>();
   const [showSignIn, setShowSignIn] = useState(true);
 
   const changeSignType = () => {
     setShowSignIn(!showSignIn);
   };
 
-  const saveJWTAndSignIn = (res: AxiosResponse<any, any>) => {
-    const {token, user} = res.data;
-    localStorage.setItem("jwt", token);
-    localStorage.setItem("username", user.username);
-    localStorage.setItem("userId", user._id);
-    setDefaultHeader("Authorization", `Bearer ${token}`);
-    Router.push("/cluster");
-    getOtherCreds();
-    if(user.username == "superadmin"){
-      localStorage.setItem("userType", "2")
+  const handleUserAndRefreshToken = async (
+    { username, _id },
+    refreshToken: string
+  ) => {
+    localStorage.setItem("refreshToken", refreshToken);
+    localStorage.setItem("username", username);
+    localStorage.setItem("userId", _id);
+    //getOtherCreds();
+    if (username == "superadmin") {
+      localStorage.setItem("userType", "2");
     }
-    openCluster();
+    await saveAccessTokenAndSignIn(refreshToken);
   };
 
-  const getOtherCreds = async () =>{
-      try {
-        const response = await UserAPI.getById(localStorage.getItem("userId"));
-        response.status === 200
-          ? (localStorage.setItem("userEmail", response.data.email),
-            localStorage.setItem("userType", response.data.type),
-            console.log(response.data.type))
-          : alert("Uups! Something went wrong!");
-      } catch (error) {
-        console.log(error);
-      }
-  }
+  const getOtherCreds = async () => {
+    try {
+      const response = await UserAPI.getById(localStorage.getItem("userId"));
+      response.status === 200
+        ? (localStorage.setItem("userEmail", response.data.email),
+          localStorage.setItem("userType", response.data.type),
+          console.log(response.data.type),
+          dispatch.notifications.success(""))
+        : dispatch.notifications.error("");
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="min-vh-100 d-flex flex-row">
@@ -51,14 +56,14 @@ const Auth: FC = () => {
         <div className="border border-grey rounded p-4 position-absolute mt-5">
           {showSignIn ? (
             <SignIn
-              saveJWTAndSignIn={saveJWTAndSignIn}
+              handleUserAndRefreshToken={handleUserAndRefreshToken}
               showSignUp={changeSignType}
-            ></SignIn>
+            />
           ) : (
             <SignUp
-              saveJWTAndSignIn={saveJWTAndSignIn}
+              handleUserAndRefreshToken={handleUserAndRefreshToken}
               showSignIn={changeSignType}
-            ></SignUp>
+            />
           )}
         </div>
       </div>

@@ -1,16 +1,20 @@
 import Auth from "components/auth/Auth";
 import { useEffect, useState } from "react";
 import Main from "components/main/Main";
-import Router from "next/router";
+import { validateAccessToken } from "api/API";
 
 export default function Home() {
   const [authenticated, setAuthenticated] = useState(false);
 
   useEffect(() => {
-    if (localStorage.getItem("jwt") && localStorage.getItem("jwt") !== "") {
-      setAuthenticated(true);
+    async function onStart() {
+      const accessToken = await validateAccessToken();
+      if (accessToken) {
+        setAuthenticated(true);
+      }
     }
+    onStart();
   }, []);
 
-  return authenticated ? <Main /> : <Auth/>
+  return authenticated ? <Main /> : <Auth />;
 }

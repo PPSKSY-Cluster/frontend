@@ -3,11 +3,16 @@ import { ICluster } from "../../types/Cluster";
 import { IReservation } from "../../types/Reservation";
 import ReservationAPI from "api/reservation";
 
+import { useDispatch } from "react-redux";
+import { Dispatch } from "src/store";
+
 interface Props {
   cluster: ICluster;
 }
 
 const ClusterReservation: FC<Props> = ({ cluster }) => {
+  const dispatch = useDispatch<Dispatch>();
+
   const [showAllReservations, setShowAllReservations] = useState(false);
   const nodes = useRef(null);
   const from = useRef(null);
@@ -32,9 +37,9 @@ const ClusterReservation: FC<Props> = ({ cluster }) => {
   async function APIcreateReservation(reservation: IReservation) {
     try {
       const response = await ReservationAPI.create(reservation);
-      alert("Erfolgreich reserviert");
+      dispatch.notifications.success("");
     } catch (error) {
-      console.log(error);
+      dispatch.notifications.error("");
     }
   }
 
