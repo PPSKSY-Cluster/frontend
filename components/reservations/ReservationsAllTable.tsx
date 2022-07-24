@@ -47,7 +47,7 @@ const ClusterTable = () => {
     async function getReservations() {
       try {
         const response = await ReservationsAPI.getAll();
-        if (response.data.length > 0) setReservations(response.data);
+        if (response.data?.length > 0) setReservations(response.data);
       } catch (error) {
         console.log(error);
       }

@@ -1,5 +1,4 @@
-import { resolvePtr } from "dns/promises";
-import React, { Dispatch, FC, FormEvent, SetStateAction, useRef } from "react";
+import React, { Dispatch, FC, FormEvent, SetStateAction } from "react";
 import { IUser } from "types/User";
 interface UserFormProps {
   title: string;
@@ -23,7 +22,7 @@ const UserForm: FC<UserFormProps> = ({
 
   const handleTypeChange = (event) => {
     let role = 0;
-    if(event.target.value == "1"){
+    if (event.target.value == "1") {
       role = 1;
     }
     setCurrentItem({
@@ -37,7 +36,7 @@ const UserForm: FC<UserFormProps> = ({
       <h2 className="mb-3">{title}</h2>
       <form onSubmit={onSubmit}>
         <div className="form-group mb-2">
-          <label htmlFor="exampleInputEmail1">Name</label>
+          <label>Name</label>
           <input
             type="text"
             className="form-control"
@@ -53,8 +52,8 @@ const UserForm: FC<UserFormProps> = ({
           />
         </div>
         <div className="form-group mb-2">
-          <label htmlFor="exampleInputEmail1">Rolle</label>
-          <select className="form-select" aria-label="Default select example" onChange={handleTypeChange}>
+          <label>Rolle</label>
+          <select className="form-select" onChange={handleTypeChange}>
             <option value="0">User</option>
             <option value="1">Admin</option>
           </select>

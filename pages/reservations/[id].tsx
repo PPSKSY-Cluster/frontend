@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import Main from "components/main/Main";
 import { useRouter } from "next/router";
 import ReservationAPI from "api/reservation";
+import ClusterAPI from "api/cluster";
 import { IReservation } from "types/Reservation";
 import { setDefaultHeader, validateAccessToken } from "api/API";
 
@@ -26,6 +27,8 @@ const ReservationSinglePage = () => {
   const nodes = useRef(null);
   const from = useRef(null);
   const to = useRef(null);
+
+  const [clusterName, setClusterName] = useState("...");
 
   const [rNodes, setRNodes] = useState(1);
   const [rFrom, setRFrom] = useState("");
@@ -59,6 +62,16 @@ const ReservationSinglePage = () => {
   };
   useEffect(() => {
     init();
+
+    async function getClusterName() {
+      try {
+        const response = await ClusterAPI.getById(currentItem.clusterID);
+        setClusterName(response.data.name);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    getClusterName();
   }, [currentItem]);
 
   const createReservation = async (e) => {
@@ -106,6 +119,7 @@ const ReservationSinglePage = () => {
   return (
     <Main>
       <div className="col-sm-8 py-5 mx-auto">
+        <h2>{clusterName}</h2>
         <form onSubmit={createReservation}>
           <div className=" d-lg-block">
             <label className="form-label">Anzahl der Nodes:</label>
@@ -152,12 +166,12 @@ const ReservationSinglePage = () => {
             <div className="form-group mb-2"></div>
             <div className="d-grid gap-2 d-lg-flex justify-content-lg-end">
               <button
-                className="btn btn-primary"
+                className="btn btn-secondary"
                 onClick={() => onDeleteClick()}
               >
                 Stornieren
               </button>
-              <button className="btn btn-secondary">Reservierung ändern</button>
+              <button className="btn btn-primary">Reservierung ändern</button>
             </div>
           </div>
         </form>

@@ -35,6 +35,7 @@ const OptionsForm: FC = () => {
       _id: localStorage.getItem("userId"),
       username,
       password: password !== "" ? password : localStorage.getItem("userPw"),
+      type: parseInt(localStorage.getItem("userType"))
     };
     try {
       const response = await UserAPI.update(updatedUser);

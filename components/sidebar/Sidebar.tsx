@@ -8,6 +8,7 @@ interface SidebarProps {
   onClickHandler: (page: PageType) => void;
 }
 const Sidebar: FC<SidebarProps> = ({ title, elements, onClickHandler }) => {
+  const userType = parseInt(localStorage.getItem("userType"));
   return (
     <div
       className="d-flex flex-column flex-shrink-0 p-3 text-primary bg-white"
@@ -15,15 +16,17 @@ const Sidebar: FC<SidebarProps> = ({ title, elements, onClickHandler }) => {
     >
       <div className="text-primary fw-bold pb-2">{title}</div>
       <ul className="list-group flex-column mb-auto">
-        {elements.map((element, index) => {
-          return (
-            <BarItem
-              element={element}
-              key={index}
-              onClickHandler={onClickHandler}
-            />
-          );
-        })}
+        {elements
+          .filter((el) => (el.admin && userType > 0) || !el.admin)
+          .map((element, index) => {
+            return (
+              <BarItem
+                element={element}
+                key={index}
+                onClickHandler={onClickHandler}
+              />
+            );
+          })}
       </ul>
     </div>
   );

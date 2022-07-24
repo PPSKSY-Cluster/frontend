@@ -1,6 +1,7 @@
 import ClusterAPI from "api/cluster";
 import ClusterReserveContent from "components/cluster/ClusterReserveContent";
 import Popup from "components/popup/Popup";
+import  Router  from "next/router";
 import { useEffect, useState } from "react";
 import { ICluster } from "types/Cluster";
 import CalendarItem from "./CalendarItem";
@@ -160,7 +161,11 @@ const ReservationsCalendar = () => {
         </tbody>
       </table>
       <Popup id={"clusterReserve"} title={"Cluster Reservieren"}>
-        <ClusterReserveContent cluster={currentItem} startDate={currentDate} />
+        <ClusterReserveContent
+          cluster={currentItem}
+          startDate={currentDate}
+          callback={() => Router.push('/reservations')}
+        />
       </Popup>
     </div>
   );

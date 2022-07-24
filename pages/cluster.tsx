@@ -7,7 +7,7 @@ import { IMobileMenu, PageType } from "types/MobileMenu";
 
 const pages: PageType[] = [
   { caption: "Alle Cluster anzeigen", action: "showTable" },
-  { caption: "Neues Cluster erstellen", action: "showCreation" },
+  { caption: "Neues Cluster erstellen", action: "showCreation", admin:true },
 ];
 
 const Cluster = () => {

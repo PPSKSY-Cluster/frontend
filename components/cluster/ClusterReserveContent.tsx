@@ -9,9 +9,10 @@ import { Dispatch } from "src/store";
 interface Props {
   cluster: ICluster;
   startDate?: number;
+  callback?: () => void;
 }
 
-const ClusterReservation: FC<Props> = ({ cluster, startDate }) => {
+const ClusterReservation: FC<Props> = ({ cluster, startDate, callback }) => {
   const dispatch = useDispatch<Dispatch>();
 
   const [showAllReservations, setShowAllReservations] = useState(false);
@@ -42,6 +43,7 @@ const ClusterReservation: FC<Props> = ({ cluster, startDate }) => {
     } catch (error) {
       dispatch.notifications.error("");
     }
+    callback && callback()
   }
 
   const createReservation = (e) => {

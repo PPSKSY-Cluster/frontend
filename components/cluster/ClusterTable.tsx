@@ -45,7 +45,7 @@ const ClusterTable = () => {
     async function getCluster() {
       try {
         const response = await ClusterAPI.getAll();
-        if (response.data.length > 0) setCluster(response.data);
+        if (response.data?.length > 0) setCluster(response.data);
       } catch (error) {
         console.log(error);
       }
@@ -87,7 +87,7 @@ const ClusterTable = () => {
     } catch (error) {}
   };
   
-  if(localStorage.getItem("userType") == "2" || localStorage.getItem("userType") == "1"){//Admin
+  if(localStorage.getItem("userType") && parseInt(localStorage.getItem("userType")) > 0){//Admin
     return (
       <>
         <table className="table table-hover m-3">
