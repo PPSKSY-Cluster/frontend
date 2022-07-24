@@ -19,6 +19,7 @@ const SignIn: FC<Props> = ({ handleUserAndRefreshToken, showSignUp }) => {
     signIn(username, password)
       .then((response) => {
         const { user, token } = response.data;
+        console.log(user);
         handleUserAndRefreshToken(user, token);
       })
       .catch(() => setWrongUser(true));

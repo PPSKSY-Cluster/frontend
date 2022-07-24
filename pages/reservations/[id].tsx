@@ -166,12 +166,12 @@ const ReservationSinglePage = () => {
             <div className="form-group mb-2"></div>
             <div className="d-grid gap-2 d-lg-flex justify-content-lg-end">
               <button
-                className="btn btn-primary"
+                className="btn btn-secondary"
                 onClick={() => onDeleteClick()}
               >
                 Stornieren
               </button>
-              <button className="btn btn-secondary">Reservierung ändern</button>
+              <button className="btn btn-primary">Reservierung ändern</button>
             </div>
           </div>
         </form>
