@@ -15,7 +15,7 @@ const ReservationSinglePage = () => {
     _id: "",
     clusterID: "",
     userID: "",
-    currentNodes: 0,
+    nodes: 0,
     startTime: 0,
     endTime: 0,
   });
@@ -61,7 +61,7 @@ const ReservationSinglePage = () => {
     init();
   }, [currentItem]);
 
-  const createReservation = (e) => {
+  const createReservation = async (e) => {
     e.preventDefault();
 
     const updatedReservation: IReservation = {
@@ -76,7 +76,7 @@ const ReservationSinglePage = () => {
     console.log(updatedReservation);
 
     try {
-      const response = ReservationAPI.update(updatedReservation);
+      const response = await ReservationAPI.update(updatedReservation);
       if (response.status === 200) {
         dispatch.notifications.success("");
       } else {

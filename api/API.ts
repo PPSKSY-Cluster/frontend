@@ -56,7 +56,7 @@ export const signUp = (email: string, username: string, password: string) => {
     username,
     password,
     email,
-    type: "0",
+    type: 0,
   });
 };
 

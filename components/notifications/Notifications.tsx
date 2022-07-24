@@ -13,18 +13,16 @@ const Notification = () => {
 
   const onDeleteClick = async () => {};
 
-  const notifications = {
-    position: "fixed",
-    bottom: "10px",
-    left: "10px",
-    maxWidth: "400px",
-    width: "400px",
-  };
-
   return (
     <>
       {notificationState != 0 ? (
-        <div style={notifications}>
+        <div style={{
+          position: "fixed",
+          bottom: "10px",
+          left: "10px",
+          maxWidth: "400px",
+          width: "400px",
+        }}>
           {notificationState == 1 ? (
             <div className="alert alert-success" role="alert">
               Erfolgreich ausgeführt!
