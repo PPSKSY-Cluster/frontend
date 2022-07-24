@@ -35,6 +35,16 @@ const UserTable = () => {
       } catch (error) {
         console.log(error);
       }
+      setAllUsers(
+        allUsers.map((el) => {
+          return el._id === currentItem._id ? currentItem : el;
+        })
+      );
+      setUsersList(allUsers);
+    };
+
+    const setUsersList = (users) => {
+      setUsers(users.sort((a, b) => a.username.localeCompare(b.username)))
     }
     getUsers();
   }, []);

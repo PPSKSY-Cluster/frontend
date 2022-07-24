@@ -1,6 +1,10 @@
 import { FC, useState } from "react";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
+import { AxiosResponse } from "axios";
+import { IUser } from "types/User";
+import { openCluster } from "jobs/afterSignIn";
+import Router from "next/router";
 import { saveAccessTokenAndSignIn } from "../../api/API";
 import UserAPI from "api/user";
 
