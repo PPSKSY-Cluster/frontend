@@ -33,7 +33,7 @@ const Cluster = () => {
         {subPage.action === "showAllTable" && <ReservationAllTable />}
       </div>
         <button className="btn btn-primary m-3" style={{float:'right'}} onClick={()=>Router.push('/reservations/calendar')}>
-        + Neue Reservierung
+        Kalender Übersicht anzeigen
       </button>
     </Main>
   );

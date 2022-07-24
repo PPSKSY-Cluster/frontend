@@ -37,11 +37,11 @@ interface NavbarProps {
 }
 
 const Navbar: FC<NavbarProps> = ({ mobileMenu }) => {
+  const userType = parseInt(localStorage.getItem("userType")) || 0;
   const abmelden = () => {
     localStorage.clear();
     Router.push("/");
   };
-
 
   return (
     <>
@@ -113,17 +113,19 @@ const Navbar: FC<NavbarProps> = ({ mobileMenu }) => {
                 </Link>
                 {mobileMenu && mobileMenu.id === el.id && (
                   <ul>
-                    {mobileMenu.mobileSubPages.map((element, index) => {
-                      return (
-                        <BarItem
-                          key={index}
-                          element={element}
-                          onClickHandler={mobileMenu.onClickHandler}
-                          data-bs-toggle="collapse"
-                          data-bs-target="#navBarMobile"
-                        />
-                      );
-                    })}
+                    {mobileMenu.mobileSubPages
+                      .filter((el) => (el.admin && userType > 0) || !el.admin)
+                      .map((element, index) => {
+                        return (
+                          <BarItem
+                            key={index}
+                            element={element}
+                            onClickHandler={mobileMenu.onClickHandler}
+                            data-bs-toggle="collapse"
+                            data-bs-target="#navBarMobile"
+                          />
+                        );
+                      })}
                   </ul>
                 )}
               </div>

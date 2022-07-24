@@ -10,224 +10,161 @@ import { Dispatch } from "src/store";
 
 const UserTable = () => {
   const dispatch = useDispatch<Dispatch>();
+  const userType = parseInt(localStorage.getItem("userType")) || 0;
 
   const [allUsers, setAllUsers] = useState<IUser[]>([
     { _id: "1", username: "foo" },
     { _id: "2", username: "bar" },
   ]);
-  const [users, setUsers] = useState<IUser[]>(allUsers);
-  const [inputname, setInputname] = useState("");
-  const [listPage, setListPage] = useState(1);
+  const [filteredUsers, setFilteredUsers] = useState<IUser[]>(allUsers);
+  const [searchInput, setSearchInput] = useState("");
 
-  const [currentItem, setCurrentItem] = useState<IUser>({
+  const [currentUser, setCurrentUser] = useState<IUser>({
     username: "",
     _id: "0",
   });
 
-  useEffect(() => {
-    async function getUsers() {
-      try {
-        const response = await UserAPI.getAll();
-        if (response.data.length > 0) {
-          setAllUsers(response.data);
-          setUsersList(response.data);
-        }
-      } catch (error) {
-        console.log(error);
-      }
-      setAllUsers(
-        allUsers.map((el) => {
-          return el._id === currentItem._id ? currentItem : el;
-        })
-      );
-      setUsersList(allUsers);
-    };
-
-    const setUsersList = (users) => {
-      setUsers(users.sort((a, b) => a.username.localeCompare(b.username)))
+  const getUsers = async () => {
+    try {
+      const response = await UserAPI.getAll();
+      setAllUsers(response.data);
+      setFilteredUsers(response.data);
+    } catch (error) {
+      console.log(error);
     }
+  };
+
+  useEffect(() => {
     getUsers();
   }, []);
 
   const onDeleteClick = async () => {
     try {
-      const response = await UserAPI.delete(currentItem._id);
+      const response = await UserAPI.delete(currentUser._id);
       response.status !== 200
         ? dispatch.notifications.success("")
         : dispatch.notifications.error("");
     } catch (error) {
       console.log(error);
     }
-    setAllUsers(allUsers.filter((el) => el._id != currentItem._id));
-    setUsersList(allUsers);
-    setUsers(users);
+    await getUsers();
   };
   const onUpdateClick = async () => {
     try {
-      const response = await UserAPI.update(currentItem);
-      response.status !== 200
+      const response = await UserAPI.update(currentUser);
+      response.status === 200
         ? dispatch.notifications.success("")
         : dispatch.notifications.error("");
     } catch (error) {
       console.log(error);
     }
-    setAllUsers(
-      allUsers.map((el) => {
-        return el._id === currentItem._id ? currentItem : el;
-      })
-    );
-    localStorage.setItem("username", currentItem.username);
-    setUsersList(allUsers);
+    await getUsers()
   };
 
-  const setUsersList = (users) => {
-    setUsers(users.sort((a, b) => a.username.localeCompare(b.username)));
-  };
-
-  const onSearchClick = (input) => {
-    setUsers(allUsers.filter((el) => el.username.includes(input)));
+  const onSearchClick = (name: string) => {
+    if (!name || name === "") {
+      setFilteredUsers(allUsers);
+    } else {
+      setFilteredUsers(allUsers.filter((el) => el.username.includes(name)));
+    }
   };
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
-      onSearchClick(inputname);
+      onSearchClick(searchInput);
     }
   };
 
-  const renderTable = () => {
-    if (localStorage.getItem("userType") == "2") {
-      return (
-        <table className="table table-hover m-3" style={{ lineHeight: 2 }}>
-          <thead>
-            <tr>
-              <th className="text-center col-md-1">Nr</th>
-              <th className="text-center col-md-4">Name</th>
-              <th className="text-center col-md-4">Rolle</th>
-              <th className="text-center col-md-1">Reservierungen</th>
-              <th className="text-center col-md-1">Bearbeiten</th>
-              <th className="text-center col-md-1">Löschen</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users?.map((userItem, index) => {
-              if ((listPage - 1) * 10 <= index && index < listPage * 10) {
+  const Table = () => {
+    return (
+      <>
+        {userType > 0 ? (
+          <table className="table table-hover mt-3">
+            <thead>
+              <tr>
+                <th className="text-center col-md-1">Nr</th>
+                <th className="text-center col-md-4">Name</th>
+                <th className="text-center col-md-4">Rolle</th>
+                <th className="text-center col-md-1">Reservierungen</th>
+                <th className="text-center col-md-1">Bearbeiten</th>
+                <th className="text-center col-md-1">Löschen</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredUsers?.map((userItem, index) => {
                 return (
                   <UserItem
                     key={userItem._id}
                     userItem={userItem}
                     count={++index}
-                    setCurrentItem={setCurrentItem}
+                    setCurrentItem={setCurrentUser}
                   ></UserItem>
                 );
-              }
-            })}
-          </tbody>
-        </table>
-      );
-    } else {
-      return (
-        <table className="table table-hover" style={{ lineHeight: 2 }}>
-          <thead>
-            <tr>
-              <th className="text-center col-md-3">Nr</th>
-              <th className="text-center col-md-5">Name</th>
-              <th className="text-center col-md-4">Rolle</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users?.map((userItem, index) => {
-              if ((listPage - 1) * 10 <= index && index < listPage * 10) {
+              })}
+            </tbody>
+          </table>
+        ) : (
+          <table className="table table-hover mt-3">
+            <thead>
+              <tr>
+                <th className="text-center col-md-3">Nr</th>
+                <th className="text-center col-md-5">Name</th>
+                <th className="text-center col-md-4">Rolle</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredUsers?.map((userItem, index) => {
                 return (
                   <UserItem
                     key={userItem._id}
                     userItem={userItem}
                     count={++index}
-                    setCurrentItem={setCurrentItem}
+                    setCurrentItem={setCurrentUser}
                   ></UserItem>
                 );
-              }
-            })}
-          </tbody>
-        </table>
-      );
-    }
+              })}
+            </tbody>
+          </table>
+        )}
+      </>
+    );
   };
 
   return (
-    <div className="form-control mt-3" style={{ border: "none" }}>
-      <div className="input-group" pb-value="2">
-        <div className="form-outline">
-          <form>
-            <input
-              placeholder="Benutzername"
-              value={inputname}
-              onChange={(evt) => {
-                setInputname(evt.target.value);
-                onSearchClick(inputname);
-              }}
-              type="search"
-              className="form-control"
-              autoComplete="off"
-              onKeyDown={handleKeyDown}
-              style={{ outlineColor: "red" }}
-            />
-          </form>
-        </div>
+    <div className="form-control m-3 border-0">
+      <div className="input-group">
+        <input
+          placeholder="Benutzername"
+          value={searchInput}
+          onChange={(evt) => {
+            setSearchInput(evt.target.value);
+            onSearchClick(searchInput);
+          }}
+          type="search"
+          className="form-control"
+          autoComplete="off"
+          onKeyDown={handleKeyDown}
+        />
         <a
           type="button"
           className="btn btn-primary "
-          onClick={() => onSearchClick(inputname)}
+          onClick={() => onSearchClick(searchInput)}
         >
           <i className="bi bi-search" vertical-align="middle" />
         </a>
       </div>
-      {renderTable()}
-      {listPage != 1 ? (
-        <button
-          className="btn-primary border-dark rounded"
-          onClick={() => setListPage(listPage - 1)}
-        >
-          <i className="bi bi-arrow-left"></i>
-        </button>
-      ) : (
-        <button
-          className="btn-primary border-dark rounded"
-          style={{ backgroundColor: "grey" }}
-        >
-          <i className="bi bi-arrow-left"></i>
-        </button>
-      )}
-
-      <span style={{ marginLeft: "5px", marginRight: "5px" }}>{listPage}</span>
-
-      {listPage < users.length / 10 ? (
-        <button
-          className="btn-primary border-dark rounded"
-          onClick={() => setListPage(listPage + 1)}
-        >
-          <i className="bi bi-arrow-right"></i>
-        </button>
-      ) : (
-        <button
-          className="btn-primary border-dark rounded"
-          style={{ backgroundColor: "grey" }}
-        >
-          <i className="bi bi-arrow-right"></i>
-        </button>
-      )}
+      <Table />
 
       <ConfirmDialog
         id={"userDeletion"}
         accept={{ caption: "Löschen", onClick: onDeleteClick }}
         title={"User Löschen"}
-        text={`Möchten Sie ${localStorage.getItem(
-          "username"
-        )} wirklich löschen?`}
+        text={`Möchten Sie ${currentUser.username} wirklich löschen?`}
       />
       <UserUpdate
-        currentItem={currentItem}
-        setCurrentItem={setCurrentItem}
+        currentItem={currentUser}
+        setCurrentItem={setCurrentUser}
         onSubmit={onUpdateClick}
       />
     </div>

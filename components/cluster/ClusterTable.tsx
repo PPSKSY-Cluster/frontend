@@ -87,7 +87,7 @@ const ClusterTable = () => {
     } catch (error) {}
   };
   
-  if(localStorage.getItem("userType") == "2" || localStorage.getItem("userType") == "1"){//Admin
+  if(localStorage.getItem("userType") && parseInt(localStorage.getItem("userType")) > 0){//Admin
     return (
       <>
         <table className="table table-hover m-3">
