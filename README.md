@@ -8,7 +8,7 @@ This project is built in the context of the course Scalable Systems at TU berlin
 
 The frontend uses react with next.js.
 
-## Create a config.ts
+## Create a config.json
 
 "BASE_URL": "Base-URL of api"
 
