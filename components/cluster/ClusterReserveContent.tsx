@@ -8,9 +8,10 @@ import { Dispatch } from "src/store";
 
 interface Props {
   cluster: ICluster;
+  startDate?: number;
 }
 
-const ClusterReservation: FC<Props> = ({ cluster }) => {
+const ClusterReservation: FC<Props> = ({ cluster, startDate }) => {
   const dispatch = useDispatch<Dispatch>();
 
   const [showAllReservations, setShowAllReservations] = useState(false);
@@ -25,7 +26,7 @@ const ClusterReservation: FC<Props> = ({ cluster }) => {
       try {
         if (cluster._id != undefined) {
           const response = await ReservationAPI.getAllByClusterId(cluster._id);
-          if (response.data.length > 0) setClusterReservations(response.data);
+          if (response.data?.length > 0) setClusterReservations(response.data);
         }
       } catch (error) {
         console.log(error);
@@ -93,6 +94,9 @@ const ClusterReservation: FC<Props> = ({ cluster }) => {
               name="due-date"
               id="due-date"
               v-model="date"
+              defaultValue={
+                startDate && new Date(startDate).toISOString().split("T")[0]
+              }
               ref={from}
             ></input>
           </div>

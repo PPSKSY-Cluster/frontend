@@ -16,6 +16,9 @@ const ReservationAPI = {
     //const userID = localStorage.getItem("userId");
     return axios.get(`${config.BASE_URL}/reservations/users/${userID}`);
   },
+  getById: (_id:string)=>{
+    return axios.get(`${config.BASE_URL}/reservations/${_id}`)
+  },
   delete: (_id: string) => {
     return axios.delete(`${config.BASE_URL}/reservations/${_id}`);
   },

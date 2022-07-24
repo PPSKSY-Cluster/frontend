@@ -1,6 +1,6 @@
 import Axios from "axios";
 import config from "config.json";
-import { openCluster } from "jobs/afterSignIn";
+import { openJob } from "jobs/afterSignIn";
 
 export const axios = Axios.create();
 
@@ -16,6 +16,7 @@ export const validateAccessToken = async () => {
   }
   const newAccessToken = await validateRefreshToken();
   if (newAccessToken) {
+    localStorage.setItem('accessToken', newAccessToken)
     return newAccessToken;
   }
   localStorage.setItem("accessToken", "");
@@ -37,7 +38,7 @@ export const saveAccessTokenAndSignIn = async (refreshToken: string) => {
     const accessToken = response.data.token;
     localStorage.setItem("accessToken", accessToken);
     setDefaultHeader("Authorization", `Bearer ${accessToken}`);
-    openCluster();
+    openJob();
   } catch (error) {
     alert(error);
   }

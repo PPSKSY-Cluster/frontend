@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import ClusterForm from "components/cluster/ClusterForm";
 import { ICluster } from "types/Cluster";
 import ClusterAPI from "api/cluster";
+import { setDefaultHeader, validateAccessToken } from "api/API";
 
 const ClusterSinglePage = () => {
   const [currentItem, setCurrentItem] = useState<ICluster>({
@@ -15,16 +16,21 @@ const ClusterSinglePage = () => {
   });
   const router = useRouter();
   useEffect(() => {
-    if (router.isReady) {
-      let { id } = router.query;
-      id = Array.isArray(id) ? id[0] : id;
-      if (localStorage.getItem("jwt") === "") {
-        localStorage.setItem("afterSignIn", `cluster:${id}`);
+    async function onStart() {
+      if (router.isReady) {
+        let { id } = router.query;
+        id = Array.isArray(id) ? id[0] : id;
+        const token = await validateAccessToken();
+        if (!token) {
+          return localStorage.setItem("afterSignIn", `cluster:${id}`);
+        }
+        setDefaultHeader("Authorization", token);
+        ClusterAPI.getById(id).then((response) => {
+          setCurrentItem(response.data);
+        });
       }
-      ClusterAPI.getById(id).then((response) => {
-        setCurrentItem(response.data);
-      });
     }
+    onStart();
   }, [router.isReady]);
 
   const onSubmit = async (updatedItem: ICluster) => {

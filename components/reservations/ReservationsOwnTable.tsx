@@ -49,7 +49,7 @@ const ClusterTable = () => {
         const response = await ReservationsAPI.getOwn(
           localStorage.getItem("userId")
         );
-        if (response.data.length > 0) setReservations(response.data);
+        if (response.data?.length > 0) setReservations(response.data);
       } catch (error) {
         console.log(error);
       }
