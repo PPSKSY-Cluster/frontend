@@ -45,7 +45,7 @@ const ClusterTable = () => {
     async function getCluster() {
       try {
         const response = await ClusterAPI.getAll();
-        if (response.data.length > 0) setCluster(response.data);
+        if (response.data?.length > 0) setCluster(response.data);
       } catch (error) {
         console.log(error);
       }

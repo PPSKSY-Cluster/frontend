@@ -54,8 +54,8 @@ const UserForm: FC<UserFormProps> = ({
         <div className="form-group mb-2">
           <label>Rolle</label>
           <select className="form-select" onChange={handleTypeChange}>
-            <option value={0}>User</option>
-            <option value={1}>Admin</option>
+            <option value="0">User</option>
+            <option value="1">Admin</option>
           </select>
         </div>
         <div className="d-grid gap-2 d-lg-flex justify-content-lg-end">
