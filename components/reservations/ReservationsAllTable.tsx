@@ -62,11 +62,9 @@ const ClusterTable = () => {
         ? setReservations(
             reservations.filter((el) => el._id != currentItem._id)
           )
-        : alert("Uups! Something went wrong!");
+        : dispatch.notifications.error("");
       response.status === 204 ? dispatch.notifications.success("") : null;
-    } catch (error) {
-      dispatch.notifications.error("");
-    }
+    } catch (error) {}
   };
 
   const onUpdateClick = async (updatedItem: IReservation) => {

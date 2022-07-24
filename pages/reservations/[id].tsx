@@ -5,7 +5,12 @@ import ReservationAPI from "api/reservation";
 import { IReservation } from "types/Reservation";
 import { setDefaultHeader, validateAccessToken } from "api/API";
 
+import { useDispatch } from "react-redux";
+import { Dispatch } from "src/store";
+
 const ReservationSinglePage = () => {
+  const dispatch = useDispatch<Dispatch>();
+
   const [currentRes, setCurrentRes] = useState<IReservation>({
     _id: "",
     clusterID: "",
@@ -34,21 +39,32 @@ const ReservationSinglePage = () => {
     onStart();
   }, [router.isReady]);
 
+  const onDeleteClick = async () => {
+    try {
+      const response = await ReservationAPI.delete(currentRes._id);
+      response.status === 204
+        ? dispatch.notifications.success("")
+        : dispatch.notifications.error("");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <Main>
       <div className="container-fluid p-4">
         <h2 className="mb-3">Reservation</h2>
         <form onSubmit={() => {}}>
           <div className="d-none d-lg-block">
-              <div className="form-group col mb-2">
-                <label>Reservation Id</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  value={currentRes._id}
-                  readOnly
-                />
-              </div>
+            <div className="form-group col mb-2">
+              <label>Reservation Id</label>
+              <input
+                type="text"
+                className="form-control"
+                value={currentRes._id}
+                readOnly
+              />
+            </div>
             <div className="row g-3">
               <div className="form-group col mb-2">
                 <label>Cluster Id</label>
@@ -89,12 +105,12 @@ const ReservationSinglePage = () => {
                 />
               </div>
             </div>
-            
           </div>
         </form>
-        <button className="btn btn-primary">Stornieren</button>
+        <button className="btn btn-primary" onClick={() => onDeleteClick()}>
+          Stornieren
+        </button>
         <button className="btn btn-secondary">Bestätigen</button>
-
       </div>
     </Main>
   );
