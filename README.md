@@ -28,7 +28,7 @@ Run the built app in production mode
 npm start
 ```
 
-## Create config.ts
+## Create config.json
 
 "BASE_URL": "Base-URL of api"
 
