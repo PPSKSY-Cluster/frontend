@@ -1,20 +1,36 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Main from "components/main/Main";
 import { useRouter } from "next/router";
 import ReservationAPI from "api/reservation";
 import { IReservation } from "types/Reservation";
 import { setDefaultHeader, validateAccessToken } from "api/API";
 
+import { useDispatch } from "react-redux";
+import { Dispatch } from "src/store";
+
 const ReservationSinglePage = () => {
+  const dispatch = useDispatch<Dispatch>();
+
   const [currentRes, setCurrentRes] = useState<IReservation>({
     _id: "",
     clusterID: "",
     userID: "",
-    nodes: 0,
+    currentNodes: 0,
     startTime: 0,
     endTime: 0,
   });
+
   const router = useRouter();
+  const currentItem = currentRes;
+
+  const nodes = useRef(null);
+  const from = useRef(null);
+  const to = useRef(null);
+
+  const [rNodes, setRNodes] = useState(1);
+  const [rFrom, setRFrom] = useState("");
+  const [rTo, setRTo] = useState("");
+
   useEffect(() => {
     async function onStart() {
       if (router.isReady) {
@@ -34,67 +50,117 @@ const ReservationSinglePage = () => {
     onStart();
   }, [router.isReady]);
 
+  const init = () => {
+    setRNodes(currentItem.nodes);
+    setRFrom(
+      new Date(currentItem.startTime * 1000).toISOString().split("T")[0]
+    );
+    setRTo(new Date(currentItem.endTime * 1000).toISOString().split("T")[0]);
+  };
+  useEffect(() => {
+    init();
+  }, [currentItem]);
+
+  const createReservation = (e) => {
+    e.preventDefault();
+
+    const updatedReservation: IReservation = {
+      _id: currentItem._id,
+      clusterID: currentItem.clusterID,
+      userID: currentItem.userID,
+      nodes: rNodes,
+      startTime: Math.floor(new Date(rFrom).getTime() / 1000),
+      endTime: Math.floor(new Date(rTo).getTime() / 1000),
+    };
+
+    console.log(updatedReservation);
+
+    try {
+      const response = ReservationAPI.update(updatedReservation);
+      if (response.status === 200) {
+        dispatch.notifications.success("");
+      } else {
+        dispatch.notifications.error("");
+      }
+    } catch (error) {}
+  };
+
+  const nodesOptions = [];
+  for (let i = 1; i <= rNodes; i++) {
+    nodesOptions.push(<option key={i.toString()}>{i}</option>);
+  }
+
+  const onDeleteClick = async () => {
+    try {
+      const response = await ReservationAPI.delete(currentRes._id);
+      response.status === 204
+        ? dispatch.notifications.success("")
+        : dispatch.notifications.error("");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const startTime = new Date(currentItem.startTime);
+
   return (
     <Main>
-      <div className="container-fluid p-4">
-        <h2 className="mb-3">Reservation</h2>
-        <form onSubmit={() => {}}>
-          <div className="d-none d-lg-block">
-              <div className="form-group col mb-2">
-                <label>Reservation Id</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  value={currentRes._id}
-                  readOnly
-                />
-              </div>
-            <div className="row g-3">
-              <div className="form-group col mb-2">
-                <label>Cluster Id</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  value={currentRes.clusterID}
-                  readOnly
-                />
-              </div>
-              <div className="form-group col mb-2">
-                <label>Anzahl der Nodes</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  value={currentRes.nodes}
-                  readOnly
-                />
-              </div>
+      <div className="col-sm-8 py-5 mx-auto">
+        <form onSubmit={createReservation}>
+          <div className=" d-lg-block">
+            <label className="form-label">Anzahl der Nodes:</label>
+            <div className="form-group mb-2">
+              <select
+                className="form-control"
+                id="exampleFormControlSelect1"
+                ref={nodes}
+                defaultValue={rNodes}
+              >
+                {nodesOptions}
+              </select>
             </div>
-            <div className="row g-3">
-              <div className="form-group col mb-2">
-                <label>Von</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  value={new Date(currentRes.startTime).toUTCString()}
-                  readOnly
-                />
-              </div>
-              <div className="form-group col mb-2">
-                <label>Bis</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  value={new Date(currentRes.endTime).toUTCString()}
-                  readOnly
-                />
-              </div>
+            <div className="form-group g-3 mb-2">
+              <label className="form-label">Von:</label>
+              <input
+                className="form-control"
+                type="date"
+                name="due-date"
+                id="due-date"
+                v-model="date"
+                ref={from}
+                value={rFrom}
+                onChange={(e) => {
+                  setRFrom(e.target.value);
+                }}
+              ></input>
             </div>
-            
+            <div className="form-group">
+              <label className="form-label">Bis:</label>
+              <input
+                className="form-control"
+                type="date"
+                name="due-date"
+                id="due-date"
+                v-model="date"
+                ref={to}
+                value={rTo}
+                onChange={(e) => {
+                  setRTo(e.target.value);
+                }}
+              ></input>
+            </div>
+            <div className="form-group mb-2"></div>
+            <div className="d-grid gap-2 d-lg-flex justify-content-lg-end">
+              <button
+                className="btn btn-primary"
+                onClick={() => onDeleteClick()}
+              >
+                Stornieren
+              </button>
+              <button className="btn btn-secondary">Reservierung ändern</button>
+            </div>
           </div>
         </form>
-        <button className="btn btn-primary">Stornieren</button>
-        <button className="btn btn-secondary">Bestätigen</button>
-
       </div>
     </Main>
   );

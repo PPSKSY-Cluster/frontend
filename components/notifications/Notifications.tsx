@@ -31,7 +31,6 @@ const Notification = () => {
             </div>
           ) : (
             <>
-              <p>{notificationState} </p>
               <div className="alert alert-danger" role="alert">
                 Fehler, bitte versuche es erneut!
               </div>
