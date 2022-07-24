@@ -1,9 +1,4 @@
-import { FC } from "react";
 import React from "react";
-import ConfirmDialog from "components/dialog/ConfirmDialog";
-import UserAPI from "api/user";
-import Router from "next/router";
-import Link from "next/link";
 
 const Impressum = () => {
   return (
@@ -12,7 +7,7 @@ const Impressum = () => {
         <h3>
           Cluster Thruster ist ein internes Clusterressourcen-Verwaltungstool
           der{" "}
-          <a target="_blank" href="https://www.tu.berlin/">
+          <a target="_blank" href="https://www.tu.berlin/" rel="noreferrer">
             TU-Berlin
           </a>
           .

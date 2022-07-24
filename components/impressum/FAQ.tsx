@@ -1,9 +1,5 @@
-import { FC } from "react";
 import React from "react";
-import ConfirmDialog from "components/dialog/ConfirmDialog";
-import UserAPI from "api/user";
 import Router from "next/router";
-import { PageType } from "types/MobileMenu";
 
 const FAQ = () => {
   const goCluster = () => {
@@ -111,7 +107,7 @@ const FAQ = () => {
               Bei dringenden Fragen zu einer Reservierung steht der
               Kundenservice der TU Berlin jederzeit telefonisch oder per E-Mail
               ein Mitarbeiter der TU zur Verfügung.
-              <a href="https://www.tu.berlin/kontakt" target="_blank">
+              <a href="https://www.tu.berlin/kontakt" target="_blank" rel="noreferrer">
                 {" "}
                 TU Kontakt
               </a>{" "}
