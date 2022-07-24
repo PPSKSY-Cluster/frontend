@@ -34,7 +34,7 @@ const CalendarItem: FC<CalenderItemProps> = ({
     }
     getReservations();
   }, []);
-  const getAvailableNodes = (date:IDate) => {
+  const getAvailableNodes = (date: IDate) => {
     let maxNodes = cluster.nodes;
     const reservedClusters =
       reservations?.filter((reservation) => {
@@ -50,13 +50,13 @@ const CalendarItem: FC<CalenderItemProps> = ({
   };
   const NodeCell = ({ date }) => {
     const nodes = getAvailableNodes(date);
-    const color = nodes === 0 ? "bg-danger" : "bg-success";
+    const color = nodes <= 0 ? "bg-danger" : "bg-success";
 
     const onCellClick = () => {
-        if(nodes !== 0){
-            setCurrentItem(cluster);
-            setCurrentDate(date.time);
-        }
+      if (nodes !== 0) {
+        setCurrentItem(cluster);
+        setCurrentDate(date.time);
+      }
     };
     return (
       <td

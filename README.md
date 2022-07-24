@@ -8,6 +8,10 @@ This project is built in the context of the course Scalable Systems at TU berlin
 
 The frontend uses react with next.js.
 
+## Create a config.ts
+
+"BASE_URL": "Base-URL of api"
+
 ## Get started
 
 Start the development server
@@ -27,10 +31,6 @@ Run the built app in production mode
 ```
 npm start
 ```
-
-## Create config.ts
-
-"BASE_URL": "Base-URL of api"
 
 ## License
 
