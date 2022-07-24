@@ -11,25 +11,27 @@ The frontend uses react with next.js.
 ## Get started
 
 Start the development server
+
 ```
 npm run dev
 ```
 
 Build the app for production
+
 ```
 npm run build
 ```
 
 Run the built app in production mode
+
 ```
 npm start
 ```
 
+## Create config.ts
+
+"BASE_URL": "Base-URL of api"
+
 ## License
 
 [MIT](https://github.com/duxianwei520/react/blob/master/LICENSE)
-
-
-
-
-

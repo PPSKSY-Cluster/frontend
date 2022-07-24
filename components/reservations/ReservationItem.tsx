@@ -34,6 +34,7 @@ const ClusterItem: FC<ClusterItemProps> = ({
     <>
       <tr>
         <td className="text-center">{count}</td>
+        <td className="text-center">{reservationItem._id}</td>
         <td className="text-center">{clusterName}</td>
         <td className="text-center">{reservationItem.nodes}</td>
         <td className="text-center">{fromDate.toLocaleDateString()}</td>
