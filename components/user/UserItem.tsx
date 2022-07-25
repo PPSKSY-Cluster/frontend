@@ -28,15 +28,6 @@ const UserItem: FC<UserItemProps> = ({ userItem, count, setCurrentItem }) => {
           <td className="text-center">
             <a onClick={() => setCurrentItem(userItem)}>
               <i
-                className="bi bi-calendar-check"
-                data-bs-toggle="modal"
-                data-bs-target="#userUpdate"
-              />
-            </a>
-          </td>
-          <td className="text-center">
-            <a onClick={() => setCurrentItem(userItem)}>
-              <i
                 className="bi bi-pencil-square"
                 data-bs-toggle="modal"
                 data-bs-target="#userUpdate"

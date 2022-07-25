@@ -86,7 +86,6 @@ const UserTable = () => {
                 <th className="text-center col-md-1">Nr</th>
                 <th className="text-center col-md-4">Name</th>
                 <th className="text-center col-md-4">Rolle</th>
-                <th className="text-center col-md-1">Reservierungen</th>
                 <th className="text-center col-md-1">Bearbeiten</th>
                 <th className="text-center col-md-1">Löschen</th>
               </tr>
